@@ -24,9 +24,10 @@ export interface VectorSearchOptions {
  *
  * Első körben maximum öt találatot kérünk vissza.
  *
- * A 0.20 érték szándékosan megengedő a kezdeti
- * teszteléshez. Később valódi receptkérdésekkel
- * finomhangolhatjuk ezt a küszöbértéket.
+ * Ez az alapérték fejlesztéshez és teszteléshez használható.
+ * Később valós SMT műszaki dokumentumokkal és evaluációval
+ * pontosítható.
+ * 
  */
 export const DEFAULT_VECTOR_SEARCH_OPTIONS:
   VectorSearchOptions = {

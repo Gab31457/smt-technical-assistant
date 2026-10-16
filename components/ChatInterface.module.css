@@ -440,3 +440,81 @@
     width: 100%;
   }
 }
+/* Tartós chatmemória kezelősávja. */
+.sessionBar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.sessionControls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sessionLabel {
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sessionSelect {
+  width: 100%;
+  max-width: 520px;
+  padding: 9px 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+}
+
+.newSessionButton {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #0f766e;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.newSessionButton:hover:not(:disabled) {
+  background: #115e59;
+}
+
+.newSessionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.promptLocation {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .sessionBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sessionSelect {
+    max-width: none;
+  }
+
+  .newSessionButton {
+    width: 100%;
+  }
+}

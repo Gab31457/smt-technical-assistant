@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import type { ChatMessageInput } from "@/lib/chat-types";
+import { databasePool } from "@/lib/database";
 import { generateRagAnswer } from "@/lib/rag";
 import {
   isSystemPromptVariant,
@@ -16,6 +17,7 @@ import {
 export const runtime = "nodejs";
 
 interface ChatRequestBody {
+  chatSessionId?: unknown;
   message?: unknown;
   messages?: unknown;
   limit?: unknown;
@@ -77,9 +79,96 @@ export async function POST(request: Request) {
     const requestBody =
       (await request.json()) as ChatRequestBody;
 
+    const chatSessionId =
+      typeof requestBody.chatSessionId === "string"
+        ? requestBody.chatSessionId.trim()
+        : "";
+
+    const usesPersistentMemory =
+      chatSessionId.length > 0;
+
     let messages: ChatMessageInput[];
 
-    if (requestBody.messages !== undefined) {
+    if (usesPersistentMemory) {
+      if (typeof requestBody.message !== "string") {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "CHAT_MESSAGE_MISSING",
+              message: "A message mező megadása kötelező.",
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      const normalizedMessage = requestBody.message.trim();
+
+      if (
+        normalizedMessage.length === 0 ||
+        normalizedMessage.length > 2000
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "INVALID_CHAT_MESSAGE",
+              message:
+                "A chatüzenet 1 és 2000 karakter közötti lehet.",
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      const sessionResult = await databasePool.query(
+        "SELECT id, title FROM chat_sessions WHERE id = $1",
+        [chatSessionId]
+      );
+
+      if (sessionResult.rowCount === 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "CHAT_SESSION_NOT_FOUND",
+              message: "A beszélgetés nem található.",
+            },
+          },
+          { status: 404 }
+        );
+      }
+
+      await databasePool.query(
+        `
+          INSERT INTO chat_messages (
+            chat_session_id,
+            role,
+            content
+          )
+          VALUES ($1, 'user', $2)
+        `,
+        [chatSessionId, normalizedMessage]
+      );
+
+      const historyResult = await databasePool.query<{
+        role: "user" | "assistant";
+        content: string;
+      }>(
+        `
+          SELECT role, content
+          FROM chat_messages
+          WHERE chat_session_id = $1
+            AND role IN ('user', 'assistant')
+          ORDER BY created_at ASC, id ASC
+        `,
+        [chatSessionId]
+      );
+
+      messages = historyResult.rows;
+    } else if (requestBody.messages !== undefined) {
+
       const parsedMessages = parseChatMessages(
         requestBody.messages
       );
@@ -299,9 +388,61 @@ export async function POST(request: Request) {
       })
     );
 
+    if (usesPersistentMemory) {
+      await databasePool.query(
+        `
+          INSERT INTO chat_messages (
+            chat_session_id,
+            role,
+            content,
+            sources
+          )
+          VALUES ($1, 'assistant', $2, $3::jsonb)
+        `,
+        [
+          chatSessionId,
+          ragAnswer.answer,
+          JSON.stringify(sources),
+        ]
+      );
+
+      const sessionResult = await databasePool.query<{
+        title: string;
+      }>(
+        "SELECT title FROM chat_sessions WHERE id = $1",
+        [chatSessionId]
+      );
+
+      if (sessionResult.rows[0]?.title === "Új beszélgetés") {
+        const generatedTitle = lastUserMessage.content
+          .replace(/\s+/g, " ")
+          .slice(0, 60);
+
+        await databasePool.query(
+          `
+            UPDATE chat_sessions
+            SET title = $1, updated_at = NOW()
+            WHERE id = $2
+          `,
+          [generatedTitle, chatSessionId]
+        );
+      } else {
+        await databasePool.query(
+          `
+            UPDATE chat_sessions
+            SET updated_at = NOW()
+            WHERE id = $1
+          `,
+          [chatSessionId]
+        );
+      }
+    }
+
     return NextResponse.json(
       {
         success: true,
+        chatSessionId:
+          usesPersistentMemory ? chatSessionId : null,
         message: lastUserMessage.content,
         answer: ragAnswer.answer,
         model: ragAnswer.model,

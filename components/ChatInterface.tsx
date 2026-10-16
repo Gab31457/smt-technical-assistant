@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import type {
   FormEvent,
   KeyboardEvent,
 } from "react";
-import type { ChatMessageInput } from "@/lib/chat-types";
 import styles from "./ChatInterface.module.css";
 
 type SystemPromptVariant =
@@ -19,11 +22,10 @@ interface ChatSource {
   originalFilename: string;
   documentTitle: string | null;
   similarity: number;
+  content?: string;
 }
 
-type ChatMessageRole =
-  | "user"
-  | "assistant";
+type ChatMessageRole = "user" | "assistant";
 
 interface ChatMessage {
   id: string;
@@ -33,8 +35,16 @@ interface ChatMessage {
   systemPromptVariant?: SystemPromptVariant;
 }
 
+interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface SuccessfulChatResponse {
   success: true;
+  chatSessionId: string | null;
   message: string;
   answer: string;
   model: string;
@@ -48,7 +58,7 @@ interface SuccessfulChatResponse {
   sources: ChatSource[];
 }
 
-interface FailedChatResponse {
+interface FailedApiResponse {
   success: false;
   error: {
     code: string;
@@ -56,63 +66,262 @@ interface FailedChatResponse {
   };
 }
 
+interface SessionListResponse {
+  success: true;
+  sessions: ChatSession[];
+}
+
+interface SessionCreateResponse {
+  success: true;
+  session: ChatSession;
+}
+
+interface SessionDetailResponse {
+  success: true;
+  session: ChatSession;
+  messages: Array<{
+    id: string;
+    role: "user" | "assistant" | "system";
+    content: string;
+    sources: ChatSource[];
+    createdAt: string;
+  }>;
+}
+
 type ChatResponse =
   | SuccessfulChatResponse
-  | FailedChatResponse;
+  | FailedApiResponse;
 
 function createMessageId(): string {
   return crypto.randomUUID();
 }
 
-function formatSimilarity(
-  similarity: number
-): string {
+function formatSimilarity(similarity: number): string {
   return `${(similarity * 100).toFixed(1)}%`;
 }
 
 function getSystemPromptLabel(
   variant: SystemPromptVariant
 ): string {
-  if (variant === "conversational") {
-    return "Beszélgető és segítő";
-  }
-
-  return "Szigorúan forráshű";
+  return variant === "conversational"
+    ? "Beszélgető és segítő"
+    : "Szigorúan forráshű";
 }
 
 export default function ChatInterface() {
-  const [inputValue, setInputValue] =
-    useState("");
+  const [inputValue, setInputValue] = useState("");
 
-  const [
-    systemPromptVariant,
-    setSystemPromptVariant,
-  ] = useState<SystemPromptVariant>(
-    "strict"
-  );
+  const [systemPromptVariant, setSystemPromptVariant] =
+    useState<SystemPromptVariant>("strict");
 
   const [messages, setMessages] =
     useState<ChatMessage[]>([]);
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [sessions, setSessions] =
+    useState<ChatSession[]>([]);
 
+  const [activeSessionId, setActiveSessionId] =
+    useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSessions, setIsLoadingSessions] =
+    useState(true);
   const [errorMessage, setErrorMessage] =
     useState<string | null>(null);
 
-  async function sendMessage(): Promise<void> {
-    const normalizedMessage =
-      inputValue.trim();
+  const loadSession = useCallback(
+    async (sessionId: string): Promise<void> => {
+      setErrorMessage(null);
 
-    if (
-      normalizedMessage.length === 0 ||
-      isLoading
-    ) {
+      try {
+        const response = await fetch(
+          `/api/chat-sessions/${sessionId}`,
+          { cache: "no-store" }
+        );
+
+        const responseBody =
+          (await response.json()) as
+            | SessionDetailResponse
+            | FailedApiResponse;
+
+        if (
+          !response.ok ||
+          responseBody.success === false
+        ) {
+          const message =
+            responseBody.success === false
+              ? responseBody.error.message
+              : "A beszélgetés betöltése sikertelen.";
+
+          throw new Error(message);
+        }
+
+        const loadedMessages: ChatMessage[] =
+          responseBody.messages
+            .filter(
+              (message) =>
+                message.role === "user" ||
+                message.role === "assistant"
+            )
+            .map((message) => ({
+              id: message.id,
+              role: message.role as ChatMessageRole,
+              content: message.content,
+              sources: message.sources,
+            }));
+
+        setActiveSessionId(sessionId);
+        setMessages(loadedMessages);
+      } catch (error) {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Ismeretlen hiba történt."
+        );
+      }
+    },
+    []
+  );
+
+  const createSession = useCallback(
+    async (): Promise<string | null> => {
+      setErrorMessage(null);
+
+      try {
+        const response = await fetch(
+          "/api/chat-sessions",
+          { method: "POST" }
+        );
+
+        const responseBody =
+          (await response.json()) as
+            | SessionCreateResponse
+            | FailedApiResponse;
+
+        if (
+          !response.ok ||
+          responseBody.success === false
+        ) {
+          const message =
+            responseBody.success === false
+              ? responseBody.error.message
+              : "Az új beszélgetés létrehozása sikertelen.";
+
+          throw new Error(message);
+        }
+
+        setSessions((currentSessions) => [
+          responseBody.session,
+          ...currentSessions,
+        ]);
+        setActiveSessionId(responseBody.session.id);
+        setMessages([]);
+
+        return responseBody.session.id;
+      } catch (error) {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Ismeretlen hiba történt."
+        );
+        return null;
+      }
+    },
+    []
+  );
+
+  const loadSessions = useCallback(
+    async (): Promise<void> => {
+      setIsLoadingSessions(true);
+      setErrorMessage(null);
+
+      try {
+        const response = await fetch(
+          "/api/chat-sessions",
+          { cache: "no-store" }
+        );
+
+        const responseBody =
+          (await response.json()) as
+            | SessionListResponse
+            | FailedApiResponse;
+
+        if (
+          !response.ok ||
+          responseBody.success === false
+        ) {
+          const message =
+            responseBody.success === false
+              ? responseBody.error.message
+              : "A beszélgetések betöltése sikertelen.";
+
+          throw new Error(message);
+        }
+
+        setSessions(responseBody.sessions);
+
+        if (responseBody.sessions.length > 0) {
+          await loadSession(responseBody.sessions[0].id);
+        } else {
+          await createSession();
+        }
+      } catch (error) {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Ismeretlen hiba történt."
+        );
+      } finally {
+        setIsLoadingSessions(false);
+      }
+    },
+    [createSession, loadSession]
+  );
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void loadSessions();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [loadSessions]);
+
+  async function refreshSessionList(): Promise<void> {
+    const response = await fetch(
+      "/api/chat-sessions",
+      { cache: "no-store" }
+    );
+
+    const responseBody =
+      (await response.json()) as
+        | SessionListResponse
+        | FailedApiResponse;
+
+    if (response.ok && responseBody.success) {
+      setSessions(responseBody.sessions);
+    }
+  }
+
+  async function sendMessage(): Promise<void> {
+    const normalizedMessage = inputValue.trim();
+
+    if (normalizedMessage.length === 0 || isLoading) {
       return;
     }
 
-    const requestedPromptVariant =
-      systemPromptVariant;
+    let sessionId = activeSessionId;
+
+    if (!sessionId) {
+      sessionId = await createSession();
+    }
+
+    if (!sessionId) {
+      return;
+    }
+
+    const requestedPromptVariant = systemPromptVariant;
 
     const userMessage: ChatMessage = {
       id: createMessageId(),
@@ -120,44 +329,28 @@ export default function ChatInterface() {
       content: normalizedMessage,
     };
 
-    const conversationMessages: ChatMessageInput[] = [
-      ...messages.map((message) => ({
-        role: message.role,
-        content: message.content,
-      })),
-      {
-        role: userMessage.role,
-        content: userMessage.content,
-      },
-    ];
-
     setMessages((currentMessages) => [
       ...currentMessages,
       userMessage,
     ]);
-
     setInputValue("");
     setErrorMessage(null);
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "/api/chat",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            messages: conversationMessages,
-            limit: 5,
-            minimumSimilarity: 0.2,
-            systemPromptVariant:
-              requestedPromptVariant,
-          }),
-        }
-      );
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chatSessionId: sessionId,
+          message: normalizedMessage,
+          limit: 5,
+          minimumSimilarity: 0.2,
+          systemPromptVariant: requestedPromptVariant,
+        }),
+      });
 
       const responseBody =
         (await response.json()) as ChatResponse;
@@ -187,13 +380,20 @@ export default function ChatInterface() {
         ...currentMessages,
         assistantMessage,
       ]);
+
+      await refreshSessionList();
     } catch (error) {
-      const readableErrorMessage =
+      setMessages((currentMessages) =>
+        currentMessages.filter(
+          (message) => message.id !== userMessage.id
+        )
+      );
+
+      setErrorMessage(
         error instanceof Error
           ? error.message
-          : "Ismeretlen hiba történt.";
-
-      setErrorMessage(readableErrorMessage);
+          : "Ismeretlen hiba történt."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -209,28 +409,50 @@ export default function ChatInterface() {
   function handleKeyDown(
     event: KeyboardEvent<HTMLTextAreaElement>
   ): void {
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       void sendMessage();
     }
   }
 
-  function handlePromptVariantChange(
-    value: string
-  ): void {
-    if (
-      value === "strict" ||
-      value === "conversational"
-    ) {
-      setSystemPromptVariant(value);
-    }
-  }
-
   return (
     <section className={styles.chatContainer}>
+      <div className={styles.sessionBar}>
+        <div className={styles.sessionControls}>
+          <label
+            className={styles.sessionLabel}
+            htmlFor="chat-session"
+          >
+            Korábbi beszélgetések
+          </label>
+
+          <select
+            id="chat-session"
+            className={styles.sessionSelect}
+            value={activeSessionId ?? ""}
+            onChange={(event) =>
+              void loadSession(event.target.value)
+            }
+            disabled={isLoadingSessions || isLoading}
+          >
+            {sessions.map((session) => (
+              <option key={session.id} value={session.id}>
+                {session.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="button"
+          className={styles.newSessionButton}
+          onClick={() => void createSession()}
+          disabled={isLoadingSessions || isLoading}
+        >
+          Új beszélgetés
+        </button>
+      </div>
+
       <div className={styles.chatHeader}>
         <div>
           <h2 className={styles.chatTitle}>
@@ -254,9 +476,16 @@ export default function ChatInterface() {
               id="system-prompt-variant"
               className={styles.promptSelector}
               value={systemPromptVariant}
-              onChange={(event) =>
-                handlePromptVariantChange(event.target.value)
-              }
+              onChange={(event) => {
+                const value = event.target.value;
+
+                if (
+                  value === "strict" ||
+                  value === "conversational"
+                ) {
+                  setSystemPromptVariant(value);
+                }
+              }}
               disabled={isLoading}
             >
               <option value="strict">
@@ -267,14 +496,7 @@ export default function ChatInterface() {
               </option>
             </select>
 
-            <p
-              style={{
-                margin: "6px 0 0",
-                color: "#64748b",
-                fontSize: "0.72rem",
-                lineHeight: 1.4,
-              }}
-            >
+            <p className={styles.promptLocation}>
               A system promptok helye: lib/system-prompts.ts
               <br />
               STRICT_SYSTEM_PROMPT és CONVERSATIONAL_SYSTEM_PROMPT
@@ -296,20 +518,12 @@ export default function ChatInterface() {
             >
               🔧
             </div>
-
             <h3>Miben segíthetek?</h3>
             <p>Például kérdezheti:</p>
-
             <ul>
-              <li>
-                Mit jelent a dokumentumban szereplő hibakód?
-              </li>
-              <li>
-                Milyen ellenőrzéseket kell elvégezni programváltás előtt?
-              </li>
-              <li>
-                Hogyan végezhető el a dokumentált karbantartási művelet?
-              </li>
+              <li>Mit jelent a dokumentumban szereplő hibakód?</li>
+              <li>Milyen ellenőrzéseket kell elvégezni programváltás előtt?</li>
+              <li>Hogyan végezhető el a dokumentált karbantartási művelet?</li>
             </ul>
           </div>
         ) : (
@@ -348,7 +562,6 @@ export default function ChatInterface() {
                     <div className={styles.sourceTitle}>
                       Felhasznált források
                     </div>
-
                     <ul className={styles.sourceList}>
                       {message.sources.map((source) => (
                         <li key={source.chunkId}>
@@ -371,27 +584,18 @@ export default function ChatInterface() {
         )}
 
         {isLoading && (
-          <div
-            className={styles.loadingMessage}
-            role="status"
-          >
+          <div className={styles.loadingMessage} role="status">
             <span className={styles.loadingDot} />
             <span className={styles.loadingDot} />
             <span className={styles.loadingDot} />
-            <span>
-              Az asszisztens válaszol...
-            </span>
+            <span>Az asszisztens válaszol...</span>
           </div>
         )}
       </div>
 
       {errorMessage && (
-        <div
-          className={styles.errorMessage}
-          role="alert"
-        >
-          <strong>Hiba:</strong>{" "}
-          {errorMessage}
+        <div className={styles.errorMessage} role="alert">
+          <strong>Hiba:</strong> {errorMessage}
         </div>
       )}
 
@@ -417,7 +621,7 @@ export default function ChatInterface() {
           placeholder="Írja be az SMT műszaki dokumentumokkal kapcsolatos kérdését..."
           maxLength={2000}
           rows={3}
-          disabled={isLoading}
+          disabled={isLoading || isLoadingSessions}
         />
 
         <div className={styles.inputFooter}>
@@ -430,12 +634,11 @@ export default function ChatInterface() {
             type="submit"
             disabled={
               isLoading ||
+              isLoadingSessions ||
               inputValue.trim().length === 0
             }
           >
-            {isLoading
-              ? "Válasz készül..."
-              : "Küldés"}
+            {isLoading ? "Válasz készül..." : "Küldés"}
           </button>
         </div>
       </form>

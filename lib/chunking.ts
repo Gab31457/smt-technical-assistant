@@ -77,9 +77,9 @@ export interface TextChunk {
 /*
  * Alapértelmezett chunking beállítások.
  *
- * Ezek a beállítások receptszövegekhez megfelelő
- * kiindulópontot adnak:
- *
+ * Ezek a beállítások műszaki dokumentumok:
+ * eldolgozásához megfelelő kiindulási értékek.
+ * 
  * - maximum 1200 karakter chunkonként;
  * - körülbelül 200 karakter átfedés;
  * - legalább 100 karakteres chunk.
