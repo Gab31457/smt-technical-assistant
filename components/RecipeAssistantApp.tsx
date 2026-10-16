@@ -1,29 +1,26 @@
 "use client";
 
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 import ChatInterface from "./ChatInterface";
 import DocumentManager from "./DocumentManager";
-
 import styles from "./RecipeAssistantApp.module.css";
 
-// Az alkalmazásban megjeleníthető nézetek típusa.
+// Az alkalmazasban megjelenitheto nezetek tipusa.
 type ApplicationView = "chat" | "documents";
 
-// A fő frontend alkalmazáskomponens.
-//
-// Ez a komponens kezeli a receptasszisztens és
-// a dokumentumkezelő felület közötti váltást.
+// A fo frontend alkalmazaskomponens.
 export default function RecipeAssistantApp() {
-  // Alapértelmezetten a chatfelület jelenik meg.
-  const [activeView, setActiveView] =
-    useState<ApplicationView>("chat");
+  const router = useRouter();
+
+  // Alapertelmezetten a chatfelulet jelenik meg.
+  const [activeView, setActiveView] = useState<ApplicationView>("chat");
 
   return (
     <div>
       <nav
         className={styles.navigation}
-        aria-label="Alkalmazásnézetek"
+        aria-label="Alkalmazasnezetek"
       >
         <button
           type="button"
@@ -34,7 +31,7 @@ export default function RecipeAssistantApp() {
           }
           onClick={() => setActiveView("chat")}
         >
-          Receptasszisztens
+          Asszisztens
         </button>
 
         <button
@@ -44,11 +41,17 @@ export default function RecipeAssistantApp() {
               ? styles.activeNavigationButton
               : styles.navigationButton
           }
-          onClick={() =>
-            setActiveView("documents")
-          }
+          onClick={() => setActiveView("documents")}
         >
-          Dokumentumkezelés
+          Dokumentumkezeles
+        </button>
+
+        <button
+          type="button"
+          className={styles.navigationButton}
+          onClick={() => router.push("/evaluation")}
+        >
+          Evaluation
         </button>
       </nav>
 
