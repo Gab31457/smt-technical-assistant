@@ -257,7 +257,7 @@ ${answer}
   const sourceText = createSourceText(sources);
 
   return `
-Értékeld az AI receptasszisztens működését.
+Értékeld az SMT műszaki asszisztens működését.
 
 Evaluáció típusa:
 ${evaluationType}
@@ -267,67 +267,62 @@ ${inputText}
 Elvárt viselkedés:
 ${expectedBehavior || "Nincs külön elvárás megadva."}
 
-Az asszisztensnek átadott receptforrások:
+Az asszisztensnek átadott SMT műszaki források:
 ${sourceText}
 
 Adj 1 és 5 közötti egész pontszámot.
 
 relevance:
-Mennyire reagál közvetlenül a válasz a felhasználó aktuális kérésére?
-A relevanciát külön értékeld attól, hogy sikerült-e megfelelő receptet találni.
-A világos, a kéréshez kapcsolódó forráshiány-jelzés lehet 4 vagy 5 pontos releváns válasz.
+Mennyire reagál közvetlenül a válasz a felhasználó aktuális műszaki kérdésére?
+A relevanciát külön értékeld attól, hogy rendelkezésre állt-e megfelelő dokumentum.
+A világos, kérdéshez kapcsolódó forráshiány-jelzés lehet 4 vagy 5 pontos releváns válasz.
 
 instructionFollowing:
 Mennyire követi a válasz a felhasználói kérést és az elvárt viselkedést?
-Ha a források között nincs egyértelműen minden feltételnek megfelelő recept, akkor a biztonságos és forráshű visszautasítás helyes utasításkövetésnek számíthat.
-Ne büntesd azért az asszisztenst, mert nem talál ki receptet vagy helyettesítést megfelelő forrás nélkül.
-Csak akkor csökkentsd erősen a pontszámot, ha nem megfelelő receptet ajánl, figyelmen kívül hagy fontos feltételt, vagy forrás nélküli állítást tesz.
+Ha a forrásokban nincs elegendő információ, a biztonságos és forráshű visszautasítás helyes utasításkövetésnek számíthat.
+Ne büntesd az asszisztenst azért, mert nem talál ki paramétert, hibakódot, eljárást vagy javítási lépést megfelelő forrás nélkül.
+Csökkentsd a pontszámot, ha összekeveri a gépet, gyártót, típust, hibakódot vagy dokumentumverziót.
 
-groundedness:
-Mennyire támasztható alá a válasz minden tényszerű állítása a megadott receptforrásokból?
-
+ groundedness:
+Mennyire támasztható alá a válasz minden tényszerű műszaki állítása a megadott forrásokból?
 A groundedness értékelés szabályai:
 - Csak a megadott forrásrészleteket tekintsd bizonyítéknak.
-- Ne fogadj el egy állítást pusztán azért, mert hihetőnek tűnik.
-- Ellenőrizd külön a hozzávalókat, mennyiségeket, elkészítési időt, adagszámot, étrendi tulajdonságokat és helyettesítési javaslatokat.
+- Ne fogadj el egy állítást pusztán azért, mert szakmailag hihetőnek tűnik.
+- Ellenőrizd külön a gépneveket, típusszámokat, hibakódokat, paramétereket, mértékegységeket, határértékeket, ellenőrzési pontokat és eljárási lépéseket.
 - Ha egy tényszerű állítás nem szerepel a forrásban és nem vezethető le egyértelműen belőle, add hozzá az unsupportedClaims listához.
 - Különböztesd meg ezt a két állítást:
-  1. „A most visszakeresett források között nem találtam megfelelő receptet.” Ez óvatos, ellenőrizhető állítás lehet.
-  2. „A teljes adatbázisban nincs megfelelő recept.” Ez túl általános állítás, ha csak néhány forrásrészlet áll rendelkezésre.
-- Ha az asszisztens nem talál megfelelő forrást, ezt pontosan jelzi, és nem tesz nem igazolt receptállítást, a groundedness legyen 5.
-- Ha nem érkezett forrás, és a válasz tényszerű receptállításokat tartalmaz, a groundedness nem lehet magasabb 1 pontnál.
-- Ha az unsupportedClaims lista üres, a groundedness csak külön, világosan megindokolt súlyos probléma esetén lehet 1 vagy 2. Az indoklásban nevezd meg ezt a problémát.
-- Ha az unsupportedClaims lista nem üres, az explanation röviden magyarázza el, hogy az állítások miért nem támaszthatók alá.
+  1. „A most visszakeresett forrásokban nem találtam megfelelő információt.” Ez óvatos, ellenőrizhető állítás lehet.
+  2. „A teljes dokumentumbázisban nincs ilyen információ.” Ez túl általános állítás, ha csak néhány forrásrészlet áll rendelkezésre.
+- Ha az asszisztens nem talál megfelelő forrást, ezt pontosan jelzi, és nem tesz nem igazolt műszaki állítást, a groundedness legyen 5.
+- Ha nem érkezett forrás, és a válasz tényszerű műszaki állításokat tartalmaz, a groundedness nem lehet magasabb 1 pontnál.
+- Ha az unsupportedClaims lista üres, a groundedness csak külön, világosan megindokolt súlyos probléma esetén lehet 1 vagy 2.
+- Ha az unsupportedClaims lista nem üres, az explanation röviden magyarázza el, miért nem támaszthatók alá az állítások.
 
 clarity:
-Mennyire világos és érthető a válasz?
-A rövid, pontos forráshiány-jelzés lehet 5 pontosan érthető akkor is, ha nincs receptajánlás.
+Mennyire világos, érthető és gyakorlatban használható a válasz?
+A rövid, pontos forráshiány-jelzés lehet 5 pontosan érthető akkor is, ha nincs végrehajtható műszaki útmutatás.
 
 contextRetention:
-Mennyire őrizte meg és alkalmazta az asszisztens a korábbi beszélgetési fordulókban megadott feltételeket?
-Ezt külön értékeld a recepttalálat sikerétől.
-Ha az asszisztens a végső válaszban egyszerre figyelembe veszi az összes korábbi feltételt, magas pontszámot adj akkor is, ha megfelelő forrás hiányában nem ajánl receptet.
+Mennyire őrizte meg és alkalmazta az asszisztens a korábbi beszélgetési fordulókban megadott gépet, gyártót, típust, hibakódot, hibajelenséget és egyéb feltételeket?
+Ezt külön értékeld a dokumentumtalálat sikerétől.
 Single-turn evaluációnál a contextRetention értéke legyen 5.
 
 consistency:
-Mennyire következetes a válasz a beszélgetés korábbi részeivel és a korábban elfogadott feltételekkel?
-Ezt külön értékeld attól, hogy talált-e megfelelő receptet.
+Mennyire következetes a válasz a beszélgetés korábbi részeivel és a korábban elfogadott műszaki feltételekkel?
 A korábbi feltételek miatt adott, forráshű visszautasítás következetes válasz lehet.
 Single-turn evaluációnál a consistency értéke legyen 5.
 
 Az overallScore a relevance, instructionFollowing, groundedness, clarity, contextRetention és consistency pontszámok átlaga legyen.
-
 A passed értéke akkor legyen true, ha az overallScore legalább 3.5.
 
 Végső konzisztencia-ellenőrzés a JSON elkészítése előtt:
 - Ne adj minden részszempontra automatikusan azonos pontszámot.
 - Minden részszempontot önállóan értékelj.
-- A feladat eredménytelensége nem jelenti automatikusan azt, hogy a válasz irreleváns, érthetetlen, kontextusvesztő vagy következetlen.
+- A megfelelő dokumentum hiánya nem jelenti automatikusan azt, hogy a válasz irreleváns, érthetetlen, kontextusvesztő vagy következetlen.
 - Az unsupportedClaims lista és a groundedness pontszám legyen egymással összhangban.
-- A magyarázat nevezze meg a konkrét hibát vagy a helyes biztonsági viselkedést.
+- A magyarázat nevezze meg a konkrét hibát vagy a helyes, biztonságos viselkedést.
 
 Kizárólag érvényes JSON-választ adj ebben a formában:
-
 {
   "relevance": 1,
   "instructionFollowing": 1,

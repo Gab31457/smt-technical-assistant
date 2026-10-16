@@ -123,11 +123,11 @@ export default function EvaluationDashboard() {
     useState<PromptVariant>("strict");
 
   const [question, setQuestion] = useState(
-    "Ajánlj egy gyors húsmentes vacsorát!"
+    "Mit jelent a dokumentumban szereplő hibakód, és milyen ellenőrzési lépéseket ír elő?"
   );
 
   const [expectedBehavior, setExpectedBehavior] = useState(
-    "Az asszisztens kizárólag a receptadatbázis alapján válaszoljon."
+    "Az asszisztens kizárólag a feltöltött SMT műszaki dokumentumok alapján válaszoljon, ne találjon ki hiányzó műszaki információt, és nevezze meg a felhasznált forrást."
   );
 
   const [expectedSource, setExpectedSource] = useState("");
@@ -136,20 +136,20 @@ export default function EvaluationDashboard() {
     useState(0.5);
 
   const [simulatorPersona, setSimulatorPersona] = useState(
-    "Olyan felhasználó, aki egyszerű vacsorát keres, de fokozatosan mondja el az étkezési korlátozásait."
+    "Olyan SMT technikus, aki egy géphibát vizsgál, de a géptípust, a hibakódot és a hiba körülményeit fokozatosan adja meg."
   );
 
   const [simulatorGoal, setSimulatorGoal] = useState(
-    "Találjon megfelelő, egyszerű vacsorareceptet."
+    "Kapjon a megfelelő műszaki dokumentumon alapuló, következetes hibakeresési segítséget."
   );
 
   const [simulatorHiddenConstraints, setSimulatorHiddenConstraints] =
     useState(
-      "A recept legyen húsmentes és tejtermékmentes."
+      "Az asszisztens tartsa meg a korábban megadott géptípust és hibakódot, ne keverjen össze eltérő berendezéseket, és csak dokumentált ellenőrzési lépéseket adjon."
     );
 
   const [simulatorInitialMessage, setSimulatorInitialMessage] =
-    useState("Ajánlj egy egyszerű vacsorát!");
+    useState("A gép hibát jelez. Segíts a hiba kivizsgálásában!");
 
   const [simulatorMaximumTurns, setSimulatorMaximumTurns] =
     useState(3);
@@ -180,7 +180,7 @@ const currentJudgePassed =
       abResults[1].judge.passed
     : false);
 
-  // Meghívja a meglévő receptasszisztens API-t.
+  // Meghívja a meglévő SMT műszaki asszisztens API-t.
   async function requestChat(
     input: string | ChatMessageInput[],
     variant: PromptVariant
@@ -226,8 +226,8 @@ const currentJudgePassed =
         !data.success
           ? data.error?.message ||
             data.message ||
-            "A receptasszisztens futtatása sikertelen."
-          : "A receptasszisztens futtatása sikertelen.";
+            "Az SMT műszaki asszisztens futtatása sikertelen."
+          : "Az SMT műszaki asszisztens futtatása sikertelen.";
 
       throw new Error(message);
     }
@@ -308,7 +308,7 @@ const currentJudgePassed =
     setStatus(
       variant === "strict"
         ? "A szigorúan forráshű változat fut..."
-        : "A beszélgető és ajánló változat fut..."
+        : "A beszélgető és segítő változat fut..."
     );
 
     const chat = await requestChat(
@@ -860,9 +860,22 @@ const currentJudgePassed =
               </option>
 
               <option value="conversational">
-                Beszélgető és ajánló
+                Beszélgető és segítő
               </option>
             </select>
+            <small
+              style={{
+                display: "block",
+                marginTop: "6px",
+                color: "#64748b",
+                fontSize: "0.72rem",
+                lineHeight: 1.4,
+              }}
+            >
+              A system promptok helye: lib/system-prompts.ts
+              <br />
+              STRICT_SYSTEM_PROMPT és CONVERSATIONAL_SYSTEM_PROMPT
+            </small>
           </label>
         )}
 
@@ -990,7 +1003,7 @@ const currentJudgePassed =
           <>
             <label className={styles.field}>
               <span>
-                Elvárt dokumentum vagy recept neve
+                Elvárt dokumentum neve
               </span>
 
               <input
@@ -999,7 +1012,7 @@ const currentJudgePassed =
                 onChange={(event) =>
                   setExpectedSource(event.target.value)
                 }
-                placeholder="Például: túrós palacsinta"
+                placeholder="Például: smt_hibakereses.pdf"
                 disabled={isRunning}
               />
             </label>
@@ -1123,7 +1136,7 @@ const currentJudgePassed =
           />
 
           <ResultPanel
-            title="B változat: Beszélgető és ajánló"
+            title="B változat: Beszélgető és segítő"
             result={abResults[1]}
             showMultiTurnScores={false}
           />

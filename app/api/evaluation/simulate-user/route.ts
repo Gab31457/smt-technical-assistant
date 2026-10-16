@@ -242,7 +242,7 @@ export async function POST(
       DEFAULT_MODEL;
 
     const prompt = `
-Egy szimulált felhasználót játszol egy AI receptasszisztens tesztelésében.
+Egy szimulált felhasználót játszol egy SMT műszaki asszisztens tesztelésében.
 
 PERSONA:
 ${persona}
@@ -263,31 +263,32 @@ Feladatod:
 Írd meg a szimulált felhasználó következő üzenetét.
 
 Szabályok:
-- Mindig a receptasszisztens legutóbbi válaszára reagálj.
+- Mindig az SMT műszaki asszisztens legutóbbi válaszára reagálj.
 - Ne ismételd szó szerint a beszélgetés korábbi mondatait.
 - Ne segíts az asszisztensnek azzal, hogy összefoglalod helyette a teljes beszélgetést.
 - Ne írd azt, hogy vegye figyelembe az összes korábbi feltételt.
 - A rejtett feltételeket természetes beszélgetésben, fokozatosan közöld.
-- Egyszerre legfeljebb egy új fontos feltételt adj meg.
+- Egyszerre legfeljebb egy új fontos műszaki feltételt adj meg.
 - Ha az asszisztens pontosító kérdést tett fel, válaszolj közvetlenül arra.
-- Ha az asszisztens olyan receptet ajánlott, amely megsérti valamelyik rejtett feltételt, jelezd természetesen a problémát.
-- Ha az asszisztens egyértelműen közli, hogy a most visszakeresett receptforrások között nem talált minden rejtett feltételnek megfelelő receptet, és nem talál ki nem igazolt alternatívát, tekintsd ezt helyes és biztonságos végállapotnak: a shouldStop legyen true.
-- A helyes forráshiány-jelzés után ne ismételd meg ugyanazt a receptkérést, és ne kényszerítsd az asszisztenst forrás nélküli ajánlásra.
-- Csak akkor állítsd le forráshiány miatt a beszélgetést, ha az asszisztens a jelenlegi vagy visszakeresett forrásokra korlátozza az állítását. Ha megalapozatlanul a teljes adatbázisról állítja, hogy nincs megfelelő recept, ezt természetesen pontosítsd, és ne állítsd le automatikusan a beszélgetést.
-- Ha a válasz megfelelően teljesíti a célt és minden feltételt, a shouldStop értéke legyen true.
+- Tartsd meg a personában szereplő gépet, gyártót, típust, hibakódot és hibajelenséget.
+- Ha az asszisztens összekeveri a géptípust, hibakódot vagy dokumentumot, jelezd természetesen a problémát.
+- Ha az asszisztens nem dokumentált paramétert, eljárást vagy javítási lépést ad, kérdezz rá annak forrására.
+- Ha az asszisztens egyértelműen közli, hogy a visszakeresett műszaki forrásokban nincs elegendő információ, és nem talál ki nem igazolt megoldást, tekintsd ezt helyes és biztonságos végállapotnak: a shouldStop legyen true.
+- A helyes forráshiány-jelzés után ne ismételd meg ugyanazt a kérést, és ne kényszerítsd az asszisztenst forrás nélküli műszaki útmutatásra.
+- Csak akkor állítsd le forráshiány miatt a beszélgetést, ha az asszisztens a jelenlegi vagy visszakeresett forrásokra korlátozza az állítását.
+- Ha a válasz megfelelően teljesíti a célt, megőrzi a beszélgetési kontextust és minden feltételt, a shouldStop értéke legyen true.
 - Ha elértük a maximális fordulószámot, a shouldStop értéke legyen true.
 - A message rövid, természetes, magyar nyelvű felhasználói üzenet legyen.
 - Ne magyarázd el az értékelési folyamatot.
 - Kizárólag érvényes JSON-választ adj.
 
 A válasz formája:
-
 {
   "message": "A következő felhasználói üzenet.",
   "shouldStop": false,
   "reason": "Rövid indoklás arról, hogy miért folytatódik vagy áll le a szimuláció."
 }
-`;
+`
 
     const completion =
       await client.chat.completions.create({
