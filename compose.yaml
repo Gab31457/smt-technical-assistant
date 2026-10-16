@@ -1,0 +1,60 @@
+services:
+  database:
+    # PostgreSQL adatbázis előre telepített pgvector kiegészítéssel.
+    # A pg17 címke azt jelenti, hogy PostgreSQL 17-es verziót használunk.
+    image: pgvector/pgvector:pg17
+
+    # Beszédes, állandó konténernév.
+    # Ezt a nevet fogjuk használni a későbbi Docker-parancsokban.
+    container_name: ai-recipe-postgres
+
+    # Ha a Docker vagy a számítógép újraindul, a konténer automatikusan
+    # újraindul, kivéve, ha korábban kézzel állítottuk le.
+    restart: unless-stopped
+
+    environment:
+      # A PostgreSQL-adatbázis felhasználóneve.
+      POSTGRES_USER: recipe_user
+
+      # A jelszót nem közvetlenül ebben a fájlban tároljuk.
+      # A Docker az értéket a később létrehozandó .env fájlból olvassa ki.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # Az automatikusan létrehozandó adatbázis neve.
+      POSTGRES_DB: recipe_assistant
+
+    ports:
+      # A Windows 5432-es portját összekapcsoljuk
+      # a konténer PostgreSQL 5432-es portjával.
+      - "5432:5432"
+
+    volumes:
+      # Az adatbázis fájljait külön Docker volume-ban tároljuk.
+      # Emiatt az adatok a konténer leállítása után is megmaradnak.
+      - recipe_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      # A Docker rendszeresen ellenőrzi, hogy az adatbázis
+      # valóban fogad-e kapcsolatokat.
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U recipe_user -d recipe_assistant"
+        ]
+
+      # Tíz másodpercenként történik ellenőrzés.
+      interval: 10s
+
+      # Egy ellenőrzés legfeljebb öt másodpercig futhat.
+      timeout: 5s
+
+      # Öt sikertelen ellenőrzés után lesz unhealthy az állapot.
+      retries: 5
+
+      # Az indulás utáni első tíz másodpercben nem tekintjük
+      # hibának, ha az adatbázis még nem áll készen.
+      start_period: 10s
+
+volumes:
+  # A Docker által kezelt tartós adattároló deklarációja.
+  recipe_postgres_data:

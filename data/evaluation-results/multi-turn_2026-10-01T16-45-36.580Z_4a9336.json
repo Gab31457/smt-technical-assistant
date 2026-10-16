@@ -1,0 +1,88 @@
+{
+  "savedAt": "2026-10-01T16:45:36.581Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "strict",
+  "expectedBehavior": "Az asszisztens kizárólag a receptadatbázis alapján válaszoljon.",
+  "questions": [
+    "Ajánlj egy egyszerű vacsorát!",
+    "Legyen húsmentes.",
+    "Tejterméket sem fogyaszthatok. Mit ajánlasz az eddigi feltételek alapján?"
+  ],
+  "turns": [
+    {
+      "user": "Ajánlj egy egyszerű vacsorát!",
+      "assistant": "Ajánlom a **Csirkés-zöldséges tortillát** egy egyszerű vacsorához.\n\n### Csirkés-zöldséges tortilla\n\n#### Rövid ismertetés\nEz egy gyors serpenyős fogás fűszeres csirkemellel, friss zöldségekkel és joghurtos öntettel, amely tökéletes választás egy könnyű vacsorához.\n\n#### Hozzávalók\n- 500 g csirkemellfilé\n- 8 közepes tortillalap\n- 1 piros kaliforniai paprika\n- 1 sárga kaliforniai paprika\n- 1 kisebb lilahagyma\n- 1 gerezd fokhagyma\n- 2 evőkanál napraforgóolaj\n- 1 teáskanál fűszerpaprika\n- fél teáskanál őrölt kömény\n- fél teáskanál oregánó\n- só\n- őrölt fekete bors\n\n**A joghurtos öntethez**\n- 200 g natúr joghurt\n- 1 teáskanál citromlé\n- 1 gerezd fokhagyma\n- csipet só\n\n#### Elkészítés\n1. A csirkemellet vágjuk vékony csíkokra.\n2. A paprikákat és a lilahagymát szintén szeleteljük fel.\n3. Egy tálban keverjük össze a csirkehúst az olajjal, a fűszerpaprikával, a köménnyel, az oregánóval, a sóval és a borssal.\n4. Forró serpenyőben pirítsuk a csirkét 6–8 percig.\n5. Adjuk hozzá a felszeletelt paprikát és lilahagymát, és pirítsuk további 5–6 percig, amíg a zöldségek kissé megpuhulnak.\n6. Az öntethez keverjük össze a joghurtot, a citromlevet, a zúzott fokhagymát és a sót.\n7. A tortillalapokat száraz serpenyőben röviden melegítsük át.\n8. Töltsük meg a tortillákat a csirkés-zöldséges keverékkel.\n9. Locsoljuk meg joghurtos öntettel, majd hajtsuk össze.\n\n#### Adag és elkészítési idő\n- Adag: 4 fő\n- Elkészítési idő: 35 perc\n\n#### Allergének\n- Glutént és tejterméket tartalmaz.\n\n### Források\n1. Csirkés-zöldséges tortilla, csirkes-zoldseges-tortilla.md"
+    },
+    {
+      "user": "Legyen húsmentes.",
+      "assistant": "Javaslok egy húsmentes vacsorát a rendelkezésre álló receptforrások alapján:\n\n### 1. Recept neve\nZöldséges csicseriborsó curry\n\n### 2. Rövid ismertetés\nEz a curry gazdag zöldségekben és ízletes fűszerekkel készült, kókusztejjel tálalva, ami krémessé teszi az ételt.\n\n### 3. Hozzávalók\n- 1 evőkanál napraforgóolaj\n- 1 db vöröshagyma\n- 2 gerezd fokhagyma\n- 1 db cukkini\n- 1 db paprika\n- 1 db paradicsom\n- 400 g csicseriborsó (leöblítve)\n- 400 ml kókusztej\n- 2 teáskanál currypor\n- 1 teáskanál őrölt kömény\n- ½ teáskanál kurkuma\n- ½ teáskanál őrölt gyömbér\n- só\n- friss koriander vagy petrezselyem a tálaláshoz\n\n### 4. Elkészítés\n1. A vöröshagymát és a fokhagymát vágjuk apróra.\n2. A cukkinit, a paprikát és a paradicsomot kockázzuk fel.\n3. Egy nagy serpenyőben melegítsük fel az olajat.\n4. Pároljuk a vöröshagymát üvegesre.\n5. Adjuk hozzá a fokhagymát, a curryport, a köményt, a kurkumát és a gyömbért, majd kevergetve pirítsuk körülbelül fél percig.\n6. Adjuk hozzá a paprikát és a cukkinit, és pirítsuk a zöldségeket körülbelül 5 percig.\n7. Tegyük hozzá a paradicsomot és a lecsepegtetett csicseriborsót.\n8. Öntsük fel a kókusztejjel, sózzuk meg, majd közepes hőfokon főzzük 15–20 percig.\n9. Tálalás előtt szórjuk meg friss korianderrel vagy petrezselyemmel.\n\n### 5. Adag és elkészítési idő\nAz adagok száma és az elkészítési idő nem található a forrásban.\n\n### 6. Allergének\nA felhasznált kókusztej és fűszerkeverék csomagolását ellenőrizni kell.\n\n### 7. Források\n- Zöldséges csicseriborsó curry, zoldseges-csicseriborso-curry.md"
+    },
+    {
+      "user": "Tejterméket sem fogyaszthatok. Mit ajánlasz az eddigi feltételek alapján?",
+      "assistant": "Az eddigi feltételek alapján, hogy húsmentes és tejterméket sem fogyaszthat, a következő receptet ajánlom:\n\n### 1. Recept neve\nZöldséges csicseriborsó curry\n\n### 2. Rövid ismertetés\nEz a recept egy ízletes zöldséges curry, amely csicseriborsót tartalmaz, kókusztejjel készül, és könnyen elkészíthető.\n\n### 3. Hozzávalók\n- 1 evőkanál napraforgóolaj\n- 1 db vöröshagyma\n- 2 gerezd fokhagyma\n- 1 db cukkini\n- 1 db paprika\n- 1 db paradicsom\n- 1 konzerv csicseriborsó (lecsepegtetve)\n- 1 doboz kókusztej\n- 2 teáskanál currypor\n- 1 teáskanál őrölt kömény\n- fél teáskanál kurkuma\n- fél teáskanál őrölt gyömbér\n- só\n- friss koriander vagy petrezselyem (tálaláshoz)\n\n### 4. Elkészítés\n1. A vöröshagymát és a fokhagymát apróra vágjuk.\n2. A cukkinit, a paprikát és a paradicsomot kockázzuk fel.\n3. Egy nagy serpenyőben melegítsük fel az olajat.\n4. Pároljuk a vöröshagymát üvegesre.\n5. Adjuk hozzá a fokhagymát, a curryport, a köményt, a kurkumát és a gyömbért, majd pirítsuk fél percig.\n6. Adjuk hozzá a felkockázott paprikát és cukkinit, és pirítsuk 5 percig.\n7. Tegyük hozzá a paradicsomot és a lecsepegtetett csicseriborsót.\n8. Öntsük fel a kókusztejjel, sózzuk, és főzzük 15–20 percig.\n9. Tálalás előtt szórjuk meg friss korianderrel vagy petrezselyemmel.\n\n### 5. Adag és elkészítési idő\nAdagszám és elkészítési idő nem található a forrásban.\n\n### 6. Allergének\nA felhasznált kókusztej és fűszerkeverék csomagolását ellenőrizni kell.\n\n### 7. Források\n- Zöldséges csicseriborsó curry, zoldseges-csicseriborso-curry.md"
+    }
+  ],
+  "totalResponseTime": 29877.899999976158,
+  "finalEvaluation": {
+    "answer": "Az eddigi feltételek alapján, hogy húsmentes és tejterméket sem fogyaszthat, a következő receptet ajánlom:\n\n### 1. Recept neve\nZöldséges csicseriborsó curry\n\n### 2. Rövid ismertetés\nEz a recept egy ízletes zöldséges curry, amely csicseriborsót tartalmaz, kókusztejjel készül, és könnyen elkészíthető.\n\n### 3. Hozzávalók\n- 1 evőkanál napraforgóolaj\n- 1 db vöröshagyma\n- 2 gerezd fokhagyma\n- 1 db cukkini\n- 1 db paprika\n- 1 db paradicsom\n- 1 konzerv csicseriborsó (lecsepegtetve)\n- 1 doboz kókusztej\n- 2 teáskanál currypor\n- 1 teáskanál őrölt kömény\n- fél teáskanál kurkuma\n- fél teáskanál őrölt gyömbér\n- só\n- friss koriander vagy petrezselyem (tálaláshoz)\n\n### 4. Elkészítés\n1. A vöröshagymát és a fokhagymát apróra vágjuk.\n2. A cukkinit, a paprikát és a paradicsomot kockázzuk fel.\n3. Egy nagy serpenyőben melegítsük fel az olajat.\n4. Pároljuk a vöröshagymát üvegesre.\n5. Adjuk hozzá a fokhagymát, a curryport, a köményt, a kurkumát és a gyömbért, majd pirítsuk fél percig.\n6. Adjuk hozzá a felkockázott paprikát és cukkinit, és pirítsuk 5 percig.\n7. Tegyük hozzá a paradicsomot és a lecsepegtetett csicseriborsót.\n8. Öntsük fel a kókusztejjel, sózzuk, és főzzük 15–20 percig.\n9. Tálalás előtt szórjuk meg friss korianderrel vagy petrezselyemmel.\n\n### 5. Adag és elkészítési idő\nAdagszám és elkészítési idő nem található a forrásban.\n\n### 6. Allergének\nA felhasznált kókusztej és fűszerkeverék csomagolását ellenőrizni kell.\n\n### 7. Források\n- Zöldséges csicseriborsó curry, zoldseges-csicseriborso-curry.md",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "responseTime": 8274.299999982119,
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "35690a0d-a584-429a-bd4c-4c9e61d1a712",
+        "chunkId": "95e87a42-29de-4dd7-b0de-280928888de4",
+        "chunkIndex": 1,
+        "originalFilename": "csikres-gombas-rizs.md",
+        "documentTitle": "csikres-gombas-rizs",
+        "similarity": 0.5433269231927595
+      },
+      {
+        "documentId": "35755303-3bb7-488e-9aab-b7c423dc2b01",
+        "chunkId": "17f1b346-d4c7-4c30-a0cb-d82be821d9da",
+        "chunkIndex": 1,
+        "originalFilename": "csirkes-zoldseges-tortilla.md",
+        "documentTitle": "csirkes-zoldseges-tortilla",
+        "similarity": 0.5400956409817977
+      },
+      {
+        "documentId": "0715c664-a3fe-4597-82cd-49a3cb2c4670",
+        "chunkId": "f42db0cd-32ee-43c8-b308-63a6f6cb12b3",
+        "chunkIndex": 1,
+        "originalFilename": "sutotokos-rizotto.md",
+        "documentTitle": "sutotokos-rizotto",
+        "similarity": 0.5365621337950229
+      },
+      {
+        "documentId": "57ad23e7-4d4a-4399-b4f3-9f96ef4bfa17",
+        "chunkId": "6ef28a3b-2169-4677-b376-fb58cd6c4eb1",
+        "chunkIndex": 1,
+        "originalFilename": "zoldseges-csicseriborso-curry.md",
+        "documentTitle": "zoldseges-csicseriborso-curry",
+        "similarity": 0.5305418930423922
+      },
+      {
+        "documentId": "7ffcad7c-72b2-4606-b60e-0ca167368c8c",
+        "chunkId": "a118b8bd-bd5c-4115-8494-e79c48600034",
+        "chunkIndex": 1,
+        "originalFilename": "kakaos-banankenyer.md",
+        "documentTitle": "kakaos-banankenyer",
+        "similarity": 0.5244942331386755
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "explanation": "Az asszisztens pontosan követte a felhasználói kérést, húsmentes és tejterméket nem tartalmazó receptet ajánlott, amely a korábbi információk alapján készült. A válasz világos, érthető és a receptadatbázisra alapozott."
+    }
+  }
+}

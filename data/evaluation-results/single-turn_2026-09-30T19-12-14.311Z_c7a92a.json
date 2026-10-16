@@ -1,0 +1,64 @@
+{
+  "savedAt": "2026-09-30T19:12:14.311Z",
+  "evaluationType": "single-turn",
+  "question": "Ajánlj egy gyors húsmentes vacsorát!",
+  "expectedBehavior": "Az asszisztens kizárólag a receptadatbázis alapján válaszoljon.",
+  "answer": "Ajánlom a következő gyors húsmentes vacsorát:\n\n1. **Recept neve**: Fűszeres vöröslencse-krémleves\n2. **Rövid ismertetés**: Sűrű, tápláló és húsmentes leves vöröslencsével, sárgarépával és melegítő fűszerekkel.\n3. **Hozzávalók**:\n   - 250 g vöröslencse\n   - 1 közepes vöröshagyma\n   - 2 gerezd fokhagyma\n   - 2 sárgarépa\n   - 1 közepes burgonya\n   - 1 evőkanál olívaolaj\n   - 1 teáskanál őrölt kömény\n   - fél teáskanál kurkuma\n   - fél teáskanál fűszerpaprika\n   - 1 liter zöldségalaplé\n   - 1 evőkanál citromlé\n   - só\n   - őrölt fekete bors\n4. **Elkészítés**:\n   1. A vöröshagymát és a fokhagymát aprítsuk fel.\n   2. A sárgarépát és a burgonyát kockázzuk fel.\n   3. Egy lábasban melegítsük fel az olívaolajat, majd pároljuk üvegesre a vöröshagymát.\n   4. Adjuk hozzá a fokhagymát, a sárgarépát és a burgonyát, pirítsuk még néhány percig.\n   5. Keverjük hozzá a vöröslencsét, a fűszereket, majd öntsük fel zöldségalaplével.\n   6. Főzzük, amíg a vöröslencse és a zöldségek megpuhulnak (kb. 20-25 perc).\n   7. Turmixoljuk simára, majd ízesítsük citromlével, sóval és borssal.\n5. **Adag és elkészítési idő**: 4 fő, 35 perc\n6. **Allergének**: Az információ nem található a rendelkezésre álló receptforrásban.\n7. **Források**: \n   - Fűszeres vöröslencse-krémleves, voroslencse-kremleves.md",
+  "answerModel": "gpt-4o-mini",
+  "promptVariant": "strict",
+  "responseTime": 9857,
+  "resultCount": 5,
+  "contextCount": 5,
+  "sources": [
+    {
+      "documentId": "8b8c9d4a-b4d1-4bd0-ac45-7c9edec57e78",
+      "chunkId": "96a78c8b-e944-4fb4-a5d3-cd5ef4952008",
+      "chunkIndex": 0,
+      "originalFilename": "citromos-fuszeres-sult-lazac.md",
+      "documentTitle": "citromos-fuszeres-sult-lazac",
+      "similarity": 0.5929874499090036
+    },
+    {
+      "documentId": "35755303-3bb7-488e-9aab-b7c423dc2b01",
+      "chunkId": "6734f368-e778-4628-acff-34bdbbef9413",
+      "chunkIndex": 0,
+      "originalFilename": "csirkes-zoldseges-tortilla.md",
+      "documentTitle": "csirkes-zoldseges-tortilla",
+      "similarity": 0.5731492451421278
+    },
+    {
+      "documentId": "0715c664-a3fe-4597-82cd-49a3cb2c4670",
+      "chunkId": "f42db0cd-32ee-43c8-b308-63a6f6cb12b3",
+      "chunkIndex": 1,
+      "originalFilename": "sutotokos-rizotto.md",
+      "documentTitle": "sutotokos-rizotto",
+      "similarity": 0.5212066634602497
+    },
+    {
+      "documentId": "35755303-3bb7-488e-9aab-b7c423dc2b01",
+      "chunkId": "17f1b346-d4c7-4c30-a0cb-d82be821d9da",
+      "chunkIndex": 1,
+      "originalFilename": "csirkes-zoldseges-tortilla.md",
+      "documentTitle": "csirkes-zoldseges-tortilla",
+      "similarity": 0.5100570084581691
+    },
+    {
+      "documentId": "e181cf80-af6e-4320-a9e0-8e8174e41678",
+      "chunkId": "ee20284c-dc99-45a4-8018-3835e60add54",
+      "chunkIndex": 0,
+      "originalFilename": "voroslencse-kremleves.md",
+      "documentTitle": "voroslencse-kremleves",
+      "similarity": 0.5018206429772297
+    }
+  ],
+  "judgeModel": "gpt-4o-mini",
+  "judge": {
+    "relevance": 5,
+    "instructionFollowing": 5,
+    "groundedness": 5,
+    "clarity": 5,
+    "overallScore": 5,
+    "passed": true,
+    "explanation": "Az asszisztens válasza teljes mértékben releváns, pontosan követi a felhasználói kérést, minden állítása igazolható és világosan van megfogalmazva."
+  }
+}

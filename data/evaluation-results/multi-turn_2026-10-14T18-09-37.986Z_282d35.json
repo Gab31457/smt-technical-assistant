@@ -1,0 +1,118 @@
+{
+  "savedAt": "2026-10-14T18:09:37.987Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "conversational",
+  "expectedBehavior": "Az asszisztens reagáljon megfelelően a szimulált felhasználó fokozatosan közölt igényeire. A végső ajánlás legyen egyszerű, húsmentes és tejtermékmentes, kizárólag a receptadatbázis alapján válaszoljon, és ne találjon ki hiányzó információt",
+  "simulator": {
+    "persona": "Olyan felhasználó, aki egyszerű vacsorát keres, de fokozatosan mondja el az étkezési korlátozásait.",
+    "goal": "Találjon megfelelő, egyszerű vacsorareceptet.",
+    "hiddenConstraints": "A recept legyen húsmentes és tejtermékmentes.",
+    "initialMessage": "Ajánlj egy egyszerű vacsorát!",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "Ajánlj egy egyszerű vacsorát!",
+      "assistant": "Itt van egy egyszerű vacsora javaslat:\n\n### 1. Ajánlott recept: Csirkés-zöldséges tortilla\n\n### 2. Miért felel meg a kérésnek?\nEz a recept gyorsan elkészíthető és ízletes, ideális vacsorára.\n\n### 3. Fő hozzávalók\n- 500 g csirkemellfilé\n- 8 közepes tortillalap\n- 1 piros kaliforniai paprika\n- 1 sárga kaliforniai paprika\n- 1 kisebb lilahagyma\n- 200 g natúr joghurt\n\n### 4. Elkészítés röviden\n1. A csirkemellet vágjuk vékony csíkokra és fűszerezzük.\n2. Pirítsuk a csirkét forró serpenyőben, majd adjuk hozzá a felszeletelt zöldségeket.\n3. A joghurtos öntetet keverjük össze a szükséges hozzávalókkal.\n4. Melegítsük át a tortillalapokat és töltsük meg a csirkés-zöldséges keverékkel, locsoljuk meg az öntettel.\n\n### 5. Idő és adag\n- Elkészítési idő: 35 perc\n- Adag: 4 fő\n\n### 6. Források\n- Csirkés-zöldséges tortilla, csirkes-zoldseges-tortilla.md\n\nEz a recept tökéletesen megfelel egy gyors és ízletes vacsora igényének!"
+    },
+    {
+      "user": "Ez a recept jó, de én húsmentes és tejtermékmentes vacsorát keresek. Tudnál ajánlani valami mást?",
+      "assistant": "Sajnos a rendelkezésre álló receptforrások alapján nem található húsmentes és tejtermékmentes vacsora recept. \n\nAz összes recept húsos vagy tejterméket tartalmaz, például a csirkés-zöldséges tortilla, ami csirkemellet és natúr joghurtot tartalmaz. \n\nHa van más igényed vagy kérdésed, szívesen segítek!"
+    },
+    {
+      "user": "Kérlek, próbálj meg egy húsmentes és tejtermékmentes receptet ajánlani. Valami egyszerűt szeretnék vacsorára.",
+      "assistant": "Sajnos a megadott receptforrások alapján nem található húsmentes és tejtermékmentes vacsora recept. \n\nAz egyetlen elérhető húsmentes recept, a paradicsomos-bazsalikomos tészta, azonban ez tartalmaz tejterméket (reszelt parmezán). \n\nHa van bármilyen más kérésed, szívesen segítek!"
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Ajánlj egy egyszerű vacsorát!"
+    },
+    {
+      "role": "assistant",
+      "content": "Itt van egy egyszerű vacsora javaslat:\n\n### 1. Ajánlott recept: Csirkés-zöldséges tortilla\n\n### 2. Miért felel meg a kérésnek?\nEz a recept gyorsan elkészíthető és ízletes, ideális vacsorára.\n\n### 3. Fő hozzávalók\n- 500 g csirkemellfilé\n- 8 közepes tortillalap\n- 1 piros kaliforniai paprika\n- 1 sárga kaliforniai paprika\n- 1 kisebb lilahagyma\n- 200 g natúr joghurt\n\n### 4. Elkészítés röviden\n1. A csirkemellet vágjuk vékony csíkokra és fűszerezzük.\n2. Pirítsuk a csirkét forró serpenyőben, majd adjuk hozzá a felszeletelt zöldségeket.\n3. A joghurtos öntetet keverjük össze a szükséges hozzávalókkal.\n4. Melegítsük át a tortillalapokat és töltsük meg a csirkés-zöldséges keverékkel, locsoljuk meg az öntettel.\n\n### 5. Idő és adag\n- Elkészítési idő: 35 perc\n- Adag: 4 fő\n\n### 6. Források\n- Csirkés-zöldséges tortilla, csirkes-zoldseges-tortilla.md\n\nEz a recept tökéletesen megfelel egy gyors és ízletes vacsora igényének!"
+    },
+    {
+      "role": "user",
+      "content": "Ez a recept jó, de én húsmentes és tejtermékmentes vacsorát keresek. Tudnál ajánlani valami mást?"
+    },
+    {
+      "role": "assistant",
+      "content": "Sajnos a rendelkezésre álló receptforrások alapján nem található húsmentes és tejtermékmentes vacsora recept. \n\nAz összes recept húsos vagy tejterméket tartalmaz, például a csirkés-zöldséges tortilla, ami csirkemellet és natúr joghurtot tartalmaz. \n\nHa van más igényed vagy kérdésed, szívesen segítek!"
+    },
+    {
+      "role": "user",
+      "content": "Kérlek, próbálj meg egy húsmentes és tejtermékmentes receptet ajánlani. Valami egyszerűt szeretnék vacsorára."
+    },
+    {
+      "role": "assistant",
+      "content": "Sajnos a megadott receptforrások alapján nem található húsmentes és tejtermékmentes vacsora recept. \n\nAz egyetlen elérhető húsmentes recept, a paradicsomos-bazsalikomos tészta, azonban ez tartalmaz tejterméket (reszelt parmezán). \n\nHa van bármilyen más kérésed, szívesen segítek!"
+    }
+  ],
+  "totalResponseTime": 9643.10000000894,
+  "finalEvaluation": {
+    "answer": "Sajnos a megadott receptforrások alapján nem található húsmentes és tejtermékmentes vacsora recept. \n\nAz egyetlen elérhető húsmentes recept, a paradicsomos-bazsalikomos tészta, azonban ez tartalmaz tejterméket (reszelt parmezán). \n\nHa van bármilyen más kérésed, szívesen segítek!",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "conversational",
+    "responseTime": 1805.1000000089407,
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "35755303-3bb7-488e-9aab-b7c423dc2b01",
+        "chunkId": "17f1b346-d4c7-4c30-a0cb-d82be821d9da",
+        "chunkIndex": 1,
+        "originalFilename": "csirkes-zoldseges-tortilla.md",
+        "documentTitle": "csirkes-zoldseges-tortilla",
+        "similarity": 0.5433567148905223
+      },
+      {
+        "documentId": "35690a0d-a584-429a-bd4c-4c9e61d1a712",
+        "chunkId": "95e87a42-29de-4dd7-b0de-280928888de4",
+        "chunkIndex": 1,
+        "originalFilename": "csikres-gombas-rizs.md",
+        "documentTitle": "csikres-gombas-rizs",
+        "similarity": 0.5360305107874237
+      },
+      {
+        "documentId": "8b8c9d4a-b4d1-4bd0-ac45-7c9edec57e78",
+        "chunkId": "96a78c8b-e944-4fb4-a5d3-cd5ef4952008",
+        "chunkIndex": 0,
+        "originalFilename": "citromos-fuszeres-sult-lazac.md",
+        "documentTitle": "citromos-fuszeres-sult-lazac",
+        "similarity": 0.5304739448239202
+      },
+      {
+        "documentId": "7ffcad7c-72b2-4606-b60e-0ca167368c8c",
+        "chunkId": "a118b8bd-bd5c-4115-8494-e79c48600034",
+        "chunkIndex": 1,
+        "originalFilename": "kakaos-banankenyer.md",
+        "documentTitle": "kakaos-banankenyer",
+        "similarity": 0.5254622691203243
+      },
+      {
+        "documentId": "28ff008b-0054-48d5-9bdd-6d6eb9bd8768",
+        "chunkId": "6ba5fea7-dc76-4e5c-bf82-19408c9c0ed1",
+        "chunkIndex": 1,
+        "originalFilename": "paradicsomos-bazsalikomos-teszta.md",
+        "documentTitle": "paradicsomos-bazsalikomos-teszta",
+        "similarity": 0.5210651715932691
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 2,
+      "instructionFollowing": 2,
+      "groundedness": 3,
+      "clarity": 4,
+      "contextRetention": 3,
+      "consistency": 3,
+      "overallScore": 2.83,
+      "passed": false,
+      "explanation": "Az asszisztens nem tudott megfelelően reagálni a felhasználó húsmentes és tejtermékmentes recept iránti kérésére, és nem ajánlott alternatív megoldást. A válaszok nem követték a felhasználó igényeit, és a források korlátozottsága miatt nem voltak relevánsak."
+    }
+  }
+}

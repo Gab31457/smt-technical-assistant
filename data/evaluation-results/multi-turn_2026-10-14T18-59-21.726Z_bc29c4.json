@@ -1,0 +1,124 @@
+{
+  "savedAt": "2026-10-14T18:59:21.726Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "conversational",
+  "expectedBehavior": "Az asszisztens reagáljon megfelelően a szimulált felhasználó fokozatosan közölt igényeire. Őrizze meg a beszélgetésben korábban megadott feltételeket. A végső ajánlás legyen egyszerű, húsmentes és tejtermékmentes, kizárólag a visszakeresett receptforrásokra támaszkodjon, és ne találjon ki hozzávalót, mennyiséget, elkészítési időt, adagszámot, étrendi tulajdonságot vagy helyettesítési javaslatot.",
+  "simulator": {
+    "persona": "Olyan felhasználó, aki egyszerű vacsorát keres, de fokozatosan mondja el az étkezési korlátozásait. A felhasználó természetesen reagál az asszisztens ajánlására, és jelzi, ha az ajánlott recept valamelyik korlátozásának nem felel meg.",
+    "goal": "Találjon megfelelő, egyszerű vacsorareceptet a receptadatbázisból.",
+    "hiddenConstraints": "A recept legyen húsmentes és tejtermékmentes.",
+    "initialMessage": "Ajánlj egy egyszerű vacsorát!",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "Ajánlj egy egyszerű vacsorát!",
+      "assistant": "### Ajánlott recept\n**Csirkés-zöldséges tortilla**\n\n### Miért felel meg a kérésnek?\nEz a recept gyorsan elkészíthető és a vacsorához ideális húsos főétel, zöldségekkel tálalva.\n\n### Fő hozzávalók\n- 500 g csirkemellfilé\n- 8 közepes tortillalap\n- Piros és sárga kaliforniai paprika\n- 1 kisebb lilahagyma\n- Natúr joghurt\n\n### Elkészítés röviden\n1. Vágd a csirkemellet vékony csíkokra, majd keverd fűszerekkel.\n2. Forró serpenyőben pirítsd meg a csirkét és a zöldségeket.\n3. Készíts joghurtos öntetet.\n4. Töltsd meg a tortillákat a csirkés-zöldséges keverékkel és öntettel, majd hajtsd össze.\n\n### Idő és adag\n- Elkészítési idő: 35 perc\n- Adag: 4 fő\n\n### Források\n**Csirkés-zöldséges tortilla**  \nFájlnév: csirkes-zoldseges-tortilla.md"
+    },
+    {
+      "user": "Ez a recept nem megfelelő, mert csirkét tartalmaz. Én húsmentes ételt keresek.",
+      "assistant": "Sajnálom, de a rendelkezésre álló receptforrások alapján nem találtam húsmentes ételt. Az egyetlen húsmentes opció, a **citromos-fűszeres sült lazac** - halétel, de ez nem felel meg a húsmentes kritériumnak. \n\nHa keresel más típusú ételt, kérlek, pontosítsd a kérésedet, például, hogy milyen hozzávalók állnak rendelkezésre, vagy milyen ételtípust szeretnél!"
+    },
+    {
+      "user": "Kérlek, ajánlj egy húsmentes receptet, és emellett tejtermékmentes is legyen!",
+      "assistant": "Sajnálom, de a rendelkezésre álló receptforrások alapján nem található olyan húsmentes és tejtermékmentes recept, amely teljesítené a kérdéseidet. \n\nHa bármilyen más típusú ételt keresel, kérlek, pontosítsd a kérésedet, és megpróbálok segíteni!"
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Ajánlj egy egyszerű vacsorát!"
+    },
+    {
+      "role": "assistant",
+      "content": "### Ajánlott recept\n**Csirkés-zöldséges tortilla**\n\n### Miért felel meg a kérésnek?\nEz a recept gyorsan elkészíthető és a vacsorához ideális húsos főétel, zöldségekkel tálalva.\n\n### Fő hozzávalók\n- 500 g csirkemellfilé\n- 8 közepes tortillalap\n- Piros és sárga kaliforniai paprika\n- 1 kisebb lilahagyma\n- Natúr joghurt\n\n### Elkészítés röviden\n1. Vágd a csirkemellet vékony csíkokra, majd keverd fűszerekkel.\n2. Forró serpenyőben pirítsd meg a csirkét és a zöldségeket.\n3. Készíts joghurtos öntetet.\n4. Töltsd meg a tortillákat a csirkés-zöldséges keverékkel és öntettel, majd hajtsd össze.\n\n### Idő és adag\n- Elkészítési idő: 35 perc\n- Adag: 4 fő\n\n### Források\n**Csirkés-zöldséges tortilla**  \nFájlnév: csirkes-zoldseges-tortilla.md"
+    },
+    {
+      "role": "user",
+      "content": "Ez a recept nem megfelelő, mert csirkét tartalmaz. Én húsmentes ételt keresek."
+    },
+    {
+      "role": "assistant",
+      "content": "Sajnálom, de a rendelkezésre álló receptforrások alapján nem találtam húsmentes ételt. Az egyetlen húsmentes opció, a **citromos-fűszeres sült lazac** - halétel, de ez nem felel meg a húsmentes kritériumnak. \n\nHa keresel más típusú ételt, kérlek, pontosítsd a kérésedet, például, hogy milyen hozzávalók állnak rendelkezésre, vagy milyen ételtípust szeretnél!"
+    },
+    {
+      "role": "user",
+      "content": "Kérlek, ajánlj egy húsmentes receptet, és emellett tejtermékmentes is legyen!"
+    },
+    {
+      "role": "assistant",
+      "content": "Sajnálom, de a rendelkezésre álló receptforrások alapján nem található olyan húsmentes és tejtermékmentes recept, amely teljesítené a kérdéseidet. \n\nHa bármilyen más típusú ételt keresel, kérlek, pontosítsd a kérésedet, és megpróbálok segíteni!"
+    }
+  ],
+  "totalResponseTime": 8046.600000008941,
+  "finalEvaluation": {
+    "answer": "Sajnálom, de a rendelkezésre álló receptforrások alapján nem található olyan húsmentes és tejtermékmentes recept, amely teljesítené a kérdéseidet. \n\nHa bármilyen más típusú ételt keresel, kérlek, pontosítsd a kérésedet, és megpróbálok segíteni!",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "conversational",
+    "responseTime": 2188.800000011921,
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "35755303-3bb7-488e-9aab-b7c423dc2b01",
+        "chunkId": "17f1b346-d4c7-4c30-a0cb-d82be821d9da",
+        "chunkIndex": 1,
+        "originalFilename": "csirkes-zoldseges-tortilla.md",
+        "documentTitle": "csirkes-zoldseges-tortilla",
+        "similarity": 0.596050117797252,
+        "content": "- fél teáskanál őrölt kömény\n- fél teáskanál oregánó\n- só\n- őrölt fekete bors\n\n## A joghurtos öntethez\n\n- 200 g natúr joghurt\n- 1 teáskanál citromlé\n- 1 gerezd fokhagyma\n- csipet só\n\n## Elkészítés\n\n1. A csirkemellet vágjuk vékony csíkokra.\n2. A paprikákat és a lilahagymát szintén szeleteljük fel.\n3. Egy tálban keverjük össze a csirkehúst az olajjal, a fűszerpaprikával, a köménnyel, az oregánóval, a sóval és a borssal.\n4. Forró serpenyőben pirítsuk a csirkét 6–8 percig.\n5. Adjuk hozzá a felszeletelt paprikát és lilahagymát.\n6. Pirítsuk további 5–6 percig, amíg a zöldségek kissé megpuhulnak.\n7. Az öntethez keverjük össze a joghurtot, a citromlevet, a zúzott fokhagymát és a sót.\n8. A tortillalapokat száraz serpenyőben röviden melegítsük át.\n9. Töltsük meg a tortillákat a csirkés-zöldséges keverékkel.\n10. Locsoljuk meg joghurtos öntettel, majd hajtsuk össze.\n\n## Tálalási javaslat\n\nFriss salátával, paradicsommal vagy reszelt sajttal kínáljuk.\n\n## Allergének\n\nGlutént és tejterméket tartalmaz."
+      },
+      {
+        "documentId": "8b8c9d4a-b4d1-4bd0-ac45-7c9edec57e78",
+        "chunkId": "96a78c8b-e944-4fb4-a5d3-cd5ef4952008",
+        "chunkIndex": 0,
+        "originalFilename": "citromos-fuszeres-sult-lazac.md",
+        "documentTitle": "citromos-fuszeres-sult-lazac",
+        "similarity": 0.5788227349256051,
+        "content": "# Citromos-fűszeres sült lazac\n\nGyorsan elkészíthető halétel citrommal, fokhagymával és kaporral.\n\n## Kategória\n\nHalétel, könnyű főétel\n\n## Adag\n\n4 fő\n\n## Elkészítési idő\n\n30 perc\n\n## Hozzávalók\n\n- 4 darab lazacfilé\n- 1 citrom\n- 2 gerezd fokhagyma\n- 2 evőkanál olívaolaj\n- 1 teáskanál mustár\n- 1 teáskanál szárított kapor\n- fél teáskanál fűszerpaprika\n- só\n- őrölt fekete bors\n\n## Elkészítés\n\n1. Melegítsük elő a sütőt 190 Celsius-fokra.\n2. A lazacfiléket papírtörlővel töröljük szárazra.\n3. Helyezzük a halszeleteket sütőpapírral bélelt tepsire.\n4. A fokhagymát zúzzuk össze.\n5. Egy kis tálban keverjük össze az olívaolajat, a mustárt, a fokhagymát, a kaprot és a fűszerpaprikát.\n6. Facsarjuk hozzá a citrom felének levét.\n7. Sózzuk és borsozzuk a lazacot.\n8. Kenjük a fűszeres keveréket a halfilékre.\n9. A citrom másik felét szeleteljük fel, majd helyezzük a halszeletekre.\n10. Süssük a lazacot 15–18 percig, a filék vastagságától függően.\n11. A lazac akkor kész, amikor a húsa könnyen rétegekre válik.\n\n## Tálalási javaslat\n\nPárolt rizzsel, sült burgonyával vagy friss salátával kínáljuk.\n\n## Allergének\n\nHal- és mustártartalmú étel."
+      },
+      {
+        "documentId": "0715c664-a3fe-4597-82cd-49a3cb2c4670",
+        "chunkId": "f42db0cd-32ee-43c8-b308-63a6f6cb12b3",
+        "chunkIndex": 1,
+        "originalFilename": "sutotokos-rizotto.md",
+        "documentTitle": "sutotokos-rizotto",
+        "similarity": 0.5668321090419636,
+        "content": "- 2 gerezd fokhagyma\n- 1 liter zöldségalaplé\n- 100 ml száraz fehérbor\n- 50 g vaj\n- 2 evőkanál olívaolaj\n- 70 g reszelt parmezán\n- 1 teáskanál szárított zsálya\n- só\n- őrölt fekete bors\n\n## Elkészítés\n\n1. A sütőtököt vágjuk kisebb kockákra.\n2. A vöröshagymát és a fokhagymát aprítsuk fel.\n3. A zöldségalaplevet külön edényben tartsuk melegen.\n4. Egy nagy serpenyőben melegítsük fel az olívaolajat.\n5. Pároljuk üvegesre a vöröshagymát.\n6. Adjuk hozzá a fokhagymát és a sütőtököt.\n7. Pirítsuk körülbelül 5 percig.\n8. Keverjük hozzá a rizottórizst és a zsályát.\n9. Öntsük hozzá a fehérbort, majd várjuk meg, amíg nagyrészt elpárolog.\n10. Merőkanalanként adjuk hozzá a meleg alaplevet.\n11. Minden újabb adag előtt várjuk meg, amíg a rizs felszívja az előző folyadékmennyiséget.\n12. Folyamatos keverés mellett főzzük körülbelül 20 percig.\n13. Amikor a rizs krémes, de még enyhén harapható, keverjük hozzá a vajat és a parmezánt.\n14. Ízesítsük sóval és borssal.\n15. Lefedve pihentessük 3 percig tálalás előtt.\n\n## Tálalási javaslat\n\nReszelt parmezánnal és pirított tökmaggal kínáljuk.\n\n## Allergének\n\nTejterméket tartalmaz. A zöldségalaplé zellert tartalmazhat."
+      },
+      {
+        "documentId": "7ffcad7c-72b2-4606-b60e-0ca167368c8c",
+        "chunkId": "a118b8bd-bd5c-4115-8494-e79c48600034",
+        "chunkIndex": 1,
+        "originalFilename": "kakaos-banankenyer.md",
+        "documentTitle": "kakaos-banankenyer",
+        "similarity": 0.564017187132765,
+        "content": "cukor\n- 2 tojás\n- 100 g olvasztott vaj\n- 100 ml tej\n- 1 teáskanál vaníliakivonat\n- 1 teáskanál sütőpor\n- fél teáskanál szódabikarbóna\n- 1 csipet só\n- 80 g apróra vágott étcsokoládé\n\n## Elkészítés\n\n1. Melegítsük elő a sütőt 175 Celsius-fokra.\n2. Egy hosszúkás sütőformát béleljünk ki sütőpapírral.\n3. A banánokat villával törjük pépesre.\n4. Egy nagy tálban keverjük össze a banánt, a tojásokat, az olvasztott vajat, a tejet és a vaníliakivonatot.\n5. Egy másik tálban keverjük össze a lisztet, a kakaóport, a barna cukrot, a sütőport, a szódabikarbónát és a sót.\n6. A száraz hozzávalókat adjuk a banános keverékhez.\n7. Röviden keverjük össze, de ne dolgozzuk túl a tésztát.\n8. Forgassuk bele az apróra vágott étcsokoládét.\n9. Öntsük a masszát az előkészített sütőformába.\n10. Süssük körülbelül 45–50 percig.\n11. Tűpróbával ellenőrizzük, hogy a sütemény átsült-e.\n12. Hagyjuk 15 percig a formában hűlni.\n13. Ezután emeljük ki, és rácson hűtsük ki teljesen.\n\n## Tálalási javaslat\n\nÖnmagában, kávé vagy tea mellé kínáljuk.\n\n## Allergének\n\nGlutént, tojást és tejterméket tartalmaz. Az étcsokoládé nyomokban dióféléket tartalmazhat."
+      },
+      {
+        "documentId": "35690a0d-a584-429a-bd4c-4c9e61d1a712",
+        "chunkId": "95e87a42-29de-4dd7-b0de-280928888de4",
+        "chunkIndex": 1,
+        "originalFilename": "csikres-gombas-rizs.md",
+        "documentTitle": "csikres-gombas-rizs",
+        "similarity": 0.5616224797803734,
+        "content": "egyszer forgassuk át, hogy minden oldala egyenletesen piruljon.\n9. A petrezselymet vágjuk finomra.\n10. A megsült burgonyát tálalás előtt szórjuk meg friss petrezselyemmel.\n\n## Tálalási javaslat\n\nSült húsok, grillezett zöldségek vagy friss saláta mellé kínáljuk.\n\n## Allergének\n\nA recept a felsorolt hozzávalók alapján nem tartalmaz gyakori allergént."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 1,
+      "instructionFollowing": 1,
+      "groundedness": 1,
+      "clarity": 1,
+      "contextRetention": 1,
+      "consistency": 1,
+      "overallScore": 1,
+      "passed": false,
+      "unsupportedClaims": [],
+      "explanation": "Az asszisztens nem tudott megfelelő húsmentes és tejtermékmentes receptet ajánlani, mivel a rendelkezésre álló forrásokban nem szerepel ilyen recept. A válasz nem felel meg a felhasználói kérésnek, és a források alapján nem tudta alátámasztani az állításait."
+    }
+  }
+}
