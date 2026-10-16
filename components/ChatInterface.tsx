@@ -266,6 +266,19 @@ export default function ChatInterface() {
                 Beszélgető és segítő
               </option>
             </select>
+
+            <p
+              style={{
+                margin: "6px 0 0",
+                color: "#64748b",
+                fontSize: "0.72rem",
+                lineHeight: 1.4,
+              }}
+            >
+              A system promptok helye: lib/system-prompts.ts
+              <br />
+              STRICT_SYSTEM_PROMPT és CONVERSATIONAL_SYSTEM_PROMPT
+            </p>
           </div>
 
           <div className={styles.statusBadge}>

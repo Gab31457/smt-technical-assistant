@@ -17,13 +17,21 @@ export default function RecipeAssistantApp() {
   const [activeView, setActiveView] = useState<ApplicationView>("chat");
 
   // Ha az oldal ?view=documents paraméterrel nyílik meg,
-  // automatikusan a Dokumentumkezelés fül jelenik meg.
+  // a következő eseményciklusban megnyitjuk a Dokumentumkezelést.
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
 
-    if (searchParams.get("view") === "documents") {
-      setActiveView("documents");
+    if (searchParams.get("view") !== "documents") {
+      return;
     }
+
+    const timeoutId = window.setTimeout(() => {
+      setActiveView("documents");
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
