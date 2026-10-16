@@ -329,7 +329,7 @@ export async function POST(request: Request) {
         error: {
           code: "RAG_CHAT_FAILED",
           message:
-            "A receptasszisztens válaszának elkészítése közben hiba történt.",
+            "Az SMT műszaki asszisztens válaszának elkészítése közben hiba történt.",
         },
       },
       { status: 500 }

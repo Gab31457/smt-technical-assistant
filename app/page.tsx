@@ -1,11 +1,11 @@
-import RecipeAssistantApp from "@/components/RecipeAssistantApp";
+import SmtTechnicalAssistantApp from "@/components/SmtTechnicalAssistantApp";
 import styles from "./page.module.css";
 
 /*
  * Az SMT Technical Assistant kezdőoldala.
  *
  * Az oldal Server Component marad.
- * Az interaktív működés a RecipeAssistantApp
+ * Az interaktív működés a SmtTechnicalAssistantApp
  * Client Componentben található.
  */
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
           </div>
         </header>
 
-        <RecipeAssistantApp />
+        <SmtTechnicalAssistantApp />
 
         <footer className={styles.footer}>
           <p>

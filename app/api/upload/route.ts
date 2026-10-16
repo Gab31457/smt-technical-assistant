@@ -17,8 +17,8 @@ export const runtime = "nodejs";
 /*
  * A támogatott fájlkiterjesztések.
  *
- * A házi feladat követelménye szerint legalább
- * TXT és Markdown fájlokat kell tudnunk kezelni.
+ * A jelenlegi verzió TXT és Markdown formátumú
+ * műszaki dokumentumokat kezel.
  */
 const ALLOWED_FILE_EXTENSIONS = new Set([".txt", ".md"]);
 
@@ -42,7 +42,7 @@ const ALLOWED_MIME_TYPES = new Set([
  * A maximálisan feltölthető fájlméret.
  *
  * Ebben az első verzióban 1 MB-os korlátot használunk.
- * Szöveges receptfájlokhoz ez megfelelő, és megakadályozza,
+ * Szöveges műszaki dokumentumokhoz ez megfelelő, és megakadályozza,
  * hogy véletlenül nagyon nagy fájl kerüljön a memóriába.
  */
 const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024;
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
      * Kisbetűsen kérjük le a fájl kiterjesztését.
      *
      * Például:
-     * "Recept.TXT" -> ".txt"
+     * "smt_gepkonyv.TXT" -> ".txt"
      */
     const fileExtension = path
       .extname(safeOriginalFilename)
@@ -253,10 +253,10 @@ export async function POST(request: Request) {
      * A cím kezdetben a fájlnév kiterjesztés nélküli része.
      *
      * Példa:
-     * "paradicsomos_teszta.md" -> "paradicsomos_teszta"
+     * "smt_gepkonyv.md" -> "smt_gepkonyv"
      *
      * Később a dokumentumfeldolgozás során pontosabb
-     * receptcímet is kinyerhetünk a tartalomból.
+     * dokumentumcímet is kinyerhetünk a tartalomból.
      */
     const initialTitle = path.basename(
       safeOriginalFilename,

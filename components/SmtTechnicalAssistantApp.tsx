@@ -4,20 +4,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ChatInterface from "./ChatInterface";
 import DocumentManager from "./DocumentManager";
-import styles from "./RecipeAssistantApp.module.css";
+import styles from "./SmtTechnicalAssistantApp.module.css";
 
-// Az alkalmazásban megjeleníthető nézetek típusa.
 type ApplicationView = "chat" | "documents";
 
-// A fő frontend alkalmazáskomponens.
-export default function RecipeAssistantApp() {
+export default function SmtTechnicalAssistantApp() {
   const router = useRouter();
 
-  // Alapértelmezetten a chatfelület jelenik meg.
-  const [activeView, setActiveView] = useState<ApplicationView>("chat");
+  const [activeView, setActiveView] =
+    useState<ApplicationView>("chat");
 
-  // Ha az oldal ?view=documents paraméterrel nyílik meg,
-  // a következő eseményciklusban megnyitjuk a Dokumentumkezelést.
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -34,6 +30,16 @@ export default function RecipeAssistantApp() {
     };
   }, []);
 
+  function showChat(): void {
+    setActiveView("chat");
+    window.history.replaceState({}, "", "/");
+  }
+
+  function showDocuments(): void {
+    setActiveView("documents");
+    window.history.replaceState({}, "", "/?view=documents");
+  }
+
   return (
     <div>
       <nav
@@ -47,7 +53,7 @@ export default function RecipeAssistantApp() {
               ? styles.activeNavigationButton
               : styles.navigationButton
           }
-          onClick={() => setActiveView("chat")}
+          onClick={showChat}
         >
           Asszisztens
         </button>
@@ -59,7 +65,7 @@ export default function RecipeAssistantApp() {
               ? styles.activeNavigationButton
               : styles.navigationButton
           }
-          onClick={() => setActiveView("documents")}
+          onClick={showDocuments}
         >
           Dokumentumkezelés
         </button>

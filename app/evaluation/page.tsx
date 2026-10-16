@@ -1,7 +1,7 @@
 import Link from "next/link";
 import EvaluationDashboard from "../../components/evaluation/EvaluationDashboard";
 import ResultsComparison from "../../components/evaluation/ResultsComparison";
-import styles from "../../components/RecipeAssistantApp.module.css";
+import styles from "../../components/SmtTechnicalAssistantApp.module.css";
 
 export default function EvaluationPage() {
   return (
@@ -34,3 +34,4 @@ export default function EvaluationPage() {
     </main>
   );
 }
+

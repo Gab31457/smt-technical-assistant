@@ -64,7 +64,7 @@ export async function GET() {
     return NextResponse.json(
       {
         status: isPgvectorAvailable ? "healthy" : "degraded",
-        application: "ai-recipe-assistant",
+        application: "smt-technical-assistant",
         database: {
           connected: true,
           name: databaseInformation.database_name,
@@ -93,7 +93,7 @@ export async function GET() {
     return NextResponse.json(
       {
         status: "unhealthy",
-        application: "ai-recipe-assistant",
+        application: "smt-technical-assistant",
         database: {
           connected: false,
         },
