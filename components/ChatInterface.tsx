@@ -1,22 +1,17 @@
 "use client";
 
 import { useState } from "react";
-
 import type {
   FormEvent,
   KeyboardEvent,
 } from "react";
-
 import type { ChatMessageInput } from "@/lib/chat-types";
-
 import styles from "./ChatInterface.module.css";
 
-// A frontendről kiválasztható system prompt változatok.
 type SystemPromptVariant =
   | "strict"
   | "conversational";
 
-// A chatválaszban visszakapott forrás szerkezete.
 interface ChatSource {
   documentId: string;
   chunkId: string;
@@ -26,12 +21,10 @@ interface ChatSource {
   similarity: number;
 }
 
-// A chatüzenet lehetséges szerepei.
 type ChatMessageRole =
   | "user"
   | "assistant";
 
-// Egy frontendoldali chatüzenet szerkezete.
 interface ChatMessage {
   id: string;
   role: ChatMessageRole;
@@ -40,7 +33,6 @@ interface ChatMessage {
   systemPromptVariant?: SystemPromptVariant;
 }
 
-// A chat API sikeres válaszának szerkezete.
 interface SuccessfulChatResponse {
   success: true;
   message: string;
@@ -56,7 +48,6 @@ interface SuccessfulChatResponse {
   sources: ChatSource[];
 }
 
-// A chat API sikertelen válaszának szerkezete.
 interface FailedChatResponse {
   success: false;
   error: {
@@ -65,44 +56,34 @@ interface FailedChatResponse {
   };
 }
 
-// A két lehetséges API-válasz egyesített típusa.
 type ChatResponse =
   | SuccessfulChatResponse
   | FailedChatResponse;
 
-// Egyedi frontendazonosító létrehozása.
 function createMessageId(): string {
   return crypto.randomUUID();
 }
 
-// A hasonlósági érték százalékos formázása.
-//
-// Például:
-// 0.8234 eredménye 82.3%.
 function formatSimilarity(
   similarity: number
 ): string {
   return `${(similarity * 100).toFixed(1)}%`;
 }
 
-// A system prompt magyar megnevezése.
 function getSystemPromptLabel(
   variant: SystemPromptVariant
 ): string {
   if (variant === "conversational") {
-    return "Beszélgető és ajánló";
+    return "Beszélgető és segítő";
   }
 
   return "Szigorúan forráshű";
 }
 
-// A fő chatkomponens.
 export default function ChatInterface() {
-  // A felhasználó által éppen szerkesztett kérdés.
   const [inputValue, setInputValue] =
     useState("");
 
-  // A frontend felületén kiválasztott system prompt.
   const [
     systemPromptVariant,
     setSystemPromptVariant,
@@ -110,25 +91,19 @@ export default function ChatInterface() {
     "strict"
   );
 
-  // A beszélgetés üzenetei.
   const [messages, setMessages] =
     useState<ChatMessage[]>([]);
 
-  // Jelzi, hogy folyamatban van-e API-kérés.
   const [isLoading, setIsLoading] =
     useState(false);
 
-  // A felhasználónak megjelenített hibaüzenet.
   const [errorMessage, setErrorMessage] =
     useState<string | null>(null);
 
-  // A chatkérdés elküldése.
   async function sendMessage(): Promise<void> {
     const normalizedMessage =
       inputValue.trim();
 
-    // Üres kérdést nem küldünk el.
-    // Folyamatban lévő kérés alatt sem indítunk újabbat.
     if (
       normalizedMessage.length === 0 ||
       isLoading
@@ -136,12 +111,6 @@ export default function ChatInterface() {
       return;
     }
 
-    // A kérés indításakor eltároljuk az aktuálisan
-    // kiválasztott promptot.
-    //
-    // Így akkor is a megfelelő prompt neve kerül
-    // a válasz mellé, ha a felhasználó később
-    // megváltoztatná a választómező értékét.
     const requestedPromptVariant =
       systemPromptVariant;
 
@@ -151,8 +120,6 @@ export default function ChatInterface() {
       content: normalizedMessage,
     };
 
-    // A teljes eddigi beszélgetéshez hozzáadjuk
-    // az új felhasználói üzenetet.
     const conversationMessages: ChatMessageInput[] = [
       ...messages.map((message) => ({
         role: message.role,
@@ -164,19 +131,13 @@ export default function ChatInterface() {
       },
     ];
 
-    // A felhasználói üzenetet azonnal megjelenítjük.
     setMessages((currentMessages) => [
       ...currentMessages,
       userMessage,
     ]);
 
-    // A beviteli mezőt kiürítjük.
     setInputValue("");
-
-    // A korábbi hibaüzenetet töröljük.
     setErrorMessage(null);
-
-    // Bekapcsoljuk a betöltési állapotot.
     setIsLoading(true);
 
     try {
@@ -201,7 +162,6 @@ export default function ChatInterface() {
       const responseBody =
         (await response.json()) as ChatResponse;
 
-      // HTTP-hiba vagy üzleti hiba kezelése.
       if (
         !response.ok ||
         responseBody.success === false
@@ -223,8 +183,6 @@ export default function ChatInterface() {
           responseBody.systemPromptVariant,
       };
 
-      // Az asszisztens válaszát hozzáadjuk
-      // a beszélgetéshez.
       setMessages((currentMessages) => [
         ...currentMessages,
         assistantMessage,
@@ -235,28 +193,19 @@ export default function ChatInterface() {
           ? error.message
           : "Ismeretlen hiba történt.";
 
-      setErrorMessage(
-        readableErrorMessage
-      );
+      setErrorMessage(readableErrorMessage);
     } finally {
       setIsLoading(false);
     }
   }
 
-  // Az űrlap elküldésének kezelése.
   function handleSubmit(
     event: FormEvent<HTMLFormElement>
   ): void {
-    // Megakadályozzuk az oldal újratöltését.
     event.preventDefault();
-
     void sendMessage();
   }
 
-  // Billentyűzetkezelés:
-  //
-  // Enter: üzenet elküldése.
-  // Shift + Enter: új sor létrehozása.
   function handleKeyDown(
     event: KeyboardEvent<HTMLTextAreaElement>
   ): void {
@@ -269,7 +218,6 @@ export default function ChatInterface() {
     }
   }
 
-  // A kiválasztott prompt biztonságos kezelése.
   function handlePromptVariantChange(
     value: string
   ): void {
@@ -281,16 +229,15 @@ export default function ChatInterface() {
     }
   }
 
-    return (
+  return (
     <section className={styles.chatContainer}>
       <div className={styles.chatHeader}>
         <div>
           <h2 className={styles.chatTitle}>
-            Receptasszisztens
+            SMT műszaki asszisztens
           </h2>
-
           <p className={styles.chatDescription}>
-            Kérdezz a feldolgozott receptadatbázis tartalmáról.
+            Kérdezzen a feldolgozott SMT műszaki dokumentumok tartalmáról.
           </p>
         </div>
 
@@ -300,7 +247,7 @@ export default function ChatInterface() {
               className={styles.promptSelectorLabel}
               htmlFor="system-prompt-variant"
             >
-              System prompt
+              Válaszadási mód
             </label>
 
             <select
@@ -315,15 +262,14 @@ export default function ChatInterface() {
               <option value="strict">
                 Szigorúan forráshű
               </option>
-
               <option value="conversational">
-                Beszélgető és ajánló
+                Beszélgető és segítő
               </option>
             </select>
           </div>
 
           <div className={styles.statusBadge}>
-            RAG + pgvector
+            Dokumentumalapú válaszadás
           </div>
         </div>
       </div>
@@ -335,24 +281,21 @@ export default function ChatInterface() {
               className={styles.emptyStateIcon}
               aria-hidden="true"
             >
-              🍲
+              🔧
             </div>
 
             <h3>Miben segíthetek?</h3>
-
-            <p>Például kérdezheted:</p>
+            <p>Például kérdezheti:</p>
 
             <ul>
               <li>
-                Tudsz ajánlani paradicsomos tésztát?
+                Mit jelent a dokumentumban szereplő hibakód?
               </li>
-
               <li>
-                Milyen recept tartalmaz fokhagymát és bazsalikomot?
+                Milyen ellenőrzéseket kell elvégezni programváltás előtt?
               </li>
-
               <li>
-                Hogyan készül a feltöltött tésztarecept?
+                Hogyan végezhető el a dokumentált karbantartási művelet?
               </li>
             </ul>
           </div>
@@ -368,8 +311,8 @@ export default function ChatInterface() {
             >
               <div className={styles.messageLabel}>
                 {message.role === "user"
-                  ? "Te"
-                  : "AI receptasszisztens"}
+                  ? "Ön"
+                  : "SMT műszaki asszisztens"}
               </div>
 
               <div className={styles.messageContent}>
@@ -379,7 +322,7 @@ export default function ChatInterface() {
               {message.role === "assistant" &&
                 message.systemPromptVariant && (
                   <div className={styles.promptUsed}>
-                    Használt system prompt:{" "}
+                    Használt válaszadási mód:{" "}
                     {getSystemPromptLabel(
                       message.systemPromptVariant
                     )}
@@ -400,7 +343,6 @@ export default function ChatInterface() {
                             {source.documentTitle ||
                               source.originalFilename}
                           </span>
-
                           <span className={styles.similarity}>
                             {formatSimilarity(
                               source.similarity
@@ -423,9 +365,8 @@ export default function ChatInterface() {
             <span className={styles.loadingDot} />
             <span className={styles.loadingDot} />
             <span className={styles.loadingDot} />
-
             <span>
-              A receptasszisztens válaszol...
+              Az asszisztens válaszol...
             </span>
           </div>
         )}
@@ -460,7 +401,7 @@ export default function ChatInterface() {
             setInputValue(event.target.value)
           }
           onKeyDown={handleKeyDown}
-          placeholder="Írd be a recepttel kapcsolatos kérdésedet..."
+          placeholder="Írja be az SMT műszaki dokumentumokkal kapcsolatos kérdését..."
           maxLength={2000}
           rows={3}
           disabled={isLoading}

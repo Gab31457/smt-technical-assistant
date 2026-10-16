@@ -6,18 +6,18 @@ import ChatInterface from "./ChatInterface";
 import DocumentManager from "./DocumentManager";
 import styles from "./RecipeAssistantApp.module.css";
 
-// Az alkalmazasban megjelenitheto nezetek tipusa.
+// Az alkalmazásban megjeleníthető nézetek típusa.
 type ApplicationView = "chat" | "documents";
 
-// A fo frontend alkalmazaskomponens.
+// A fő frontend alkalmazáskomponens.
 export default function RecipeAssistantApp() {
   const router = useRouter();
 
-  // Alapertelmezetten a chatfelulet jelenik meg.
+  // Alapértelmezetten a chatfelület jelenik meg.
   const [activeView, setActiveView] = useState<ApplicationView>("chat");
 
-  // Ha az oldal ?view=documents parameterrel nyilik meg,
-  // automatikusan a Dokumentumkezeles ful jelenik meg.
+  // Ha az oldal ?view=documents paraméterrel nyílik meg,
+  // automatikusan a Dokumentumkezelés fül jelenik meg.
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -30,7 +30,7 @@ export default function RecipeAssistantApp() {
     <div>
       <nav
         className={styles.navigation}
-        aria-label="Alkalmazasnezetek"
+        aria-label="Alkalmazásnézetek"
       >
         <button
           type="button"
@@ -53,7 +53,7 @@ export default function RecipeAssistantApp() {
           }
           onClick={() => setActiveView("documents")}
         >
-          Dokumentumkezeles
+          Dokumentumkezelés
         </button>
 
         <button

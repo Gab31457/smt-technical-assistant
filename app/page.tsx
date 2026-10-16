@@ -1,11 +1,10 @@
 import RecipeAssistantApp from "@/components/RecipeAssistantApp";
-
 import styles from "./page.module.css";
 
 /*
- * Az alkalmazás kezdőoldala.
+ * Az SMT Technical Assistant kezdőoldala.
  *
- * Az oldal Server Component maradhat.
+ * Az oldal Server Component marad.
  * Az interaktív működés a RecipeAssistantApp
  * Client Componentben található.
  */
@@ -16,28 +15,26 @@ export default function Home() {
         <header className={styles.hero}>
           <div className={styles.heroContent}>
             <div className={styles.eyebrow}>
-              AI Engineering házi feladat
+              Intelligens gyártástámogatás
             </div>
 
             <h1 className={styles.title}>
-              AI Receptasszisztens
+              SMT Technical Assistant
             </h1>
 
             <p className={styles.subtitle}>
-              Tölts fel receptdokumentumokat,
-              dolgozd fel őket embeddingekké,
-              majd kérdezz a receptadatbázis
-              tartalmáról.
+              Töltse fel az SMT műszaki dokumentumokat, majd kérdezzen
+              a dokumentumbázis tartalmáról. Az asszisztens a
+              feldolgozott források alapján segít a műszaki
+              információk gyors visszakeresésében.
             </p>
           </div>
 
-          <div
-            className={styles.architectureCard}
-          >
-            <span>Next.js</span>
-            <span>OpenAI</span>
-            <span>PostgreSQL</span>
-            <span>pgvector</span>
+          <div className={styles.architectureCard}>
+            <span>Műszaki tudásbázis</span>
+            <span>Dokumentumkeresés</span>
+            <span>Forrásalapú válaszok</span>
+            <span>AI-támogatás</span>
           </div>
         </header>
 
@@ -45,8 +42,8 @@ export default function Home() {
 
         <footer className={styles.footer}>
           <p>
-            A válaszokat mindig ellenőrizd az
-            eredeti receptforrások alapján.
+            A válaszokat mindig ellenőrizze az eredeti
+            műszaki dokumentumok alapján.
           </p>
         </footer>
       </div>

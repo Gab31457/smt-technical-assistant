@@ -2,7 +2,6 @@
 
 import {
   ChangeEvent,
-  FormEvent,
   useCallback,
   useEffect,
   useState,
@@ -192,11 +191,6 @@ export default function DocumentManager() {
     DocumentItem[]
   >([]);
 
-  /*
-   * A fájlválasztóban aktuálisan kiválasztott fájl.
-   */
-  const [selectedFile, setSelectedFile] =
-    useState<File | null>(null);
 
   /*
    * Dokumentumlista betöltési állapota.
@@ -313,44 +307,28 @@ export default function DocumentManager() {
 
   /*
    * A fájlválasztó változásának kezelése.
+   * A kiválasztás után automatikusan elindul
+   * a feltöltés és a feldolgozás.
    */
-  function handleFileChange(
+  async function handleFileChange(
     event: ChangeEvent<HTMLInputElement>
-  ): void {
-    const file =
-      event.target.files?.[0] ?? null;
-
-    setSelectedFile(file);
-    setErrorMessage(null);
-    setSuccessMessage(null);
-  }
-
-  /*
-   * Fájl feltöltése.
-   */
-  async function handleUpload(
-    event: FormEvent<HTMLFormElement>
   ): Promise<void> {
-    event.preventDefault();
+    const file = event.target.files?.[0];
 
-    if (!selectedFile || isUploading) {
+    if (!file || isUploading) {
       return;
     }
 
-    /*
-     * A FormData kezeli a multipart/form-data kérést.
-     *
-     * A backend a fájlt a "file" mezőben várja.
-     */
+    const fileInput = event.target;
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", file);
 
     setIsUploading(true);
     setErrorMessage(null);
     setSuccessMessage(null);
 
     try {
-      const response = await fetch(
+      const uploadResponse = await fetch(
         "/api/upload",
         {
           method: "POST",
@@ -358,43 +336,26 @@ export default function DocumentManager() {
         }
       );
 
-      const responseBody =
-        (await response.json()) as
+      const uploadResponseBody =
+        (await uploadResponse.json()) as
           | SuccessfulUploadResponse
           | FailedApiResponse;
 
       if (
-        !response.ok ||
-        responseBody.success === false
+        !uploadResponse.ok ||
+        uploadResponseBody.success === false
       ) {
         const apiError =
-          responseBody.success === false
-            ? responseBody.error.message
+          uploadResponseBody.success === false
+            ? uploadResponseBody.error.message
             : "A fájl feltöltése sikertelen.";
 
         throw new Error(apiError);
       }
 
-      setSuccessMessage(responseBody.message);
-      setSelectedFile(null);
-
-      /*
-       * A fájlválasztó HTML-értékét külön
-       * visszaállítjuk.
-       */
-      const fileInput =
-        document.getElementById(
-          "recipe-file"
-        ) as HTMLInputElement | null;
-
-      if (fileInput) {
-        fileInput.value = "";
-      }
-
-      /*
-       * Feltöltés után frissítjük a dokumentumlistát.
-       */
-      await loadDocuments();
+      await processDocument(
+        uploadResponseBody.document.id
+      );
     } catch (error) {
       const readableError =
         error instanceof Error
@@ -402,7 +363,9 @@ export default function DocumentManager() {
           : "Ismeretlen feltöltési hiba történt.";
 
       setErrorMessage(readableError);
+      await loadDocuments();
     } finally {
+      fileInput.value = "";
       setIsUploading(false);
     }
   }
@@ -496,7 +459,7 @@ export default function DocumentManager() {
      * A törlés előtt megerősítést kérünk.
      */
     const shouldDelete = window.confirm(
-      `Biztosan törölni szeretnéd ezt a dokumentumot?\n\n${documentItem.originalFilename}\n\nA hozzá tartozó chunkok és embeddingek is törlődnek.`
+      `Biztosan törölni szeretné ezt a dokumentumot?\n\n${documentItem.originalFilename}\n\nA hozzá tartozó chunkok és embeddingek is törlődnek.`
     );
 
     if (!shouldDelete) {
@@ -553,12 +516,11 @@ export default function DocumentManager() {
       <div className={styles.header}>
         <div>
           <h2 className={styles.title}>
-            Receptdokumentumok
+            SMT műszaki dokumentumok
           </h2>
 
           <p className={styles.description}>
-            Tölts fel TXT vagy Markdown
-            receptfájlokat, majd dolgozd fel őket
+            Töltsön fel SMT műszaki dokumentumokat, majd dolgozza fel őket
             szemantikus kereséshez.
           </p>
         </div>
@@ -577,66 +539,42 @@ export default function DocumentManager() {
         </button>
       </div>
 
-      <form
-        className={styles.uploadForm}
-        onSubmit={handleUpload}
-      >
-        <label
-          className={styles.fileLabel}
-          htmlFor="recipe-file"
-        >
-          Receptfájl kiválasztása
-        </label>
-
+      <div className={styles.uploadForm}>
         <input
-          id="recipe-file"
-          className={styles.fileInput}
+          id="document-file"
           type="file"
           accept=".txt,.md,text/plain,text/markdown"
-          onChange={handleFileChange}
-          disabled={isUploading}
+          onChange={(event) =>
+            void handleFileChange(event)
+          }
+          disabled={
+            isUploading ||
+            Boolean(processingDocumentId)
+          }
+          style={{ display: "none" }}
         />
 
-        <div className={styles.uploadFooter}>
-          <div className={styles.selectedFile}>
-            {selectedFile ? (
-              <>
-                <strong>
-                  {selectedFile.name}
-                </strong>
+        <button
+          className={styles.uploadButton}
+          type="button"
+          onClick={() => {
+            const fileInput =
+              document.getElementById(
+                "document-file"
+              ) as HTMLInputElement | null;
 
-                <span>
-                  {formatFileSize(
-                    selectedFile.size
-                  )}
-                </span>
-              </>
-            ) : (
-              <span>
-                Nincs fájl kiválasztva.
-              </span>
-            )}
-          </div>
-
-          <button
-            className={styles.uploadButton}
-            type="submit"
-            disabled={
-              !selectedFile ||
-              isUploading
-            }
-          >
-            {isUploading
-              ? "Feltöltés..."
-              : "Fájl feltöltése"}
-          </button>
-        </div>
-
-        <p className={styles.uploadHelp}>
-          Támogatott formátumok: .txt és .md.
-          Maximális fájlméret: 1 MB.
-        </p>
-      </form>
+            fileInput?.click();
+          }}
+          disabled={
+            isUploading ||
+            Boolean(processingDocumentId)
+          }
+        >
+          {isUploading || processingDocumentId
+            ? "Feltöltés és feldolgozás..."
+            : "Fájl feltöltése"}
+        </button>
+      </div>
 
       {successMessage && (
         <div
@@ -683,16 +621,12 @@ export default function DocumentManager() {
           </h3>
 
           <p>
-            Válassz ki egy TXT vagy Markdown
-            receptfájlt a feltöltéshez.
+            Válasszon ki egy SMT műszaki dokumentumot a feltöltéshez.
           </p>
         </div>
       ) : (
         <div className={styles.documentList}>
           {documents.map((documentItem) => {
-            const isProcessing =
-              processingDocumentId ===
-              documentItem.id;
 
             const isDeleting =
               deletingDocumentId ===
@@ -814,37 +748,6 @@ export default function DocumentManager() {
                     )}
                   </span>
 
-                  {(documentItem.status ===
-                    "uploaded" ||
-                    documentItem.status ===
-                      "failed") && (
-                    <button
-                      className={
-                        styles.processButton
-                      }
-                      type="button"
-                      onClick={() =>
-                        void processDocument(
-                          documentItem.id
-                        )
-                      }
-                      disabled={
-                        Boolean(
-                          processingDocumentId
-                        ) ||
-                        Boolean(
-                          deletingDocumentId
-                        )
-                      }
-                    >
-                      {isProcessing
-                        ? "Feldolgozás..."
-                        : documentItem.status ===
-                            "failed"
-                          ? "Újrapróbálás"
-                          : "Feldolgozás"}
-                    </button>
-                  )}
 
                   <button
                     className={
