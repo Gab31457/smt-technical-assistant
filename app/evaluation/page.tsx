@@ -1,25 +1,36 @@
 import Link from "next/link";
 import EvaluationDashboard from "../../components/evaluation/EvaluationDashboard";
 import ResultsComparison from "../../components/evaluation/ResultsComparison";
+import styles from "../../components/RecipeAssistantApp.module.css";
 
 export default function EvaluationPage() {
   return (
     <main>
-      <EvaluationDashboard />
-
-      <ResultsComparison />
-
-      <div
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto 40px",
-          padding: "0 24px",
-        }}
+      <nav
+        className={styles.navigation}
+        aria-label="Alkalmazasnezetek"
       >
-        <Link href="/">
-          Vissza a receptasszisztenshez
+        <Link
+          href="/"
+          className={styles.navigationButton}
+        >
+          Asszisztens
         </Link>
-      </div>
+
+        <Link
+          href="/?view=documents"
+          className={styles.navigationButton}
+        >
+          Dokumentumkezeles
+        </Link>
+
+        <span className={styles.activeNavigationButton}>
+          Evaluation
+        </span>
+      </nav>
+
+      <EvaluationDashboard />
+      <ResultsComparison />
     </main>
   );
 }
