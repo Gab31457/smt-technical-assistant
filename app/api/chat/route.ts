@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 
 import type { ChatMessageInput } from "@/lib/chat-types";
 import { databasePool } from "@/lib/database";
+import {
+  DEFAULT_KNOWLEDGE_SOURCE_MODE,
+  isKnowledgeSourceMode,
+} from "@/lib/knowledge-source";
+import type {
+  KnowledgeSourceMode,
+} from "@/lib/knowledge-source";
 import { generateRagAnswer } from "@/lib/rag";
 import {
   isSystemPromptVariant,
@@ -23,6 +30,7 @@ interface ChatRequestBody {
   limit?: unknown;
   minimumSimilarity?: unknown;
   systemPromptVariant?: unknown;
+  knowledgeSourceMode?: unknown;
 }
 
 function parseChatMessages(
@@ -347,6 +355,27 @@ export async function POST(request: Request) {
         requestBody.systemPromptVariant;
     }
 
+    let knowledgeSourceMode: KnowledgeSourceMode =
+      DEFAULT_KNOWLEDGE_SOURCE_MODE;
+
+    if (requestBody.knowledgeSourceMode !== undefined) {
+      if (!isKnowledgeSourceMode(requestBody.knowledgeSourceMode)) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "INVALID_KNOWLEDGE_SOURCE_MODE",
+              message:
+                "A knowledgeSourceMode értéke csak documents, model vagy hybrid lehet.",
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      knowledgeSourceMode = requestBody.knowledgeSourceMode;
+    }
+
     // A kereséshez csak a legutóbbi legfeljebb
     // négy felhasználói üzenetet használjuk.
     const searchQuery = messages
@@ -360,10 +389,12 @@ export async function POST(request: Request) {
       .slice(0, 2000);
 
     const searchResults =
-      await searchSimilarChunks(searchQuery, {
-        limit,
-        minimumSimilarity,
-      });
+      knowledgeSourceMode === "model"
+        ? []
+        : await searchSimilarChunks(searchQuery, {
+            limit,
+            minimumSimilarity,
+          });
 
     // A teljes beszélgetést továbbadjuk a válaszgenerálásnak.
     const ragAnswer = await generateRagAnswer({
@@ -371,6 +402,7 @@ export async function POST(request: Request) {
       messages,
       searchResults,
       systemPromptVariant,
+      knowledgeSourceMode,
     });
 
     const sources = searchResults.map(
@@ -448,6 +480,8 @@ export async function POST(request: Request) {
         model: ragAnswer.model,
         systemPromptVariant:
           ragAnswer.systemPromptVariant,
+        knowledgeSourceMode:
+          ragAnswer.knowledgeSourceMode,
         retrieval: {
           resultCount: searchResults.length,
           contextCount: ragAnswer.contextCount,

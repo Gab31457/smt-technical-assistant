@@ -13,7 +13,13 @@ import styles from "./ChatInterface.module.css";
 
 type SystemPromptVariant =
   | "strict"
-  | "conversational";
+  | "conversational"
+  | "default";
+
+type KnowledgeSourceMode =
+  | "documents"
+  | "model"
+  | "hybrid";
 
 interface ChatSource {
   documentId: string;
@@ -49,6 +55,7 @@ interface SuccessfulChatResponse {
   answer: string;
   model: string;
   systemPromptVariant: SystemPromptVariant;
+  knowledgeSourceMode: KnowledgeSourceMode;
   retrieval: {
     resultCount: number;
     contextCount: number;
@@ -103,9 +110,15 @@ function formatSimilarity(similarity: number): string {
 function getSystemPromptLabel(
   variant: SystemPromptVariant
 ): string {
-  return variant === "conversational"
-    ? "Beszélgető és segítő"
-    : "Szigorúan forráshű";
+  if (variant === "conversational") {
+    return "Beszélgető és segítő";
+  }
+
+  if (variant === "default") {
+    return "Alapértelmezett modellviselkedés";
+  }
+
+  return "Szigorúan forráshű";
 }
 
 export default function ChatInterface() {
@@ -113,6 +126,9 @@ export default function ChatInterface() {
 
   const [systemPromptVariant, setSystemPromptVariant] =
     useState<SystemPromptVariant>("strict");
+
+  const [knowledgeSourceMode, setKnowledgeSourceMode] =
+    useState<KnowledgeSourceMode>("documents");
 
   const [messages, setMessages] =
     useState<ChatMessage[]>([]);
@@ -322,6 +338,7 @@ export default function ChatInterface() {
     }
 
     const requestedPromptVariant = systemPromptVariant;
+    const requestedKnowledgeSourceMode = knowledgeSourceMode;
 
     const userMessage: ChatMessage = {
       id: createMessageId(),
@@ -349,6 +366,7 @@ export default function ChatInterface() {
           limit: 5,
           minimumSimilarity: 0.2,
           systemPromptVariant: requestedPromptVariant,
+          knowledgeSourceMode: requestedKnowledgeSourceMode,
         }),
       });
 
@@ -481,7 +499,8 @@ export default function ChatInterface() {
 
                 if (
                   value === "strict" ||
-                  value === "conversational"
+                  value === "conversational" ||
+                  value === "default"
                 ) {
                   setSystemPromptVariant(value);
                 }
@@ -494,6 +513,9 @@ export default function ChatInterface() {
               <option value="conversational">
                 Beszélgető és segítő
               </option>
+              <option value="default">
+                Alapértelmezett modellviselkedés
+              </option>
             </select>
 
             <p className={styles.promptLocation}>
@@ -503,8 +525,43 @@ export default function ChatInterface() {
             </p>
           </div>
 
+          <div className={styles.promptSelectorGroup}>
+            <label
+              className={styles.promptSelectorLabel}
+              htmlFor="knowledge-source-mode"
+            >
+              Tudásforrás
+            </label>
+
+            <select
+              id="knowledge-source-mode"
+              className={styles.promptSelector}
+              value={knowledgeSourceMode}
+              onChange={(event) => {
+                const value = event.target.value;
+
+                if (
+                  value === "documents" ||
+                  value === "model" ||
+                  value === "hybrid"
+                ) {
+                  setKnowledgeSourceMode(value);
+                }
+              }}
+              disabled={isLoading}
+            >
+              <option value="documents">Csak feltöltött dokumentumok</option>
+              <option value="model">Csak a modell általános tudása</option>
+              <option value="hybrid">Dokumentumok és modell tudása</option>
+            </select>
+          </div>
+
           <div className={styles.statusBadge}>
-            Dokumentumalapú válaszadás
+            {knowledgeSourceMode === "documents"
+              ? "Dokumentumalapú válaszadás"
+              : knowledgeSourceMode === "model"
+                ? "Általános AI-tudás"
+                : "Dokumentumok + AI-tudás"}
           </div>
         </div>
       </div>

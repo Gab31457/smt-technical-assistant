@@ -518,3 +518,13 @@
     width: 100%;
   }
 }
+
+/* A válaszadási mód és a tudásforrás egymás mellett is tördelhető. */
+.headerControls {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.promptSelectorGroup {
+  min-width: 210px;
+}
