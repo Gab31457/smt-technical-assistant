@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ChatInterface from "./ChatInterface";
 import DocumentManager from "./DocumentManager";
@@ -15,6 +15,16 @@ export default function RecipeAssistantApp() {
 
   // Alapertelmezetten a chatfelulet jelenik meg.
   const [activeView, setActiveView] = useState<ApplicationView>("chat");
+
+  // Ha az oldal ?view=documents parameterrel nyilik meg,
+  // automatikusan a Dokumentumkezeles ful jelenik meg.
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (searchParams.get("view") === "documents") {
+      setActiveView("documents");
+    }
+  }, []);
 
   return (
     <div>
