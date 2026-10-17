@@ -5,7 +5,9 @@ import {
   createTextChunks,
   DEFAULT_CHUNKING_OPTIONS,
 } from "@/lib/chunking";
+import type { TextChunk } from "@/lib/chunking";
 import { databasePool } from "@/lib/database";
+import { parsePdfPageContent } from "@/lib/pdf-extraction";
 import {
   createEmbeddings,
   getEmbeddingModel,
@@ -30,9 +32,88 @@ interface DocumentRow {
   id: string;
   original_filename: string;
   title: string | null;
+  mime_type: string;
   content: string;
   status: "uploaded" | "processing" | "completed" | "failed";
   metadata: Record<string, unknown>;
+}
+
+interface ProcessChunk extends TextChunk {
+  pageNumber?: number;
+  worksheetName?: string;
+  rowStart?: number;
+  rowEnd?: number;
+}
+
+function createDocumentChunks(
+  document: DocumentRow
+): ProcessChunk[] {
+  if (
+    document.mime_type ===
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ) {
+    const sheetPattern = /\[\[XLSX_SHEET:([^\]]+)\]\]/g;
+    const sheetMatches = [...document.content.matchAll(sheetPattern)];
+    const chunks: ProcessChunk[] = [];
+
+    for (let index = 0; index < sheetMatches.length; index += 1) {
+      const match = sheetMatches[index];
+      const worksheetName = match[1].trim();
+      const start = (match.index ?? 0) + match[0].length;
+      const end =
+        index + 1 < sheetMatches.length
+          ? sheetMatches[index + 1].index
+          : document.content.length;
+      const worksheetText = document.content.slice(start, end).trim();
+      const sheetChunks = createTextChunks(worksheetText);
+
+      for (const sheetChunk of sheetChunks) {
+        const rowNumbers = [
+          ...sheetChunk.content.matchAll(/\[\[XLSX_ROW:(\d+)\]\]/g),
+        ].map((rowMatch) => Number(rowMatch[1]));
+
+        chunks.push({
+          ...sheetChunk,
+          chunkIndex: chunks.length,
+          worksheetName,
+          rowStart:
+            rowNumbers.length > 0
+              ? Math.min(...rowNumbers)
+              : undefined,
+          rowEnd:
+            rowNumbers.length > 0
+              ? Math.max(...rowNumbers)
+              : undefined,
+          content: sheetChunk.content
+            .replace(/\[\[XLSX_ROW:\d+\]\]\n?/g, "")
+            .trim(),
+        });
+      }
+    }
+
+    return chunks;
+  }
+
+  if (document.mime_type !== "application/pdf") {
+    return createTextChunks(document.content);
+  }
+
+  const pages = parsePdfPageContent(document.content);
+  const chunks: ProcessChunk[] = [];
+
+  for (const page of pages) {
+    const pageChunks = createTextChunks(page.text);
+
+    for (const pageChunk of pageChunks) {
+      chunks.push({
+        ...pageChunk,
+        chunkIndex: chunks.length,
+        pageNumber: page.pageNumber,
+      });
+    }
+  }
+
+  return chunks;
 }
 
 /*
@@ -93,7 +174,7 @@ function formatVectorForPostgreSQL(
 async function saveChunks(
   databaseClient: PoolClient,
   document: DocumentRow,
-  chunks: ReturnType<typeof createTextChunks>,
+  chunks: ProcessChunk[],
   embeddings: number[][]
 ): Promise<void> {
   /*
@@ -164,7 +245,29 @@ async function saveChunks(
           documentTitle: document.title,
           startPosition: chunk.startPosition,
           endPosition: chunk.endPosition,
-          chunkingStrategy: "paragraph-overlap-v1",
+          pageNumber: chunk.pageNumber ?? null,
+          worksheetName: chunk.worksheetName ?? null,
+          rowStart: chunk.rowStart ?? null,
+          rowEnd: chunk.rowEnd ?? null,
+          sourceType:
+            document.mime_type === "application/pdf"
+              ? "pdf"
+              : document.mime_type ===
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ? "xlsx"
+                : document.mime_type ===
+                      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  ? "docx"
+                  : "text",
+          extractionMethod:
+            document.metadata.extractionMethod ?? null,
+          chunkingStrategy:
+            document.mime_type === "application/pdf"
+              ? "pdf-page-paragraph-overlap-v1"
+              : document.mime_type ===
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ? "xlsx-sheet-row-overlap-v1"
+                : "paragraph-overlap-v1",
           maximumChunkCharacters:
             DEFAULT_CHUNKING_OPTIONS.maxChunkCharacters,
           overlapCharacters:
@@ -230,6 +333,7 @@ export async function POST(request: Request) {
             id,
             original_filename,
             title,
+            mime_type,
             content,
             status,
             metadata
@@ -319,7 +423,7 @@ export async function POST(request: Request) {
      * Chunkok létrehozása a korábban elkészített
      * helyi chunking modul segítségével.
      */
-    const chunks = createTextChunks(document.content);
+    const chunks = createDocumentChunks(document);
 
     if (chunks.length === 0) {
       throw new Error(
@@ -390,7 +494,12 @@ export async function POST(request: Request) {
             processing: {
               chunkCount: chunks.length,
               chunkingStrategy:
-                "paragraph-overlap-v1",
+                document.mime_type === "application/pdf"
+                  ? "pdf-page-paragraph-overlap-v1"
+                  : document.mime_type ===
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    ? "xlsx-sheet-row-overlap-v1"
+                    : "paragraph-overlap-v1",
               embeddingModel:
                 getEmbeddingModel(),
             },

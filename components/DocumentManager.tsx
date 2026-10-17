@@ -543,7 +543,7 @@ export default function DocumentManager() {
         <input
           id="document-file"
           type="file"
-          accept=".txt,.md,text/plain,text/markdown"
+          accept=".txt,.md,.pdf,.docx,.xlsx,text/plain,text/markdown,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           onChange={(event) =>
             void handleFileChange(event)
           }
@@ -659,9 +659,18 @@ export default function DocumentManager() {
                       aria-hidden="true"
                     >
                       {documentItem.mimeType ===
-                      "text/markdown"
-                        ? "MD"
-                        : "TXT"}
+                      "application/pdf"
+                        ? "PDF"
+                        : documentItem.mimeType ===
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                          ? "DOCX"
+                          : documentItem.mimeType ===
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            ? "XLSX"
+                            : documentItem.mimeType ===
+                                "text/markdown"
+                              ? "MD"
+                              : "TXT"}
                     </div>
 
                     <div>

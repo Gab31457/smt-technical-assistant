@@ -5,6 +5,9 @@ import { NextResponse } from "next/server";
 import type { DatabaseError } from "pg";
 
 import { databasePool } from "@/lib/database";
+import { extractTextFromDocx } from "@/lib/docx-extraction";
+import { extractTextFromPdf } from "@/lib/pdf-extraction";
+import { extractTextFromXlsx } from "@/lib/xlsx-extraction";
 
 /*
  * Ez az API-végpont Node.js futtatókörnyezetet igényel.
@@ -20,7 +23,7 @@ export const runtime = "nodejs";
  * A jelenlegi verzió TXT és Markdown formátumú
  * műszaki dokumentumokat kezel.
  */
-const ALLOWED_FILE_EXTENSIONS = new Set([".txt", ".md"]);
+const ALLOWED_FILE_EXTENSIONS = new Set([".txt", ".md", ".pdf", ".docx", ".xlsx"]);
 
 /*
  * A támogatott MIME-típusok.
@@ -35,6 +38,9 @@ const ALLOWED_MIME_TYPES = new Set([
   "text/plain",
   "text/markdown",
   "text/x-markdown",
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "",
 ]);
 
@@ -45,7 +51,7 @@ const ALLOWED_MIME_TYPES = new Set([
  * Szöveges műszaki dokumentumokhoz ez megfelelő, és megakadályozza,
  * hogy véletlenül nagyon nagy fájl kerüljön a memóriába.
  */
-const MAX_FILE_SIZE_BYTES = 1 * 1024 * 1024;
+const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
 
 /*
  * Az INSERT lekérdezés által visszaadott adatbázissor típusa.
@@ -155,7 +161,7 @@ export async function POST(request: Request) {
           error: {
             code: "UNSUPPORTED_MIME_TYPE",
             message:
-              "A fájl tartalomtípusa nem támogatott. Csak egyszerű szöveges vagy Markdown fájl tölthető fel.",
+              "A fájl tartalomtípusa nem támogatott. TXT, Markdown, PDF, DOCX vagy XLSX fájl tölthető fel.",
             receivedMimeType: uploadedValue.type,
           },
         },
@@ -174,7 +180,7 @@ export async function POST(request: Request) {
           success: false,
           error: {
             code: "FILE_TOO_LARGE",
-            message: "A fájl túl nagy. A maximális méret 1 MB.",
+            message: "A fájl túl nagy. A maximális méret 20 MB.",
             maximumSizeBytes: MAX_FILE_SIZE_BYTES,
             receivedSizeBytes: uploadedValue.size,
           },
@@ -192,50 +198,122 @@ export async function POST(request: Request) {
     const fileBuffer = Buffer.from(fileArrayBuffer);
 
     /*
-     * UTF-8 szöveggé alakítás.
-     *
-     * A fatal: true beállítás miatt érvénytelen UTF-8 tartalomnál
-     * hibát kapunk, nem pedig hibás helyettesítő karaktereket.
+     * A fájltípusnak megfelelő szövegkinyerés.
+     * PDF esetén csak meglévő szövegréteget használunk, OCR-t nem.
      */
     let fileContent: string;
+    let extractionMetadata: Record<string, unknown>;
 
-    try {
-      const textDecoder = new TextDecoder("utf-8", {
-        fatal: true,
-      });
-
-      fileContent = textDecoder.decode(fileBuffer);
-    } catch {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: "INVALID_TEXT_ENCODING",
-            message:
-              "A fájl nem olvasható érvényes UTF-8 szövegként. Kérlek, mentsd UTF-8 kódolással.",
+    if (fileExtension === ".pdf") {
+      try {
+        const extractedPdf = await extractTextFromPdf(fileBuffer);
+        fileContent = extractedPdf.content;
+        extractionMetadata = {
+          extractionMethod: "pdf-text-layer",
+          pageCount: extractedPdf.pageCount,
+          pagesWithText: extractedPdf.pagesWithText,
+          extractedCharacterCount:
+            extractedPdf.totalCharacterCount,
+        };
+      } catch (error) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "PDF_TEXT_EXTRACTION_FAILED",
+              message:
+                error instanceof Error
+                  ? error.message
+                  : "A PDF szövegének kinyerése sikertelen.",
+            },
           },
-        },
-        {
-          status: 422,
-        }
-      );
+          { status: 422 }
+        );
+      }
+    } else if (fileExtension === ".docx") {
+      try {
+        const extractedDocx = await extractTextFromDocx(fileBuffer);
+        fileContent = extractedDocx.content;
+        extractionMetadata = {
+          extractionMethod: "docx-raw-text",
+          paragraphCount: extractedDocx.paragraphCount,
+          extractionWarningCount: extractedDocx.warningCount,
+        };
+      } catch (error) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "DOCX_TEXT_EXTRACTION_FAILED",
+              message:
+                error instanceof Error
+                  ? error.message
+                  : "A DOCX szövegének kinyerése sikertelen.",
+            },
+          },
+          { status: 422 }
+        );
+      }
+    } else if (fileExtension === ".xlsx") {
+      try {
+        const extractedXlsx = await extractTextFromXlsx(fileBuffer);
+        fileContent = extractedXlsx.content;
+        extractionMetadata = {
+          extractionMethod: "xlsx-cell-values",
+          worksheetCount: extractedXlsx.worksheetCount,
+          worksheetsWithContent:
+            extractedXlsx.worksheetsWithContent,
+          rowCount: extractedXlsx.rowCount,
+        };
+      } catch (error) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "XLSX_TEXT_EXTRACTION_FAILED",
+              message:
+                error instanceof Error
+                  ? error.message
+                  : "Az XLSX tartalmának kinyerése sikertelen.",
+            },
+          },
+          { status: 422 }
+        );
+      }
+    } else {
+      try {
+        const textDecoder = new TextDecoder("utf-8", {
+          fatal: true,
+        });
+        fileContent = textDecoder.decode(fileBuffer);
+        extractionMetadata = {
+          extractionMethod: "utf8-text",
+        };
+      } catch {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "INVALID_TEXT_ENCODING",
+              message:
+                "A fájl nem olvasható érvényes UTF-8 szövegként. Kérlek, mentsd UTF-8 kódolással.",
+            },
+          },
+          { status: 422 }
+        );
+      }
     }
 
-    /*
-     * Üres vagy csak szóközöket tartalmazó fájl elutasítása.
-     */
     if (fileContent.trim().length === 0) {
       return NextResponse.json(
         {
           success: false,
           error: {
             code: "EMPTY_FILE",
-            message: "Az üres fájl nem tölthető fel.",
+            message: "A fájlból nem nyerhető ki feldolgozható szöveg.",
           },
         },
-        {
-          status: 422,
-        }
+        { status: 422 }
       );
     }
 
@@ -269,7 +347,15 @@ export async function POST(request: Request) {
      */
     const normalizedMimeType =
       uploadedValue.type ||
-      (fileExtension === ".md" ? "text/markdown" : "text/plain");
+      (fileExtension === ".md"
+        ? "text/markdown"
+        : fileExtension === ".pdf"
+          ? "application/pdf"
+          : fileExtension === ".docx"
+            ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            : fileExtension === ".xlsx"
+              ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              : "text/plain");
 
     /*
      * A dokumentum mentése paraméterezett SQL-lekérdezéssel.
@@ -315,6 +401,7 @@ export async function POST(request: Request) {
           source: "file_upload",
           fileExtension,
           fileSizeBytes: uploadedValue.size,
+          ...extractionMetadata,
         }),
       ]
     );
