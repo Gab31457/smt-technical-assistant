@@ -21,6 +21,8 @@ type KnowledgeSourceMode =
   | "model"
   | "hybrid";
 
+type DocumentSearchScope = "all" | "selected";
+
 interface ChatSource {
   documentId: string;
   chunkId: string;
@@ -28,6 +30,12 @@ interface ChatSource {
   originalFilename: string;
   documentTitle: string | null;
   similarity: number;
+  sourceType?: string | null;
+  extractionMethod?: string | null;
+  pageNumber?: number | null;
+  worksheetName?: string | null;
+  rowStart?: number | null;
+  rowEnd?: number | null;
   content?: string;
 }
 
@@ -46,6 +54,19 @@ interface ChatSession {
   title: string;
   createdAt: string;
   updatedAt: string;
+}
+
+interface SearchableDocument {
+  id: string;
+  originalFilename: string;
+  title: string | null;
+  mimeType: string;
+  status: "uploaded" | "processing" | "completed" | "failed";
+}
+
+interface DocumentListResponse {
+  success: true;
+  documents: SearchableDocument[];
 }
 
 interface SuccessfulChatResponse {
@@ -107,6 +128,31 @@ function formatSimilarity(similarity: number): string {
   return `${(similarity * 100).toFixed(1)}%`;
 }
 
+function formatSourceLocation(source: ChatSource): string | null {
+  const parts: string[] = [];
+
+  if (source.pageNumber !== null && source.pageNumber !== undefined) {
+    parts.push(`${source.pageNumber}. oldal`);
+  }
+  if (source.worksheetName) {
+    parts.push(`${source.worksheetName} munkalap`);
+  }
+  if (
+    source.rowStart !== null &&
+    source.rowStart !== undefined &&
+    source.rowEnd !== null &&
+    source.rowEnd !== undefined
+  ) {
+    parts.push(
+      source.rowStart === source.rowEnd
+        ? `${source.rowStart}. sor`
+        : `${source.rowStart}-${source.rowEnd}. sor`
+    );
+  }
+
+  return parts.length > 0 ? parts.join(", ") : null;
+}
+
 function getSystemPromptLabel(
   variant: SystemPromptVariant
 ): string {
@@ -130,6 +176,13 @@ export default function ChatInterface() {
   const [knowledgeSourceMode, setKnowledgeSourceMode] =
     useState<KnowledgeSourceMode>("documents");
 
+  const [documentSearchScope, setDocumentSearchScope] =
+    useState<DocumentSearchScope>("all");
+  const [searchableDocuments, setSearchableDocuments] =
+    useState<SearchableDocument[]>([]);
+  const [selectedDocumentIds, setSelectedDocumentIds] =
+    useState<string[]>([]);
+
   const [messages, setMessages] =
     useState<ChatMessage[]>([]);
 
@@ -140,6 +193,8 @@ export default function ChatInterface() {
     useState<string | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeletingSession, setIsDeletingSession] =
+    useState(false);
   const [isLoadingSessions, setIsLoadingSessions] =
     useState(true);
   const [errorMessage, setErrorMessage] =
@@ -295,6 +350,32 @@ export default function ChatInterface() {
   );
 
   useEffect(() => {
+    async function loadSearchableDocuments(): Promise<void> {
+      try {
+        const response = await fetch("/api/documents", {
+          cache: "no-store",
+        });
+        const responseBody =
+          (await response.json()) as
+            | DocumentListResponse
+            | FailedApiResponse;
+
+        if (response.ok && responseBody.success) {
+          setSearchableDocuments(
+            responseBody.documents.filter(
+              (document) => document.status === "completed"
+            )
+          );
+        }
+      } catch (error) {
+        console.error("A dokumentumlista betöltése sikertelen:", error);
+      }
+    }
+
+    void loadSearchableDocuments();
+  }, []);
+
+  useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       void loadSessions();
     }, 0);
@@ -303,6 +384,79 @@ export default function ChatInterface() {
       window.clearTimeout(timeoutId);
     };
   }, [loadSessions]);
+
+  async function deleteActiveSession(): Promise<void> {
+    if (!activeSessionId || isLoading || isDeletingSession) {
+      return;
+    }
+
+    const activeSession = sessions.find(
+      (session) => session.id === activeSessionId
+    );
+
+    const shouldDelete = window.confirm(
+      `Biztosan törli ezt a beszélgetést?
+
+${
+        activeSession?.title ?? "Kiválasztott beszélgetés"
+      }
+
+A beszélgetés összes üzenete véglegesen törlődik.`
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    setIsDeletingSession(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch(
+        `/api/chat-sessions/${activeSessionId}`,
+        { method: "DELETE" }
+      );
+
+      const responseBody =
+        (await response.json()) as
+          | {
+              success: true;
+              deletedSessionId: string;
+            }
+          | FailedApiResponse;
+
+      if (!response.ok || responseBody.success === false) {
+        const message =
+          responseBody.success === false
+            ? responseBody.error.message
+            : "A beszélgetés törlése sikertelen.";
+
+        throw new Error(message);
+      }
+
+      const remainingSessions = sessions.filter(
+        (session) => session.id !== activeSessionId
+      );
+
+      setSessions(remainingSessions);
+      setMessages([]);
+      setActiveSessionId(null);
+
+      if (remainingSessions.length > 0) {
+        await loadSession(remainingSessions[0].id);
+      } else {
+        await createSession();
+      }
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Ismeretlen hiba történt."
+      );
+    } finally {
+      setIsDeletingSession(false);
+    }
+  }
 
   async function refreshSessionList(): Promise<void> {
     const response = await fetch(
@@ -322,6 +476,17 @@ export default function ChatInterface() {
 
   async function sendMessage(): Promise<void> {
     const normalizedMessage = inputValue.trim();
+
+    if (
+      documentSearchScope === "selected" &&
+      knowledgeSourceMode !== "model" &&
+      selectedDocumentIds.length === 0
+    ) {
+      setErrorMessage(
+        "A kiválasztott dokumentumok keresési tartományhoz jelöljön ki legalább egy dokumentumot."
+      );
+      return;
+    }
 
     if (normalizedMessage.length === 0 || isLoading) {
       return;
@@ -367,6 +532,10 @@ export default function ChatInterface() {
           minimumSimilarity: 0.2,
           systemPromptVariant: requestedPromptVariant,
           knowledgeSourceMode: requestedKnowledgeSourceMode,
+          selectedDocumentIds:
+            documentSearchScope === "selected"
+              ? selectedDocumentIds
+              : [],
         }),
       });
 
@@ -461,18 +630,40 @@ export default function ChatInterface() {
           </select>
         </div>
 
-        <button
-          type="button"
-          className={styles.newSessionButton}
-          onClick={() => void createSession()}
-          disabled={isLoadingSessions || isLoading}
-        >
-          Új beszélgetés
-        </button>
+        <div className={styles.sessionActions}>
+          <button
+            type="button"
+            className={styles.deleteSessionButton}
+            onClick={() => void deleteActiveSession()}
+            disabled={
+              !activeSessionId ||
+              isLoadingSessions ||
+              isLoading ||
+              isDeletingSession
+            }
+          >
+            {isDeletingSession
+              ? "Törlés..."
+              : "Beszélgetés törlése"}
+          </button>
+
+          <button
+            type="button"
+            className={styles.newSessionButton}
+            onClick={() => void createSession()}
+            disabled={
+              isLoadingSessions ||
+              isLoading ||
+              isDeletingSession
+            }
+          >
+            Új beszélgetés
+          </button>
+        </div>
       </div>
 
       <div className={styles.chatHeader}>
-        <div>
+        <div className={styles.headerIntro}>
           <h2 className={styles.chatTitle}>
             SMT műszaki asszisztens
           </h2>
@@ -518,11 +709,6 @@ export default function ChatInterface() {
               </option>
             </select>
 
-            <p className={styles.promptLocation}>
-              A system promptok helye: lib/system-prompts.ts
-              <br />
-              STRICT_SYSTEM_PROMPT és CONVERSATIONAL_SYSTEM_PROMPT
-            </p>
           </div>
 
           <div className={styles.promptSelectorGroup}>
@@ -556,12 +742,75 @@ export default function ChatInterface() {
             </select>
           </div>
 
-          <div className={styles.statusBadge}>
-            {knowledgeSourceMode === "documents"
-              ? "Dokumentumalapú válaszadás"
-              : knowledgeSourceMode === "model"
-                ? "Általános AI-tudás"
-                : "Dokumentumok + AI-tudás"}
+          {knowledgeSourceMode !== "model" && (
+            <div className={styles.promptSelectorGroup}>
+              <label
+                className={styles.promptSelectorLabel}
+                htmlFor="document-search-scope"
+              >
+                Keresési tartomány
+              </label>
+              <select
+                id="document-search-scope"
+                className={styles.promptSelector}
+                value={documentSearchScope}
+                onChange={(event) =>
+                  setDocumentSearchScope(
+                    event.target.value as DocumentSearchScope
+                  )
+                }
+                disabled={isLoading}
+              >
+                <option value="all">
+                  Összes feltöltött dokumentum
+                </option>
+                <option value="selected">
+                  Kiválasztott dokumentumok
+                </option>
+              </select>
+
+              {documentSearchScope === "selected" && (
+                <div className={styles.documentPicker}>
+                  {searchableDocuments.length === 0 ? (
+                    <small>Nincs feldolgozott dokumentum.</small>
+                  ) : (
+                    searchableDocuments.map((document) => (
+                      <label
+                        key={document.id}
+                        className={styles.documentOption}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedDocumentIds.includes(document.id)}
+                          onChange={(event) => {
+                            setSelectedDocumentIds((current) =>
+                              event.target.checked
+                                ? [...current, document.id]
+                                : current.filter((id) => id !== document.id)
+                            );
+                          }}
+                          disabled={isLoading}
+                        />
+                        <span>
+                          {document.title || document.originalFilename}
+                        </span>
+                      </label>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className={styles.statusRow}>
+            <span className={styles.statusLabel}>Aktív működés</span>
+            <div className={styles.statusBadge}>
+              {knowledgeSourceMode === "documents"
+                ? "Dokumentumalapú válaszadás"
+                : knowledgeSourceMode === "model"
+                  ? "Általános AI-tudás"
+                  : "Dokumentumok + AI-tudás"}
+            </div>
           </div>
         </div>
       </div>
@@ -623,8 +872,22 @@ export default function ChatInterface() {
                       {message.sources.map((source) => (
                         <li key={source.chunkId}>
                           <span>
-                            {source.documentTitle ||
-                              source.originalFilename}
+                            <span>
+                              {source.documentTitle ||
+                                source.originalFilename}
+                            </span>
+                            {formatSourceLocation(source) && (
+                              <small
+                                style={{
+                                  display: "block",
+                                  marginTop: "2px",
+                                  color: "#64748b",
+                                  fontSize: "0.75rem",
+                                }}
+                              >
+                                {formatSourceLocation(source)}
+                              </small>
+                            )}
                           </span>
                           <span className={styles.similarity}>
                             {formatSimilarity(

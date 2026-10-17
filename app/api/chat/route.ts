@@ -31,6 +31,7 @@ interface ChatRequestBody {
   minimumSimilarity?: unknown;
   systemPromptVariant?: unknown;
   knowledgeSourceMode?: unknown;
+  selectedDocumentIds?: unknown;
 }
 
 function parseChatMessages(
@@ -355,6 +356,37 @@ export async function POST(request: Request) {
         requestBody.systemPromptVariant;
     }
 
+    let selectedDocumentIds: string[] = [];
+
+    if (requestBody.selectedDocumentIds !== undefined) {
+      if (
+        !Array.isArray(requestBody.selectedDocumentIds) ||
+        !requestBody.selectedDocumentIds.every(
+          (value) => typeof value === "string"
+        )
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: {
+              code: "INVALID_DOCUMENT_FILTER",
+              message:
+                "A selectedDocumentIds mező csak dokumentumazonosítókat tartalmazó tömb lehet.",
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      selectedDocumentIds = [
+        ...new Set(
+          requestBody.selectedDocumentIds
+            .map((value) => value.trim())
+            .filter((value) => value.length > 0)
+        ),
+      ];
+    }
+
     let knowledgeSourceMode: KnowledgeSourceMode =
       DEFAULT_KNOWLEDGE_SOURCE_MODE;
 
@@ -394,6 +426,7 @@ export async function POST(request: Request) {
         : await searchSimilarChunks(searchQuery, {
             limit,
             minimumSimilarity,
+            documentIds: selectedDocumentIds,
           });
 
     // A teljes beszélgetést továbbadjuk a válaszgenerálásnak.
@@ -414,6 +447,12 @@ export async function POST(request: Request) {
           result.originalFilename,
         documentTitle: result.documentTitle,
         similarity: result.similarity,
+        sourceType: result.sourceType,
+        extractionMethod: result.extractionMethod,
+        pageNumber: result.pageNumber,
+        worksheetName: result.worksheetName,
+        rowStart: result.rowStart,
+        rowEnd: result.rowEnd,
 
         //A judge számára szükséges tényleges forrásszöveg
         content: result.content,
@@ -482,6 +521,10 @@ export async function POST(request: Request) {
           ragAnswer.systemPromptVariant,
         knowledgeSourceMode:
           ragAnswer.knowledgeSourceMode,
+        documentFilter: {
+          selectedDocumentIds,
+          isFiltered: selectedDocumentIds.length > 0,
+        },
         retrieval: {
           resultCount: searchResults.length,
           contextCount: ragAnswer.contextCount,

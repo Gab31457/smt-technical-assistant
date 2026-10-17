@@ -528,3 +528,81 @@
 .promptSelectorGroup {
   min-width: 210px;
 }
+
+/* Beszélgetésműveletek. */
+.sessionActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.deleteSessionButton {
+  padding: 10px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff7f7;
+  color: #b42318;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.deleteSessionButton:hover:not(:disabled) {
+  border-color: #fca5a5;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.deleteSessionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 720px) {
+  .sessionActions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .deleteSessionButton,
+  .newSessionButton {
+    width: 100%;
+  }
+}
+
+/* Rendezett asszisztens fejléc és nagyobb beszélgetési terület. */
+.chatContainer { min-height: 820px; }
+.chatHeader { display: block; padding: 22px 24px 20px; }
+.headerIntro { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.headerIntro .chatDescription { max-width: 680px; margin: 0; text-align: right; }
+.headerControls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 14px; width: 100%; }
+.promptSelectorGroup { display: flex; min-width: 0; height: fit-content; padding: 14px; border: 1px solid rgba(203, 213, 225, 0.9); border-radius: 12px; background: rgba(255, 255, 255, 0.82); box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04); }
+.promptSelectorLabel { margin-bottom: 3px; color: #334155; font-size: 0.78rem; }
+.promptSelector { width: 100%; min-width: 0; min-height: 40px; font-size: 0.84rem; }
+.documentPicker { display: flex; flex-direction: column; gap: 3px; max-height: 168px; margin-top: 8px; overflow-y: auto; padding: 8px; border: 1px solid #dbe3ec; border-radius: 9px; background: #f8fafc; }
+.documentOption { display: flex; align-items: flex-start; gap: 8px; padding: 6px 7px; border-radius: 7px; color: #334155; font-size: 0.79rem; line-height: 1.35; cursor: pointer; }
+.documentOption:hover { background: #eef6ff; }
+.documentOption input { flex: 0 0 auto; margin-top: 2px; }
+.statusRow { grid-column: 1 / -1; display: flex; align-items: center; justify-content: flex-end; gap: 9px; min-height: 28px; padding-top: 1px; }
+.statusLabel { color: #64748b; font-size: 0.74rem; font-weight: 700; }
+.statusBadge { width: fit-content; }
+.messageList { min-height: 560px; max-height: 760px; padding: 28px 24px; }
+@media (max-width: 1050px) {
+  .headerIntro { display: block; }
+  .headerIntro .chatDescription { max-width: none; margin-top: 6px; text-align: left; }
+  .headerControls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .chatContainer { min-height: 720px; }
+  .chatHeader { padding: 18px; }
+  .headerControls { display: grid; grid-template-columns: 1fr; width: 100%; }
+  .promptSelectorGroup { width: auto; }
+  .statusRow { justify-content: flex-start; }
+  .messageList { min-height: 460px; max-height: 640px; }
+}

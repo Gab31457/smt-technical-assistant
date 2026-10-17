@@ -110,12 +110,30 @@ function buildContext(
 
       const similarity =
         result.similarity.toFixed(4);
+      const sourceLocation: string[] = [];
+
+      if (result.pageNumber !== null) {
+        sourceLocation.push(`Oldal: ${result.pageNumber}`);
+      }
+
+      if (result.worksheetName) {
+        sourceLocation.push(`Munkalap: ${result.worksheetName}`);
+      }
+
+      if (result.rowStart !== null && result.rowEnd !== null) {
+        sourceLocation.push(
+          result.rowStart === result.rowEnd
+            ? `Sor: ${result.rowStart}`
+            : `Sorok: ${result.rowStart}-${result.rowEnd}`
+        );
+      }
 
       return [
         `[FORRÁS ${sourceNumber}]`,
         `Dokumentum címe: ${sourceTitle}`,
         `Fájlnév: ${result.originalFilename}`,
         `Chunk index: ${result.chunkIndex}`,
+        ...sourceLocation,
         `Hasonlóság: ${similarity}`,
         "Tartalom:",
         result.content,

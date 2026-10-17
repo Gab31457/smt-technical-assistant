@@ -17,6 +17,7 @@ import { createEmbedding } from "@/lib/openai";
 export interface VectorSearchOptions {
   limit: number;
   minimumSimilarity: number;
+  documentIds: string[];
 }
 
 /*
@@ -33,6 +34,7 @@ export const DEFAULT_VECTOR_SEARCH_OPTIONS:
   VectorSearchOptions = {
     limit: 5,
     minimumSimilarity: 0.2,
+    documentIds: [],
   };
 
 /*
@@ -68,6 +70,12 @@ export interface VectorSearchResult {
   documentTitle: string | null;
   chunkMetadata: Record<string, unknown>;
   documentMetadata: Record<string, unknown>;
+  sourceType: string | null;
+  extractionMethod: string | null;
+  pageNumber: number | null;
+  worksheetName: string | null;
+  rowStart: number | null;
+  rowEnd: number | null;
   distance: number;
   similarity: number;
 }
@@ -84,6 +92,26 @@ export interface VectorSearchResult {
  *
  * [0.12,-0.34,0.56]
  */
+function readStringMetadata(
+  metadata: Record<string, unknown>,
+  key: string
+): string | null {
+  const value = metadata[key];
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : null;
+}
+
+function readNumberMetadata(
+  metadata: Record<string, unknown>,
+  key: string
+): number | null {
+  const value = metadata[key];
+  return typeof value === "number" && Number.isFinite(value)
+    ? value
+    : null;
+}
+
 function formatVectorForPostgreSQL(
   embedding: number[]
 ): string {
@@ -179,6 +207,19 @@ export async function searchSimilarChunks(
 
   validateSearchOptions(options);
 
+  const documentIds = [...new Set(
+    options.documentIds
+      .map((documentId) => documentId.trim())
+      .filter((documentId) => documentId.length > 0)
+  )];
+
+  const uuidPattern =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  if (!documentIds.every((documentId) => uuidPattern.test(documentId))) {
+    throw new Error("Érvénytelen dokumentumazonosító a keresési szűrőben.");
+  }
+
   /*
    * A felhasználói kérdés embeddingjének elkészítése.
    *
@@ -216,6 +257,14 @@ export async function searchSimilarChunks(
    *
    * engedünk át.
    */
+  const documentFilter =
+    documentIds.length > 0
+      ? "AND document.id = ANY($3::uuid[]) "
+      : "";
+
+  const limitParameter =
+    documentIds.length > 0 ? "$4" : "$3";
+
   const vectorSearchQuery =
     "SELECT " +
     "chunk.id AS chunk_id, " +
@@ -233,23 +282,29 @@ export async function searchSimilarChunks(
     "ON document.id = chunk.document_id " +
     "WHERE chunk.embedding IS NOT NULL " +
     "AND document.status = 'completed' " +
+    documentFilter +
     "AND 1 - (chunk.embedding <=> $1::vector) >= $2 " +
     "ORDER BY chunk.embedding <=> $1::vector ASC " +
-    "LIMIT $3;";
+    `LIMIT ${limitParameter};`;
 
-  /*
-   * A paraméterezett SQL-lekérdezés megakadályozza,
-   * hogy a felhasználói adatok SQL-kódként
-   * értelmeződjenek.
-   */
+  const queryParameters =
+    documentIds.length > 0
+      ? [
+          formattedQueryEmbedding,
+          options.minimumSimilarity,
+          documentIds,
+          options.limit,
+        ]
+      : [
+          formattedQueryEmbedding,
+          options.minimumSimilarity,
+          options.limit,
+        ];
+
   const result =
     await databasePool.query<VectorSearchDatabaseRow>(
       vectorSearchQuery,
-      [
-        formattedQueryEmbedding,
-        options.minimumSimilarity,
-        options.limit,
-      ]
+      queryParameters
     );
 
   /*
@@ -265,6 +320,18 @@ export async function searchSimilarChunks(
     documentTitle: row.document_title,
     chunkMetadata: row.chunk_metadata,
     documentMetadata: row.document_metadata,
+    sourceType: readStringMetadata(row.chunk_metadata, "sourceType"),
+    extractionMethod: readStringMetadata(
+      row.chunk_metadata,
+      "extractionMethod"
+    ),
+    pageNumber: readNumberMetadata(row.chunk_metadata, "pageNumber"),
+    worksheetName: readStringMetadata(
+      row.chunk_metadata,
+      "worksheetName"
+    ),
+    rowStart: readNumberMetadata(row.chunk_metadata, "rowStart"),
+    rowEnd: readNumberMetadata(row.chunk_metadata, "rowEnd"),
     distance: Number(row.distance),
     similarity: Number(row.similarity),
   }));

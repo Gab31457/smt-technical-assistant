@@ -99,3 +99,56 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  _request: Request,
+  context: RouteContext
+) {
+  try {
+    const { id } = await context.params;
+
+    const deleteResult =
+      await databasePool.query<ChatSessionRow>(
+        `
+          DELETE FROM chat_sessions
+          WHERE id = $1
+          RETURNING id, title, created_at, updated_at
+        `,
+        [id]
+      );
+
+    const deletedSession = deleteResult.rows[0];
+
+    if (!deletedSession) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: "CHAT_SESSION_NOT_FOUND",
+            message: "A beszélgetés nem található.",
+          },
+        },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "A beszélgetés törlése sikeres.",
+      deletedSessionId: deletedSession.id,
+    });
+  } catch (error) {
+    console.error("Chat session deletion failed:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: {
+          code: "CHAT_SESSION_DELETE_FAILED",
+          message: "A beszélgetés törlése sikertelen.",
+        },
+      },
+      { status: 500 }
+    );
+  }
+}
