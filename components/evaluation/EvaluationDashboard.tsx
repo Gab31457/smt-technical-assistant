@@ -15,7 +15,15 @@ type EvaluationType =
   | "multi-turn"
   | "rag";
 
-type PromptVariant = "strict" | "conversational";
+type PromptVariant =
+  | "strict"
+  | "conversational"
+  | "default";
+
+type KnowledgeSourceMode =
+  | "documents"
+  | "model"
+  | "hybrid";
 
 interface Source {
   documentId: number;
@@ -32,6 +40,7 @@ interface ChatSuccess {
   answer: string;
   model: string;
   systemPromptVariant: PromptVariant;
+  knowledgeSourceMode: KnowledgeSourceMode;
   retrieval: {
     resultCount: number;
     contextCount: number;
@@ -70,6 +79,7 @@ interface EvaluationResult {
   answer: string;
   answerModel: string;
   promptVariant: PromptVariant;
+  knowledgeSourceMode: KnowledgeSourceMode;
   responseTime: number;
   resultCount: number;
   contextCount: number;
@@ -121,6 +131,8 @@ export default function EvaluationDashboard() {
 
   const [promptVariant, setPromptVariant] =
     useState<PromptVariant>("strict");
+  const [knowledgeSourceMode, setKnowledgeSourceMode] =
+    useState<KnowledgeSourceMode>("documents");
 
   const [question, setQuestion] = useState(
     "Mit jelent a dokumentumban szereplő hibakód, és milyen ellenőrzési lépéseket ír elő?"
@@ -183,7 +195,8 @@ const currentJudgePassed =
   // Meghívja a meglévő SMT műszaki asszisztens API-t.
   async function requestChat(
     input: string | ChatMessageInput[],
-    variant: PromptVariant
+    variant: PromptVariant,
+    sourceMode: KnowledgeSourceMode
   ) {
     const messages: ChatMessageInput[] =
       typeof input === "string"
@@ -205,6 +218,7 @@ const currentJudgePassed =
       body: JSON.stringify({
         messages,
         systemPromptVariant: variant,
+        knowledgeSourceMode: sourceMode,
       }),
     });
 
@@ -302,18 +316,23 @@ const currentJudgePassed =
   // Lefuttatja az asszisztenst és a Judge értékelést.
   async function runAssistantAndJudge(
     variant: PromptVariant,
+    sourceMode: KnowledgeSourceMode,
     normalizedQuestion: string,
     normalizedExpectation: string
   ): Promise<EvaluationResult> {
-    setStatus(
+    const promptLabel =
       variant === "strict"
-        ? "A szigorúan forráshű változat fut..."
-        : "A beszélgető és segítő változat fut..."
-    );
+        ? "szigorúan forráshű"
+        : variant === "conversational"
+          ? "beszélgető és segítő"
+          : "alapértelmezett modellviselkedés";
+
+    setStatus(`A ${promptLabel} változat fut...`);
 
     const chat = await requestChat(
       normalizedQuestion,
-      variant
+      variant,
+      sourceMode
     );
 
     setStatus("Az LLM Judge értékeli a választ...");
@@ -330,6 +349,7 @@ const currentJudgePassed =
       answer: chat.data.answer,
       answerModel: chat.data.model,
       promptVariant: chat.data.systemPromptVariant,
+      knowledgeSourceMode: chat.data.knowledgeSourceMode,
       responseTime: chat.responseTime,
       resultCount: chat.data.retrieval.resultCount,
       contextCount: chat.data.retrieval.contextCount,
@@ -433,7 +453,8 @@ const currentJudgePassed =
 
       const chat = await requestChat(
         messages,
-        promptVariant
+        promptVariant,
+        knowledgeSourceMode
       );
 
       lastChat = chat.data;
@@ -516,6 +537,7 @@ const currentJudgePassed =
       answer: finalAnswer,
       answerModel: lastChat.model,
       promptVariant: lastChat.systemPromptVariant,
+      knowledgeSourceMode: lastChat.knowledgeSourceMode,
       responseTime: lastResponseTime,
       resultCount: lastChat.retrieval.resultCount,
       contextCount: lastChat.retrieval.contextCount,
@@ -595,6 +617,7 @@ const currentJudgePassed =
 
         const result = await runAssistantAndJudge(
           promptVariant,
+          knowledgeSourceMode,
           normalizedQuestion,
           normalizedExpectation
         );
@@ -603,6 +626,7 @@ const currentJudgePassed =
 
         await saveEvaluation({
           evaluationType: "single-turn",
+          knowledgeSourceMode,
           question: normalizedQuestion,
           expectedBehavior: normalizedExpectation,
           result,
@@ -624,6 +648,7 @@ const currentJudgePassed =
 
         const strictResult = await runAssistantAndJudge(
           "strict",
+          knowledgeSourceMode,
           normalizedQuestion,
           normalizedExpectation
         );
@@ -631,6 +656,7 @@ const currentJudgePassed =
         const conversationalResult =
           await runAssistantAndJudge(
             "conversational",
+            knowledgeSourceMode,
             normalizedQuestion,
             normalizedExpectation
           );
@@ -644,6 +670,7 @@ const currentJudgePassed =
 
         await saveEvaluation({
           evaluationType: "ab-test",
+          knowledgeSourceMode,
           question: normalizedQuestion,
           expectedBehavior: normalizedExpectation,
           results,
@@ -695,6 +722,7 @@ const currentJudgePassed =
         await saveEvaluation({
           evaluationType: "multi-turn",
           promptVariant,
+          knowledgeSourceMode,
           expectedBehavior: normalizedExpectation,
           simulator: {
             persona: simulatorPersona.trim(),
@@ -740,6 +768,7 @@ const currentJudgePassed =
         const evaluation =
           await runAssistantAndJudge(
             promptVariant,
+            knowledgeSourceMode,
             normalizedQuestion,
             normalizedExpectation
           );
@@ -763,6 +792,7 @@ const currentJudgePassed =
 
         await saveEvaluation({
           evaluationType: "rag",
+          knowledgeSourceMode,
           question: normalizedQuestion,
           expectedBehavior: normalizedExpectation,
           expectedSource: expectedSource.trim(),
@@ -862,6 +892,9 @@ const currentJudgePassed =
               <option value="conversational">
                 Beszélgető és segítő
               </option>
+              <option value="default">
+                Alapértelmezett modellviselkedés
+              </option>
             </select>
             <small
               style={{
@@ -874,7 +907,9 @@ const currentJudgePassed =
             >
               A system promptok helye: lib/system-prompts.ts
               <br />
-              STRICT_SYSTEM_PROMPT és CONVERSATIONAL_SYSTEM_PROMPT
+              STRICT_SYSTEM_PROMPT, CONVERSATIONAL_SYSTEM_PROMPT és default mód
+              <br />
+              Tudásforrás-szabályok: lib/knowledge-source.ts
             </small>
           </label>
         )}
@@ -889,6 +924,40 @@ const currentJudgePassed =
             </p>
           </div>
         )}
+
+        <label className={styles.field}>
+          <span>Tudásforrás</span>
+          <select
+            value={knowledgeSourceMode}
+            onChange={(event) =>
+              setKnowledgeSourceMode(
+                event.target.value as KnowledgeSourceMode
+              )
+            }
+            disabled={isRunning}
+          >
+            <option value="documents">
+              Csak feltöltött dokumentumok
+            </option>
+            <option value="model">
+              Csak a modell általános tudása
+            </option>
+            <option value="hybrid">
+              Dokumentumok és modell tudása
+            </option>
+          </select>
+          <small
+            style={{
+              display: "block",
+              marginTop: "6px",
+              color: "#64748b",
+              fontSize: "0.72rem",
+              lineHeight: 1.4,
+            }}
+          >
+            A RAG-szintű méréshez a „Csak feltöltött dokumentumok” mód ajánlott.
+          </small>
+        </label>
 
         {evaluationType !== "multi-turn" && (
           <label className={styles.field}>
@@ -1342,6 +1411,10 @@ function ResultPanel({
           <Metric
             label="Prompt"
             value={result.promptVariant}
+          />
+          <Metric
+            label="Tudásforrás"
+            value={result.knowledgeSourceMode}
           />
 
           <Metric
