@@ -1,10 +1,17 @@
 export interface RagSource {
-  documentId: number;
-  chunkId: number;
+  documentId: string;
+  chunkId: string;
   chunkIndex: number;
   originalFilename: string;
   documentTitle: string | null;
   similarity: number;
+  content?: string;
+  sourceType?: string | null;
+  extractionMethod?: string | null;
+  pageNumber?: number | null;
+  worksheetName?: string | null;
+  rowStart?: number | null;
+  rowEnd?: number | null;
 }
 
 export interface RagCheckResult {

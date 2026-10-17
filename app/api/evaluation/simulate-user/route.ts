@@ -18,10 +18,14 @@ interface SimulateUserRequest {
   maximumTurns?: unknown;
 }
 
+type MessageLanguage = "hu" | "en" | "other";
+
 interface SimulatedUserResult {
   message: string;
   shouldStop: boolean;
   reason: string;
+  language?: MessageLanguage;
+  goalStep?: number;
 }
 
 function createOpenAIClient(): OpenAI {
@@ -112,6 +116,70 @@ function createConversationText(
       );
     })
     .join("\n\n");
+}
+
+function inferRequiredLanguage(
+  persona: string,
+  goal: string,
+  hiddenConstraints: string,
+  turnNumber: number
+): MessageLanguage | null {
+  const combinedText = `${persona}
+${goal}
+${hiddenConstraints}`
+    .toLowerCase();
+  const turnWords =
+    turnNumber === 2
+      ? ["második", "2.", "second"]
+      : turnNumber === 3
+        ? ["harmadik", "3.", "third"]
+        : ["első", "1.", "first"];
+  const relevantLines = combinedText
+    .split(/\n+/)
+    .filter((line) =>
+      turnWords.some((turnWord) => line.includes(turnWord))
+    )
+    .join(" ");
+
+  if (/angol|english/.test(relevantLines)) {
+    return "en";
+  }
+
+  if (/magyar|hungarian/.test(relevantLines)) {
+    return "hu";
+  }
+
+  return null;
+}
+
+function isMessageLanguageValid(
+  message: string,
+  requiredLanguage: MessageLanguage | null
+): boolean {
+  if (!requiredLanguage || requiredLanguage === "other") {
+    return true;
+  }
+
+  const normalized = message.toLowerCase();
+  const hungarianMarkers = [
+    /[áéíóöőúüű]/,
+    /\b(köszönöm|kérem|milyen|mennyi|mi|az|egy|és|vagy|hogy|most|szeretném|térnék|vonatkozik|megengedett)\b/,
+  ];
+  const englishMarkers = [
+    /\b(what|which|how|the|and|is|are|does|please|could|maximum|required|pressure|requirements)\b/,
+  ];
+  const hasHungarian = hungarianMarkers.some((pattern) =>
+    pattern.test(normalized)
+  );
+  const hasEnglish = englishMarkers.some((pattern) =>
+    pattern.test(normalized)
+  );
+
+  if (requiredLanguage === "en") {
+    return hasEnglish && !hasHungarian;
+  }
+
+  return hasHungarian && !hasEnglish;
 }
 
 export async function POST(
@@ -241,6 +309,13 @@ export async function POST(
       process.env.OPENAI_CHAT_MODEL?.trim() ||
       DEFAULT_MODEL;
 
+    const requiredLanguage = inferRequiredLanguage(
+      persona,
+      goal,
+      hiddenConstraints,
+      turnNumber
+    );
+
     const prompt = `
 Egy szimulált felhasználót játszol egy SMT műszaki asszisztens tesztelésében.
 
@@ -255,6 +330,9 @@ ${hiddenConstraints}
 
 AKTUÁLIS FORDULÓ:
 ${turnNumber} / ${maximumTurns}
+
+PROGRAMOZOTTAN ELVÁRT NYELV:
+${requiredLanguage ?? "nincs külön előírva"}
 
 EDDIGI BESZÉLGETÉS:
 ${conversationText}
@@ -278,7 +356,11 @@ Szabályok:
 - Csak akkor állítsd le forráshiány miatt a beszélgetést, ha az asszisztens a jelenlegi vagy visszakeresett forrásokra korlátozza az állítását.
 - Ha a válasz megfelelően teljesíti a célt, megőrzi a beszélgetési kontextust és minden feltételt, a shouldStop értéke legyen true.
 - Ha elértük a maximális fordulószámot, a shouldStop értéke legyen true.
-- A message rövid, természetes, magyar nyelvű felhasználói üzenet legyen.
+- A message legyen rövid és természetes.
+- A message nyelve pontosan kövesse az aktuális fordulóra előírt nyelvet.
+- Ne használj vegyes nyelvű felvezetést vagy köszönetet.
+- A language mező a message tényleges nyelve legyen.
+- A goalStep az aktuálisan végrehajtott cél-lépés sorszáma legyen.
 - Ne magyarázd el az értékelési folyamatot.
 - Kizárólag érvényes JSON-választ adj.
 
@@ -286,52 +368,83 @@ A válasz formája:
 {
   "message": "A következő felhasználói üzenet.",
   "shouldStop": false,
-  "reason": "Rövid indoklás arról, hogy miért folytatódik vagy áll le a szimuláció."
+  "reason": "Rövid indoklás arról, hogy miért folytatódik vagy áll le a szimuláció.",
+  "language": "hu vagy en vagy other",
+  "goalStep": 2
 }
 `
 
-    const completion =
-      await client.chat.completions.create({
-        model,
-        messages: [
-          {
-            role: "system",
-            content:
-              "Szigorúan követed a megadott felhasználói personát. " +
-              "Kizárólag érvényes JSON formátumban válaszolsz.",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        response_format: {
-          type: "json_object",
-        },
-        temperature: 0.3,
-      });
+    async function generateSimulatedMessage(
+      correction?: string
+    ): Promise<SimulatedUserResult> {
+      const completion =
+        await client.chat.completions.create({
+          model,
+          messages: [
+            {
+              role: "system",
+              content:
+                "Szigorúan követed a megadott personát, cél-lépést és nyelvi előírást. " +
+                "A message nem lehet kevert nyelvű. " +
+                "Kizárólag érvényes JSON formátumban válaszolsz.",
+            },
+            {
+              role: "user",
+              content: correction
+                ? `${prompt}
 
-    const content =
-      completion.choices[0]?.message.content;
+JAVÍTÁSI UTASÍTÁS:
+${correction}`
+                : prompt,
+            },
+          ],
+          response_format: {
+            type: "json_object",
+          },
+          temperature: correction ? 0 : 0.2,
+        });
 
-    if (!content) {
+      const content =
+        completion.choices[0]?.message.content;
+
+      if (!content) {
+        throw new Error(
+          "A szimulált felhasználó nem adott választ."
+        );
+      }
+
+      return JSON.parse(content) as SimulatedUserResult;
+    }
+
+    let parsed = await generateSimulatedMessage();
+    let message = String(parsed.message ?? "").trim();
+    let languageWasRegenerated = false;
+
+    if (!isMessageLanguageValid(message, requiredLanguage)) {
+      languageWasRegenerated = true;
+      parsed = await generateSimulatedMessage(
+        `Az előző message nem felelt meg a kötelező ${requiredLanguage} nyelvnek, vagy kevert nyelvű volt. ` +
+          `Generáld újra kizárólag ${requiredLanguage} nyelven, bevezető és más nyelvű rész nélkül.`
+      );
+      message = String(parsed.message ?? "").trim();
+    }
+
+    if (!isMessageLanguageValid(message, requiredLanguage)) {
       throw new Error(
-        "A szimulált felhasználó nem adott választ."
+        "A szimulált felhasználói üzenet az újragenerálás után sem felel meg az előírt nyelvnek."
       );
     }
 
-    const parsed =
-      JSON.parse(
-        content
-      ) as SimulatedUserResult;
-
-    const message = String(
-      parsed.message ?? ""
-    ).trim();
-
-    const reason = String(
-      parsed.reason ?? ""
-    ).trim();
+    const reason = String(parsed.reason ?? "").trim();
+    const language: MessageLanguage =
+      requiredLanguage ??
+      (parsed.language === "en" ||
+      parsed.language === "other"
+        ? parsed.language
+        : "hu");
+    const goalStep = Number.isInteger(Number(parsed.goalStep))
+      ? Math.max(1, Number(parsed.goalStep))
+      : turnNumber;
 
     const reachedMaximumTurns =
       turnNumber >= maximumTurns;
@@ -355,6 +468,10 @@ A válasz formája:
         reason:
           reason ||
           "Nem érkezett külön indoklás.",
+        language,
+        goalStep,
+        languageValidated: true,
+        languageWasRegenerated,
       },
     });
   } catch (error) {

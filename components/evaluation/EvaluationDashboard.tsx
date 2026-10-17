@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ChatMessageInput } from "@/lib/chat-types";
 import styles from "./EvaluationDashboard.module.css";
 import HumanReviewForm from "./HumanReviewForm";
@@ -25,14 +25,35 @@ type KnowledgeSourceMode =
   | "model"
   | "hybrid";
 
+type DocumentSearchScope = "all" | "selected";
+
 interface Source {
-  documentId: number;
-  chunkId: number;
+  documentId: string;
+  chunkId: string;
   chunkIndex: number;
   originalFilename: string;
   documentTitle: string | null;
   similarity: number;
   content: string;
+  sourceType?: string | null;
+  extractionMethod?: string | null;
+  pageNumber?: number | null;
+  worksheetName?: string | null;
+  rowStart?: number | null;
+  rowEnd?: number | null;
+}
+
+interface SearchableDocument {
+  id: string;
+  originalFilename: string;
+  title: string | null;
+  mimeType: string;
+  status: "uploaded" | "processing" | "completed" | "failed";
+}
+
+interface DocumentListSuccess {
+  success: true;
+  documents: SearchableDocument[];
 }
 
 interface ChatSuccess {
@@ -134,6 +155,13 @@ export default function EvaluationDashboard() {
   const [knowledgeSourceMode, setKnowledgeSourceMode] =
     useState<KnowledgeSourceMode>("documents");
 
+  const [documentSearchScope, setDocumentSearchScope] =
+    useState<DocumentSearchScope>("all");
+  const [searchableDocuments, setSearchableDocuments] =
+    useState<SearchableDocument[]>([]);
+  const [selectedDocumentIds, setSelectedDocumentIds] =
+    useState<string[]>([]);
+
   const [question, setQuestion] = useState(
     "Mit jelent a dokumentumban szereplő hibakód, és milyen ellenőrzési lépéseket ír elő?"
   );
@@ -192,6 +220,47 @@ const currentJudgePassed =
       abResults[1].judge.passed
     : false);
 
+  useEffect(() => {
+    async function loadSearchableDocuments(): Promise<void> {
+      try {
+        const response = await fetch("/api/documents", {
+          cache: "no-store",
+        });
+        const data = (await response.json()) as
+          | DocumentListSuccess
+          | ApiError;
+
+        if (response.ok && data.success) {
+          setSearchableDocuments(
+            data.documents.filter(
+              (document) => document.status === "completed"
+            )
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Az evaluációs dokumentumlista betöltése sikertelen:",
+          error
+        );
+      }
+    }
+
+    void loadSearchableDocuments();
+  }, []);
+
+  function getEffectiveDocumentIds(
+    sourceMode: KnowledgeSourceMode
+  ): string[] {
+    if (
+      sourceMode === "model" ||
+      documentSearchScope === "all"
+    ) {
+      return [];
+    }
+
+    return selectedDocumentIds;
+  }
+
   // Meghívja a meglévő SMT műszaki asszisztens API-t.
   async function requestChat(
     input: string | ChatMessageInput[],
@@ -219,6 +288,8 @@ const currentJudgePassed =
         messages,
         systemPromptVariant: variant,
         knowledgeSourceMode: sourceMode,
+        selectedDocumentIds:
+          getEffectiveDocumentIds(sourceMode),
       }),
     });
 
@@ -572,7 +643,27 @@ const currentJudgePassed =
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          documentSearchScope:
+            knowledgeSourceMode === "model"
+              ? "all"
+              : documentSearchScope,
+          selectedDocumentIds:
+            getEffectiveDocumentIds(knowledgeSourceMode),
+          selectedDocuments: searchableDocuments
+            .filter((document) =>
+              getEffectiveDocumentIds(
+                knowledgeSourceMode
+              ).includes(document.id)
+            )
+            .map((document) => ({
+              id: document.id,
+              title:
+                document.title || document.originalFilename,
+              originalFilename: document.originalFilename,
+            })),
+        }),
       }
     );
 
@@ -963,6 +1054,63 @@ const currentJudgePassed =
             A RAG-szintű méréshez a „Csak feltöltött dokumentumok” mód ajánlott.
           </small>
         </label>
+
+        {knowledgeSourceMode !== "model" && (
+          <div className={styles.documentScopePanel}>
+            <label className={styles.field}>
+              <span>Keresési tartomány</span>
+              <select
+                value={documentSearchScope}
+                onChange={(event) =>
+                  setDocumentSearchScope(
+                    event.target.value as DocumentSearchScope
+                  )
+                }
+                disabled={isRunning}
+              >
+                <option value="all">
+                  Összes feldolgozott dokumentum
+                </option>
+                <option value="selected">
+                  Kiválasztott dokumentumok
+                </option>
+              </select>
+            </label>
+
+            {documentSearchScope === "selected" && (
+              <div className={styles.documentPicker}>
+                {searchableDocuments.length === 0 ? (
+                  <p>Nincs feldolgozott dokumentum.</p>
+                ) : (
+                  searchableDocuments.map((document) => (
+                    <label
+                      key={document.id}
+                      className={styles.documentOption}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedDocumentIds.includes(document.id)}
+                        onChange={(event) =>
+                          setSelectedDocumentIds((current) =>
+                            event.target.checked
+                              ? [...current, document.id]
+                              : current.filter(
+                                  (id) => id !== document.id
+                                )
+                          )
+                        }
+                        disabled={isRunning}
+                      />
+                      <span>
+                        {document.title || document.originalFilename}
+                      </span>
+                    </label>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {evaluationType !== "multi-turn" && (
           <label className={styles.field}>

@@ -478,9 +478,18 @@ export async function searchSimilarChunksForQueriesWithDebug(
 
   /*
    * A maradék helyeket az összevont rangsor tölti fel.
-   * Dokumentumonként legfeljebb három chunkot engedünk be,
-   * hogy egy általános dokumentum ne foglalja el az összes helyet.
+   * Több dokumentumos keresésnél dokumentumonként legfeljebb három
+   * chunkot engedünk be. Egyetlen kijelölt dokumentumnál viszont a teljes
+   * kért találati keretet felhasználhatja ugyanaz a dokumentum.
    */
+  const selectedDocumentFilter =
+    customOptions.documentIds ??
+    DEFAULT_VECTOR_SEARCH_OPTIONS.documentIds;
+  const maximumChunksPerDocument =
+    selectedDocumentFilter.length === 1
+      ? requestedLimit
+      : 3;
+
   const documentCounts = new Map<string, number>();
 
   for (const selectedResult of selectedResults) {
@@ -502,7 +511,7 @@ export async function searchSimilarChunksForQueriesWithDebug(
     const documentCount =
       documentCounts.get(rankedResult.documentId) ?? 0;
 
-    if (documentCount >= 3) {
+    if (documentCount >= maximumChunksPerDocument) {
       continue;
     }
 

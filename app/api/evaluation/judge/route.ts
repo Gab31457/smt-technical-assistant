@@ -13,6 +13,11 @@ interface JudgeSource {
   originalFilename?: string;
   chunkIndex?: number;
   content?: string;
+  sourceType?: string | null;
+  pageNumber?: number | null;
+  worksheetName?: string | null;
+  rowStart?: number | null;
+  rowEnd?: number | null;
 }
 
 interface JudgeResult {
@@ -190,6 +195,11 @@ function parseSources(value: unknown): JudgeSource[] {
         "chunkIndex"
       );
       const content = Reflect.get(item, "content");
+      const sourceType = Reflect.get(item, "sourceType");
+      const pageNumber = Reflect.get(item, "pageNumber");
+      const worksheetName = Reflect.get(item, "worksheetName");
+      const rowStart = Reflect.get(item, "rowStart");
+      const rowEnd = Reflect.get(item, "rowEnd");
 
       return {
         documentTitle:
@@ -208,6 +218,16 @@ function parseSources(value: unknown): JudgeSource[] {
           typeof content === "string"
             ? content.trim().slice(0, 6000)
             : "",
+        sourceType:
+          typeof sourceType === "string" ? sourceType : null,
+        pageNumber:
+          Number.isInteger(Number(pageNumber)) ? Number(pageNumber) : null,
+        worksheetName:
+          typeof worksheetName === "string" ? worksheetName : null,
+        rowStart:
+          Number.isInteger(Number(rowStart)) ? Number(rowStart) : null,
+        rowEnd:
+          Number.isInteger(Number(rowEnd)) ? Number(rowEnd) : null,
       };
     })
     .filter((source) => source.content);
@@ -227,10 +247,29 @@ function createSourceText(
         source.originalFilename ||
         "Ismeretlen forrás";
 
+      const locationParts: string[] = [];
+
+      if (source.pageNumber !== null && source.pageNumber !== undefined) {
+        locationParts.push(`Oldal: ${source.pageNumber}`);
+      }
+      if (source.worksheetName) {
+        locationParts.push(`Munkalap: ${source.worksheetName}`);
+      }
+      if (source.rowStart !== null && source.rowStart !== undefined) {
+        locationParts.push(
+          source.rowEnd !== null &&
+          source.rowEnd !== undefined &&
+          source.rowEnd !== source.rowStart
+            ? `Sorok: ${source.rowStart}-${source.rowEnd}`
+            : `Sor: ${source.rowStart}`
+        );
+      }
+
       return [
         `[FORRÁS ${index + 1}]`,
         `Dokumentum: ${sourceName}`,
         `Chunk: ${source.chunkIndex ?? 0}`,
+        ...locationParts,
         "Tartalom:",
         source.content || "",
       ].join("\n");
@@ -275,6 +314,18 @@ ${answer}
 `;
 
   const sourceText = createSourceText(sources);
+  const multiTurnRules = isMultiTurn
+    ? `
+Multi-turn kötelező ellenőrzések:
+- A teljes beszélgetést fordulónként értékeld, ne csak az utolsó választ.
+- Bontsd fel az Elvárt viselkedés minden lényeges követelményét, és ellenőrizd külön, hogy teljesült-e.
+- Ellenőrizd minden felhasználói és asszisztensi üzenet előírt nyelvét. Ha az elvárt viselkedés angol fordulót ír elő, de a szimulált felhasználó vagy az asszisztens magyarul ír, az instructionFollowing és consistency legfeljebb 2 lehet.
+- Ha egy lényeges cél-lépés, kért műszaki érték vagy forduló kimarad, az instructionFollowing és contextRetention legfeljebb 2 lehet, a passed pedig false.
+- Ha az asszisztens azt állítja, hogy egy adat nincs a forrásokban, miközben az elvárt viselkedés szerint azt a kijelölt dokumentumból meg kellett volna találnia, ezt keresési kudarcként értékeld: relevance, instructionFollowing és contextRetention legfeljebb 2 lehet.
+- Az új témát nem szabad összekeverni a korábbi témával. A valódi visszautalást viszont a közvetlenül megelőző témához kell kapcsolni.
+- A passed csak akkor lehet true, ha a teljes beszélgetés minden lényeges elvárt lépése teljesült.
+`
+    : "";
 
   const knowledgeSourceLabel =
     knowledgeSourceMode === "model"
@@ -328,6 +379,8 @@ ${inputText}
 Elvárt viselkedés:
 ${expectedBehavior || "Nincs külön elvárás megadva."}
 
+${multiTurnRules}
+
 Az asszisztensnek átadott SMT műszaki források:
 ${sourceText}
 
@@ -374,6 +427,7 @@ A passed értéke csak akkor legyen true, ha mindhárom feltétel teljesül:
 - a groundedness legalább 3;
 - az instructionFollowing legalább 3.
 Ha a válasz ismeretlen rövidítéshez jelentést talál ki, vagy dokumentumalapúként nem alátámasztott műszaki lépést ad, a passed legyen false.
+Multi-turn evaluációnál a passed legyen false akkor is, ha bármely lényeges elvárt forduló, nyelvváltás, témaváltás, visszautalás vagy kért műszaki érték nem teljesült.
 
 Végső konzisztencia-ellenőrzés a JSON elkészítése előtt:
 - Ne adj minden részszempontra automatikusan azonos pontszámot.
@@ -461,7 +515,8 @@ function normalizeJudgeResult(
     passed:
       overallScore >= 3.5 &&
       groundedness >= 3 &&
-      instructionFollowing >= 3,
+      instructionFollowing >= 3 &&
+      (evaluationType !== "multi-turn" || result.passed === true),
     unsupportedClaims,
     explanation:
       String(result.explanation ?? "").trim() ||

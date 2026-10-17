@@ -1,0 +1,87 @@
+{
+  "savedAt": "2026-10-17T16:50:14.354Z",
+  "evaluationType": "single-turn",
+  "knowledgeSourceMode": "documents",
+  "question": "MIlyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+  "expectedBehavior": "A válasz kizárólag a kijelölt NASA dokumentumon alapuljon.\nAdja meg a dokumentált ellenállási tartományt.\nNe használjon más feltöltött dokumentumot vagy általános modelltudást.",
+  "result": {
+    "answer": "1. **Rövid válasz**: A csuklópánt személyi földelőrendszeréhez szükséges ellenállási tartomány 800 kΩ és 1,2 MΩ.\n\n2. **Érintett gép, típus vagy funkció**: ESD (elektrosztatikus kisülés) védelmi rendszerek.\n\n3. **Műszaki információ vagy eljárás**: A csuklópánt ellenállását a csuklópánt csatlakozási pontja és a bőrfelület között kell mérni.\n\n4. **Ellenőrzési pontok**: Ellenőrizze, hogy a csuklópánt ellenállása a megadott tartományon belül van-e (800 kΩ - 1,2 MΩ).\n\n5. **Biztonsági megjegyzés**: A csuklópánt folyamatos használata és ellenőrzése szükséges a megfelelő ESD védelem biztosításához.\n\n6. **Források**: [FORRÁS 3]",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 7793.10000000149,
+    "resultCount": 3,
+    "contextCount": 3,
+    "sources": [
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "9ce3684f-0e5d-4c03-a3d4-e117a43bfe0e",
+        "chunkIndex": 89,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.2700840950124608,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 38,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 38 of 50 Note: While a PC monitor may be considered essential, keyboards and mice are not. Note: Carbon dioxide ( CO ₂ ) snow cleaning or other compressed air nozzles may be considered essential insulators and are a source of charged ions that may pose significant risk to ESDS items. 7.2.4.2.3 Vacuum cleaning equipment, hoses, and associated tools, used for cleaning ESDS articles that cannot be grounded at the nozzle shall be treated as essential insulators. 7.2.4.2.4 ESDS hardwa re shall be either grounded or protected from charge accumulation during transport. 7.2.4.2.5 A subassembly (e.g., electrical box) shall have conductive or dissipative connector caps or plugs in place except when being mated to system cabling, or during environment al bake or test operations. 7.2.4.2.6 Requirements for reducing the static charge on connectors, cables and harnesses prior to mating system interface connectors to system test sets shall be defined in the ESD Control Program Plan . 7.2.4.3 Packaging 7.2.4.3.1 Electrostatic protectiv e packaging shall prevent the generation of static charge and provide protection from electrostatic fields."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "bcf9d9db-b6d4-4dcd-9fc6-65f159441dc8",
+        "chunkIndex": 91,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.30551553664382236,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 39,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 39 of 50 7.2.4.4 EPA Perimeter, Marking and Signage 7.2.4.4.1 The ESD Control Program Plan shall include requirements for signage and perimeter indicators. Note: EPA perimeter indicators s uch as floor tape, partitions, and rope guards are used to prevent unauthorized and untrained personnel as defined in 7.2.3.1.5 from entering the EPA and to prevent t he EPA from being used for unauthorized purposes. 7.2.4.4.2 ESD a ccess - controlled areas shall be li mited to ESD trained personnel and escorted visitors. 7.2.4.4.3 EPAs within access - controlled areas shall have a minimum 12 inch traffic buffer beyond the applicable sides of t he perimeter , including those sides that share a boundary with a non - EPA work bench or work area . 7.2.4.4.4 EPAs outside of access - controlled areas shall have a minimum one - meter traffic buffer beyond the applicable sides of the perimeter , including those sides that share a boundary with a non - EPA work bench or work area ."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "d1d3d142-4ede-4401-bc74-a410f89650f7",
+        "chunkIndex": 95,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.6967084980989159,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 40,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "each time before use. See Table 3 , #5 . 7.2.5.3.3 The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface . See Table 3 , #6 .\n\n7.2.5.3.4 The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG . Follow manufacturer’s recommendation for continuous monitoring systems . See Table 3 , #7 . 7.2.5.3.5 Elastic conductive fabric wristband s shall not be used where shedding of conductive fibers is a concern. Metal expansion bracelet or conductive thermoplastic wristband s ensur ing continuous conductive contact with the wearer’s skin are preferred. 7.2.5.3.6 Foot grounding devices, when used, shall be worn on both feet and measure < 3.5x 10 7 Ω . See Table 3 , #8 . 7.2.5.3.7 The method and frequency of calibration for Continuous Monitored System (CMS) ESD wrist strap systems shall be documented in the local ESD Control Program Plan. See Table 3 , #9 . 7.2.5.4 Stools , Chairs , and Mobile Equipment/Carts 7.2.5.4.1 Groundable, static dissipative seating is required in EPAs rated for processing HBM Class 0 items."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz pontosan tükrözi a megadott forrást, amelyben a csuklópánt ellenállási tartománya 800 kΩ és 1,2 MΩ szerepel. A válasz világos, érthető és a felhasználói kérdésre közvetlenül reagál."
+    }
+  },
+  "documentSearchScope": "selected",
+  "selectedDocumentIds": [
+    "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+  ],
+  "selectedDocuments": [
+    {
+      "id": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+      "title": "Test1_nasa-std-87396b",
+      "originalFilename": "Test1_nasa-std-87396b.pdf"
+    }
+  ]
+}
