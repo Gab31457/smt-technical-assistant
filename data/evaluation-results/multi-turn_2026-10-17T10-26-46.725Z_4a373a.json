@@ -1,0 +1,99 @@
+{
+  "savedAt": "2026-10-17T10:26:46.725Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "conversational",
+  "knowledgeSourceMode": "hybrid",
+  "expectedBehavior": "Az asszisztens kizárólag a feltöltött SMT műszaki dokumentumok alapján válaszoljon, ne találjon ki hiányzó műszaki információt, és nevezze meg a felhasznált forrást.",
+  "simulator": {
+    "persona": "Olyan SMT technikus, aki egy géphibát vizsgál, de a géptípust, a hibakódot és a hiba körülményeit fokozatosan adja meg.",
+    "goal": "Kapjon a megfelelő műszaki dokumentumon alapuló, következetes hibakeresési segítséget.",
+    "hiddenConstraints": "Az asszisztens tartsa meg a korábban megadott géptípust és hibakódot, ne keverjen össze eltérő berendezéseket",
+    "initialMessage": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+      "assistant": "1. **Rövid válasz**  \nA hiba kivizsgálásához kövesse az alábbi ellenőrzési sorrendet.\n\n2. **Érintett gép, típus vagy funkció**  \nSMEMA kommunikációval kapcsolatos SMT berendezések.\n\n3. **Műszaki információ vagy javasolt ellenőrzési sorrend**  \nHa a panelátadás nem indul el, hajtsa végre az alábbi lépéseket:\n\n   1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n   2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n   3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n   4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n   5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n   6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n4. **Biztonsági megjegyzés**  \nMukodo gépen ne bontsa meg a kábelsor kapcsolatait, és ne kerüljön meg biztonsági reteszeléseket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n5. **Források**  \n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)  \n- Általános AI-tudás"
+    },
+    {
+      "user": "A gép hibakódja 101, és a hiba akkor jelentkezik, amikor a panelátadás megpróbálkozik. Kérlek, nézd meg, hogy van-e további információ a hibakódról a dokumentációban.",
+      "assistant": "## Dokumentumalapú információ\nA megadott dokumentumokban nem találtam konkrét információt a 101-es hibakódról. Azonban a panelátadás problémája esetén javasolt ellenőrzési sorrendet az alábbi lépések alapján hajtsa végre:\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. A 101-es hibakód gyakran a panelátadás hibás kezelése miatt jelenik meg, amelyet a fent említett ajánlott lépések követésével jelentkezett ki lehet deríteni. Érdemes lehet a berendezés szervizkönyvét is átnézni, mivel a gyártó specifikus információkat adhat erről a hibáról.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "user": "Azt hiszem, a 101-es hibakód a panelátadás hibás kezelésére utal. Van valami további információ a dokumentációban arról, hogy mit tehetek, ha a hiba továbbra is fennáll?",
+      "assistant": "## Dokumentumalapú információ\nA dokumentumok alapján a 101-es hibakód a panelátadás hibás kezelésére utalhat. Az alábbi ellenőrzéseket kell elvégezni, ha a panelátadás nem indul el:\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" (Kész a gép) jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" (Panel rendelkezésre áll) jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\nFelhívom a figyelmét, hogy a hiba megjelenésekor ne bontsa meg a kábelcsatlakozásokat, és ne kerüljön meg biztonsági reteszeléseket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. A 101-es hibakód gyakran a gép közötti kommunikációs problémák következménye lehet. Források alapján a megfelelő jelek hiánya okozhatja, ami megakadályozza a panelátadást. További gyártói útmutatást kell keresni a készülékek specifikus jellemzőivel kapcsolatban.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n- Általános AI-tudás"
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "A gép hibát jelez. Segíts a hiba kivizsgálásában!"
+    },
+    {
+      "role": "assistant",
+      "content": "1. **Rövid válasz**  \nA hiba kivizsgálásához kövesse az alábbi ellenőrzési sorrendet.\n\n2. **Érintett gép, típus vagy funkció**  \nSMEMA kommunikációval kapcsolatos SMT berendezések.\n\n3. **Műszaki információ vagy javasolt ellenőrzési sorrend**  \nHa a panelátadás nem indul el, hajtsa végre az alábbi lépéseket:\n\n   1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n   2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n   3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n   4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n   5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n   6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n4. **Biztonsági megjegyzés**  \nMukodo gépen ne bontsa meg a kábelsor kapcsolatait, és ne kerüljön meg biztonsági reteszeléseket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n5. **Források**  \n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)  \n- Általános AI-tudás"
+    },
+    {
+      "role": "user",
+      "content": "A gép hibakódja 101, és a hiba akkor jelentkezik, amikor a panelátadás megpróbálkozik. Kérlek, nézd meg, hogy van-e további információ a hibakódról a dokumentációban."
+    },
+    {
+      "role": "assistant",
+      "content": "## Dokumentumalapú információ\nA megadott dokumentumokban nem találtam konkrét információt a 101-es hibakódról. Azonban a panelátadás problémája esetén javasolt ellenőrzési sorrendet az alábbi lépések alapján hajtsa végre:\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. A 101-es hibakód gyakran a panelátadás hibás kezelése miatt jelenik meg, amelyet a fent említett ajánlott lépések követésével jelentkezett ki lehet deríteni. Érdemes lehet a berendezés szervizkönyvét is átnézni, mivel a gyártó specifikus információkat adhat erről a hibáról.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "role": "user",
+      "content": "Azt hiszem, a 101-es hibakód a panelátadás hibás kezelésére utal. Van valami további információ a dokumentációban arról, hogy mit tehetek, ha a hiba továbbra is fennáll?"
+    },
+    {
+      "role": "assistant",
+      "content": "## Dokumentumalapú információ\nA dokumentumok alapján a 101-es hibakód a panelátadás hibás kezelésére utalhat. Az alábbi ellenőrzéseket kell elvégezni, ha a panelátadás nem indul el:\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" (Kész a gép) jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" (Panel rendelkezésre áll) jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\nFelhívom a figyelmét, hogy a hiba megjelenésekor ne bontsa meg a kábelcsatlakozásokat, és ne kerüljön meg biztonsági reteszeléseket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. A 101-es hibakód gyakran a gép közötti kommunikációs problémák következménye lehet. Források alapján a megfelelő jelek hiánya okozhatja, ami megakadályozza a panelátadást. További gyártói útmutatást kell keresni a készülékek specifikus jellemzőivel kapcsolatban.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n- Általános AI-tudás"
+    }
+  ],
+  "totalResponseTime": 14746.200000000186,
+  "finalEvaluation": {
+    "answer": "## Dokumentumalapú információ\nA dokumentumok alapján a 101-es hibakód a panelátadás hibás kezelésére utalhat. Az alábbi ellenőrzéseket kell elvégezni, ha a panelátadás nem indul el:\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" (Kész a gép) jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" (Panel rendelkezésre áll) jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\nFelhívom a figyelmét, hogy a hiba megjelenésekor ne bontsa meg a kábelcsatlakozásokat, és ne kerüljön meg biztonsági reteszeléseket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. A 101-es hibakód gyakran a gép közötti kommunikációs problémák következménye lehet. Források alapján a megfelelő jelek hiánya okozhatja, ami megakadályozza a panelátadást. További gyártói útmutatást kell keresni a készülékek specifikus jellemzőivel kapcsolatban.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n- Általános AI-tudás",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "conversational",
+    "knowledgeSourceMode": "hybrid",
+    "responseTime": 4418.5,
+    "resultCount": 2,
+    "contextCount": 2,
+    "sources": [
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "42d735d5-dab0-4193-aaaa-f6a3eff1b565",
+        "chunkIndex": 1,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.6368065604715277,
+        "content": "ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:\n\n1. Ellenorizze, hogy mindket berendezes automata uzemmodban van-e.\n2. Ellenorizze, hogy a kovetkezo berendezes Machine Ready jele aktiv-e.\n3. Ellenorizze, hogy az elozo berendezes Board Available jele aktiv-e.\n4. Ellenorizze a ket gep kozotti SMEMA kabel csatlakozasat.\n5. Ellenorizze, hogy nincs-e aktiv gepi riasztas vagy biztonsagi reteszeles.\n6. Ha a hiba tovabbra is fennall, hasznalja az erintett berendezes hivatalos gyartoi dokumentaciojat, vagy kerje jogosult karbantarto segitseget.\n\n4. Biztonsagi megjegyzes\nMukodo gepen ne bontsa meg a kabelcsatlakozast, es ne kerulje meg a biztonsagi reteszeket. Beavatkozas elott tartsa be a helyi biztonsagi es energia-levasztasi eloirasokat.\n\n5. Korlatozas\nEz a dokumentum kizarolag a szoftver mukodesenek tesztelesere hasznalhato. A tenyleges jelnevek, elektromos kialakitasok es hibakeresesi eljarasok berendezesenkent elterhetnek."
+      },
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "85eeb08f-d3fe-4851-88a0-d051998a5b95",
+        "chunkIndex": 0,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.4887251321518993,
+        "content": "SMEMA KOMMUNIKACIO - OKTATASI TESZTDOKUMENTUM\n\nDokumentum celja\nEz a sajat keszitesu, oktatasi celu tesztdokumentum az SMT Technical Assistant dokumentumfeltoltesi, RAG-keresesi es evaluacios funkcioinak ellenorzesere keszult. Nem gyartoi gepkonyv, es nem helyettesiti a helyi munkautasitast vagy a berendezes hivatalos dokumentaciojat.\n\n1. A SMEMA kommunikacio szerepe\nA SMEMA kommunikacio egyszeru jelkapcsolatot biztosit ket egymas mellett elhelyezett SMT berendezes kozott. A kapcsolat celja, hogy a gepek jelezzek egymasnak, mikor adhato at egy nyomtatott aramkori lap a kovetkezo berendezesnek.\n\n2. Alapveto jelek\nA jelen tesztdokumentumban hasznalt ket alapjel:\n\n- Machine Ready: a kovetkezo gep keszen all a panel fogadasara.\n- Board Available: az elozo gepnel atadasra kesz panel all rendelkezesre.\n\nA panel atadasa akkor indithato, ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:"
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 4,
+      "instructionFollowing": 4,
+      "groundedness": 3,
+      "clarity": 4,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 4.17,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "Az asszisztens válasza releváns volt a felhasználó kérdésére, és a dokumentumok alapján nyújtott információkat. Az általános műszaki tájékoztatás elkülönítése megfelelő volt, de a 101-es hibakódról nem volt konkrét információ a dokumentumokban, így a válasz nem teljesen forráshű. Az utasítások követése és a válasz világossága is megfelelő volt."
+    }
+  }
+}

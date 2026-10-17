@@ -1,0 +1,30 @@
+{
+  "savedAt": "2026-10-17T09:56:27.914Z",
+  "evaluationType": "single-turn",
+  "knowledgeSourceMode": "model",
+  "question": "Mi a SMEMA kommunikáció szerepe egy SMT gyártósoron?",
+  "expectedBehavior": "Az asszisztens válaszoljon az általános modelltudása alapján, jelezze, hogy az információ nem feltöltött dokumentumból származik, és ne hivatkozzon feltöltött dokumentumra.",
+  "result": {
+    "answer": "A SMEMA (Surface Mount Equipment Manufacturers Association) kommunikáció egy alapvető protokoll az SMT (Surface Mount Technology) gyártósorokban, amely lehetővé teszi a különböző berendezések közötti adat- és vezérlésmegosztást. \n\n### Szerepe a SMT gyártósoron:\n\n1. **Berendezések közötti kooperáció**: A SMEMA protokoll lehetővé teszi a különféle berendezések (pl. nyomtatók, felhelyező gépek, sütők) közötti zökkenőmentes kommunikációt, így biztosítva a gyártási folyamat folytonosságát.\n\n2. **Adatátvitel**: A SMEMA lehetővé teszi a gyártósoron lévő gépek számára, hogy információkat (például az aktuális munkadarab állapotát) cseréljenek, amely elősegíti a gyártási folyamat optimalizálását.\n\n3. **Folyamatellenőrzés**: A kommunikáció révén a berendezések valós idejű információkat biztosítanak, lehetővé téve a gyártás folyamatának monitorozását és a szükséges beavatkozások azonnali végrehajtását, ha valami elromlik.\n\n4. **Minőségbiztosítás**: A SMEMA rendszer használatával csökkenthető a hibák száma, mivel a különböző berendezések folyamatosan figyelik egymás állapotát, és értesítik a felhasználókat a potenciális problémákról.\n\nA SMEMA tehát kritikus szerepet játszik az SMT gyártósorok hatékony és megbízható működésében.\n\n### Források:\nÁltalános AI-tudás.",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "default",
+    "knowledgeSourceMode": "model",
+    "responseTime": 6585.200000000186,
+    "resultCount": 0,
+    "contextCount": 0,
+    "sources": [],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz pontosan és részletesen válaszolt a felhasználói kérdésre a SMEMA kommunikáció szerepéről az SMT gyártósoron, és világosan jelezte, hogy az információ az általános AI-tudásból származik, nem pedig egy feltöltött dokumentumból. A válasz érthető és gyakorlatban is alkalmazható."
+    }
+  }
+}

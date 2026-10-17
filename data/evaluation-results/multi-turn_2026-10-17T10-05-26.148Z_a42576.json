@@ -1,0 +1,99 @@
+{
+  "savedAt": "2026-10-17T10:05:26.148Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "conversational",
+  "knowledgeSourceMode": "hybrid",
+  "expectedBehavior": "Az asszisztens különítse el a dokumentumból származó hibakeresési lépéseket és az általános AI-tudásból származó műszaki magyarázatot. Ne írja felül a dokumentált adatokat és a források között szerepeljen a dokumentum neve és az általános AI-tudás.",
+  "simulator": {
+    "persona": "Olyan SMT technikus, aki egy géphibát vizsgál, de a géptípust, a hibakódot és a hiba körülményeit fokozatosan adja meg.",
+    "goal": "Kapjon a megfelelő műszaki dokumentumon alapuló, következetes hibakeresési segítséget.",
+    "hiddenConstraints": "Az asszisztens tartsa meg a korábban megadott géptípust és hibakódot, ne keverjen össze eltérő berendezéseket, és csak dokumentált ellenőrzési lépéseket adjon.",
+    "initialMessage": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+      "assistant": "## Rövid válasz\nHa a gép hibát jelez, a következő lépéseket javaslom a hiba kivizsgálásához.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (SMT) kommunikációs problémájából eredhet, amely két egymás mellett elhelyezett SMT berendezés közötti jelátadást kezeli.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Automata üzemmód ellenőrzése**: Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. **Machine Ready jel**: Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jelzése aktív-e.\n3. **Board Available jel**: Ellenőrizze, hogy az előző berendezés \"Board Available\" jelzése aktív-e.\n4. **SMEMA kábels csatlakozások**: Ellenőrizze a két gép közötti SMEMA kábel csatlakozásait.\n5. **Aktív riasztások vagy zárak**: Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. **Dokumentáció vagy szakmai segítség**: Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Biztonsági megjegyzés\nNe bontsa meg a kábelcsatlakozást működő gépen, és ne kerülje meg a biztonsági reteszeket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n\nEz a válasz a dokumentumokban található információkon alapul."
+    },
+    {
+      "user": "Ellenőriztem a gépeket, és mindkettő automata üzemmódban van. A 'Machine Ready' jelzés is aktív, de a 'Board Available' jelzés nem világít. Mi a teendőm ilyenkor?",
+      "assistant": "## Rövid válasz\nHa a 'Machine Ready' jelzés aktív, de a 'Board Available' jelzés nem világít, ellenőrizze a következő lépéseket.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (Surface Mount Technology) kommunikációs problémájából adódik, amely két SMT berendezést érint.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Ellenőrizze az előző berendezést**: Győződjön meg arról, hogy az előző gép ténylegesen rendelkezik átadásra kész panellel.\n2. **Ellenőrizze a panel érintkezését**: Nézze meg, hogy a panel megfelelően van-e betéve a gépbe, és nincs-e elakadás.\n3. **Ellenőrizze a kábelcsatlakozásokat**: Nézze át a SMEMA kábel csatlakozásait a két gép között, hogy biztosítsa a megfelelő kapcsolatot.\n4. **Aktív riasztások**: Ellenőrizze, hogy az előző gépen nincsenek-e aktív gépi riasztások vagy biztonsági zárak, amelyek megakadályozzák a panel átadását.\n5. **Hivatalos dokumentáció**: Ha a hiba továbbra is fennáll, használja a berendezés hivatalos gyártói dokumentációját, vagy kérjen segítséget egy képzett karbantartótól.\n\n## Biztonsági megjegyzés\nNe végezzen beavatkozást a gépen működés közben, és ne bontsa meg a kábelcsatlakozást, amíg az berendezés aktív. Tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2) \n\nEz a válasz a megadott dokumentumok információin alapul."
+    },
+    {
+      "user": "Az előző gépen nem találtam aktív riasztást, de a panel nem tűnik átadásra késznek. Van valami javaslatod, hogy mit nézzek még meg?",
+      "assistant": "## Rövid válasz\nHa a panel nem tűnik átadásra késznek, és az előző gépen nincs aktív riasztás, ellenőrizze a panel állapotát és a berendezés működését.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (Surface Mount Technology) rendszerben a panelátadás zavarát jelzi.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Panel fizikai ellenőrzése**: Nézze meg, hogy a panel megfelelően van-e elhelyezve és nincsenek-e vele mechanikai akadályok.\n2. **Képződmények vagy hibák**: Ellenőrizze a paneleket, hogy nincsenek-e rajtuk látható hibák (pl. törött lábak, egyéb sérülések).\n3. **Előző gép beállításai**: Győződjön meg arról, hogy az előző gép beállításai helyesek, és megfelelően tudja kezelni a panelt.\n4. **Tesztelési módok**: Ha van rá lehetőség, tesztelje az előző gép panelátadási funkcióját egy másik, ellenőrzött panellel.\n5. **Zavaró jelek**: Nézze meg, hogy a gépek körüli környezeti tényezők, mint például a por vagy állapotváltozások, nem befolyásolják-e a működést.\n\n## Biztonsági megjegyzés\nMűködés közben ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n\nEz a válasz a megadott dokumentumok információin alapul."
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "A gép hibát jelez. Segíts a hiba kivizsgálásában!"
+    },
+    {
+      "role": "assistant",
+      "content": "## Rövid válasz\nHa a gép hibát jelez, a következő lépéseket javaslom a hiba kivizsgálásához.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (SMT) kommunikációs problémájából eredhet, amely két egymás mellett elhelyezett SMT berendezés közötti jelátadást kezeli.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Automata üzemmód ellenőrzése**: Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. **Machine Ready jel**: Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jelzése aktív-e.\n3. **Board Available jel**: Ellenőrizze, hogy az előző berendezés \"Board Available\" jelzése aktív-e.\n4. **SMEMA kábels csatlakozások**: Ellenőrizze a két gép közötti SMEMA kábel csatlakozásait.\n5. **Aktív riasztások vagy zárak**: Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. **Dokumentáció vagy szakmai segítség**: Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Biztonsági megjegyzés\nNe bontsa meg a kábelcsatlakozást működő gépen, és ne kerülje meg a biztonsági reteszeket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n\nEz a válasz a dokumentumokban található információkon alapul."
+    },
+    {
+      "role": "user",
+      "content": "Ellenőriztem a gépeket, és mindkettő automata üzemmódban van. A 'Machine Ready' jelzés is aktív, de a 'Board Available' jelzés nem világít. Mi a teendőm ilyenkor?"
+    },
+    {
+      "role": "assistant",
+      "content": "## Rövid válasz\nHa a 'Machine Ready' jelzés aktív, de a 'Board Available' jelzés nem világít, ellenőrizze a következő lépéseket.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (Surface Mount Technology) kommunikációs problémájából adódik, amely két SMT berendezést érint.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Ellenőrizze az előző berendezést**: Győződjön meg arról, hogy az előző gép ténylegesen rendelkezik átadásra kész panellel.\n2. **Ellenőrizze a panel érintkezését**: Nézze meg, hogy a panel megfelelően van-e betéve a gépbe, és nincs-e elakadás.\n3. **Ellenőrizze a kábelcsatlakozásokat**: Nézze át a SMEMA kábel csatlakozásait a két gép között, hogy biztosítsa a megfelelő kapcsolatot.\n4. **Aktív riasztások**: Ellenőrizze, hogy az előző gépen nincsenek-e aktív gépi riasztások vagy biztonsági zárak, amelyek megakadályozzák a panel átadását.\n5. **Hivatalos dokumentáció**: Ha a hiba továbbra is fennáll, használja a berendezés hivatalos gyártói dokumentációját, vagy kérjen segítséget egy képzett karbantartótól.\n\n## Biztonsági megjegyzés\nNe végezzen beavatkozást a gépen működés közben, és ne bontsa meg a kábelcsatlakozást, amíg az berendezés aktív. Tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2) \n\nEz a válasz a megadott dokumentumok információin alapul."
+    },
+    {
+      "role": "user",
+      "content": "Az előző gépen nem találtam aktív riasztást, de a panel nem tűnik átadásra késznek. Van valami javaslatod, hogy mit nézzek még meg?"
+    },
+    {
+      "role": "assistant",
+      "content": "## Rövid válasz\nHa a panel nem tűnik átadásra késznek, és az előző gépen nincs aktív riasztás, ellenőrizze a panel állapotát és a berendezés működését.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (Surface Mount Technology) rendszerben a panelátadás zavarát jelzi.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Panel fizikai ellenőrzése**: Nézze meg, hogy a panel megfelelően van-e elhelyezve és nincsenek-e vele mechanikai akadályok.\n2. **Képződmények vagy hibák**: Ellenőrizze a paneleket, hogy nincsenek-e rajtuk látható hibák (pl. törött lábak, egyéb sérülések).\n3. **Előző gép beállításai**: Győződjön meg arról, hogy az előző gép beállításai helyesek, és megfelelően tudja kezelni a panelt.\n4. **Tesztelési módok**: Ha van rá lehetőség, tesztelje az előző gép panelátadási funkcióját egy másik, ellenőrzött panellel.\n5. **Zavaró jelek**: Nézze meg, hogy a gépek körüli környezeti tényezők, mint például a por vagy állapotváltozások, nem befolyásolják-e a működést.\n\n## Biztonsági megjegyzés\nMűködés közben ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n\nEz a válasz a megadott dokumentumok információin alapul."
+    }
+  ],
+  "totalResponseTime": 17260.599999999627,
+  "finalEvaluation": {
+    "answer": "## Rövid válasz\nHa a panel nem tűnik átadásra késznek, és az előző gépen nincs aktív riasztás, ellenőrizze a panel állapotát és a berendezés működését.\n\n## Érintett gép, típus vagy funkció\nEz a hiba a SMEMA (Surface Mount Technology) rendszerben a panelátadás zavarát jelzi.\n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n1. **Panel fizikai ellenőrzése**: Nézze meg, hogy a panel megfelelően van-e elhelyezve és nincsenek-e vele mechanikai akadályok.\n2. **Képződmények vagy hibák**: Ellenőrizze a paneleket, hogy nincsenek-e rajtuk látható hibák (pl. törött lábak, egyéb sérülések).\n3. **Előző gép beállításai**: Győződjön meg arról, hogy az előző gép beállításai helyesek, és megfelelően tudja kezelni a panelt.\n4. **Tesztelési módok**: Ha van rá lehetőség, tesztelje az előző gép panelátadási funkcióját egy másik, ellenőrzött panellel.\n5. **Zavaró jelek**: Nézze meg, hogy a gépek körüli környezeti tényezők, mint például a por vagy állapotváltozások, nem befolyásolják-e a működést.\n\n## Biztonsági megjegyzés\nMűködés közben ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1)\n- smema_teszt_dokumentum.txt (FORRÁS 2)\n\nEz a válasz a megadott dokumentumok információin alapul.",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "conversational",
+    "knowledgeSourceMode": "hybrid",
+    "responseTime": 6529.299999999814,
+    "resultCount": 2,
+    "contextCount": 2,
+    "sources": [
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "42d735d5-dab0-4193-aaaa-f6a3eff1b565",
+        "chunkIndex": 1,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.6553927264680794,
+        "content": "ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:\n\n1. Ellenorizze, hogy mindket berendezes automata uzemmodban van-e.\n2. Ellenorizze, hogy a kovetkezo berendezes Machine Ready jele aktiv-e.\n3. Ellenorizze, hogy az elozo berendezes Board Available jele aktiv-e.\n4. Ellenorizze a ket gep kozotti SMEMA kabel csatlakozasat.\n5. Ellenorizze, hogy nincs-e aktiv gepi riasztas vagy biztonsagi reteszeles.\n6. Ha a hiba tovabbra is fennall, hasznalja az erintett berendezes hivatalos gyartoi dokumentaciojat, vagy kerje jogosult karbantarto segitseget.\n\n4. Biztonsagi megjegyzes\nMukodo gepen ne bontsa meg a kabelcsatlakozast, es ne kerulje meg a biztonsagi reteszeket. Beavatkozas elott tartsa be a helyi biztonsagi es energia-levasztasi eloirasokat.\n\n5. Korlatozas\nEz a dokumentum kizarolag a szoftver mukodesenek tesztelesere hasznalhato. A tenyleges jelnevek, elektromos kialakitasok es hibakeresesi eljarasok berendezesenkent elterhetnek."
+      },
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "85eeb08f-d3fe-4851-88a0-d051998a5b95",
+        "chunkIndex": 0,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.49765752623634163,
+        "content": "SMEMA KOMMUNIKACIO - OKTATASI TESZTDOKUMENTUM\n\nDokumentum celja\nEz a sajat keszitesu, oktatasi celu tesztdokumentum az SMT Technical Assistant dokumentumfeltoltesi, RAG-keresesi es evaluacios funkcioinak ellenorzesere keszult. Nem gyartoi gepkonyv, es nem helyettesiti a helyi munkautasitast vagy a berendezes hivatalos dokumentaciojat.\n\n1. A SMEMA kommunikacio szerepe\nA SMEMA kommunikacio egyszeru jelkapcsolatot biztosit ket egymas mellett elhelyezett SMT berendezes kozott. A kapcsolat celja, hogy a gepek jelezzek egymasnak, mikor adhato at egy nyomtatott aramkori lap a kovetkezo berendezesnek.\n\n2. Alapveto jelek\nA jelen tesztdokumentumban hasznalt ket alapjel:\n\n- Machine Ready: a kovetkezo gep keszen all a panel fogadasara.\n- Board Available: az elozo gepnel atadasra kesz panel all rendelkezesre.\n\nA panel atadasa akkor indithato, ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:"
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz pontosan reagál a felhasználó kérdésére, a dokumentumban található információkra alapozva. Az asszisztens világosan elkülönítette a dokumentumból származó hibakeresési lépéseket és az általános AI-tudást, így a válasz megbízható és érthető volt."
+    }
+  }
+}

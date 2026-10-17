@@ -1,0 +1,99 @@
+{
+  "savedAt": "2026-10-17T10:06:41.499Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "conversational",
+  "knowledgeSourceMode": "hybrid",
+  "expectedBehavior": "Az asszisztens különítse el a dokumentumból származó hibakeresési lépéseket és az általános AI-tudásból származó műszaki magyarázatot. Ne írja felül a dokumentált adatokat és a források között szerepeljen a dokumentum neve és az általános AI-tudás.",
+  "simulator": {
+    "persona": "Olyan SMT technikus, aki egy géphibát vizsgál, de a géptípust, a hibakódot és a hiba körülményeit fokozatosan adja meg.",
+    "goal": "Kapjon a megfelelő műszaki dokumentumon alapuló, következetes hibakeresési segítséget.",
+    "hiddenConstraints": "Az asszisztens tartsa meg a korábban megadott géptípust és hibakódot, ne keverjen össze eltérő berendezéseket, és csak dokumentált ellenőrzési lépéseket adjon.",
+    "initialMessage": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "A gép hibát jelez. Segíts a hiba kivizsgálásában!",
+      "assistant": "## Rövid válasz\nA hiba kivizsgálásához végezze el az alábbi ellenőrzéseket a SMEMA (Surface Mount Technology Equipment Manufacturer's Association) kommunikációs rendszer keretein belül.\n\n## Érintett gép, típus vagy funkció\nA hiba a SMEMA kapcsolaton keresztül két SMT berendezés közötti panelátadással kapcsolatos. \n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Biztonsági megjegyzés\nMűködő gépen ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "user": "Az összes ellenőrzést elvégeztem, és minden jelzés rendben van. A gép típusa SMT-XYZ, a hibakód pedig 1234. Kérlek, nézd meg, hogy van-e további lépés a hiba elhárításához.",
+      "assistant": "## Dokumentumalapú információ\nA hibaelhárítási folyamat alapján, mivel minden jelzés rendben van, és a hibakód 1234 az SMT-XYZ gépnél, a következő lépéseket javaslom:\n\n1. **Ellenőrizze a hibakód jelentését**: A 1234-es hibakód specifikus lehet a gép gyártói dokumentációjában. Ellenőrizze a gyártó hivatalos dokumentációját a hibakód részleteiért.\n2. **Fizikai ellenőrzés**: Győződjön meg arról, hogy nincsenek látható mechanikai akadályok vagy hibák, például szennyeződés a berendezés körüli területen.\n3. **Szoftverfrissítés**: Ellenőrizze, hogy a gép szoftvere naprakész-e. Lehet, hogy a frissítés tartalmaz hibajavításokat.\n4. **Újraindítás**: Üzemeltesse újra a gépet, és ellenőrizze, hogy a hiba továbbra is fennáll-e.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. \n\nEgyes SMT gépeknél a hibakódok különböző problémákat jelezhetnek, például kommunikációs hibát, szoftveres problémát vagy mechanikai akadályokat. További információkért érdemes lehet a gyártó ügyfélszolgálatával is kapcsolatba lépni, különösen, ha a hiba nem orvosolható a fenti lépésekkel.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "user": "A 1234-es hibakód jelentése alapján nem találtam semmilyen információt a gyártói dokumentációban. Milyen további lépéseket javasolsz, ha a gép újraindítása sem segített?",
+      "assistant": "## Dokumentumalapú információ\nA 1234-es hibakód jelentésével kapcsolatban, mivel a gyártói dokumentációban nem talált információt, a következő lépéseket javaslom:\n\n1. **SMEMA kommunikáció ellenőrzése**: Biztosítsa, hogy a két gép közötti SMEMA kapcsolat működik. Ellenőrizze, hogy a \"Machine Ready\" és \"Board Available\" jelek aktívak, és nem voltak megszakadások a jelekben.\n\n2. **Fizikai ellenőrzés**: Mivel a gép már újraindult, érdemes megvizsgálni a kábeleket fizikai károsodás vagy laza csatlakozások jelei után.\n\n3. **Helyi rendszerek**: Nézze át, hogy van-e hibakód vagy riasztás más rendszerekben (pl. tápellátás, hűtés), amely befolyásolhatja a működést.\n\n4. **Karancsolati irányelv**: Ha a hiba továbbra is fennáll, javasolja, hogy vegye fel a kapcsolatot a gyártó ügyfélszolgálatával vagy egy képzett karbantartóval, akik specializálódtak az SMT-XYZ típusú gépekre.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. Ha a hibaüzenetek nem dokumentáltak, elképzelhető, hogy a gyártó weboldalán, fórumokon vagy a gép telepítője által nyújtott erőforrásokban további információt találhat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "A gép hibát jelez. Segíts a hiba kivizsgálásában!"
+    },
+    {
+      "role": "assistant",
+      "content": "## Rövid válasz\nA hiba kivizsgálásához végezze el az alábbi ellenőrzéseket a SMEMA (Surface Mount Technology Equipment Manufacturer's Association) kommunikációs rendszer keretein belül.\n\n## Érintett gép, típus vagy funkció\nA hiba a SMEMA kapcsolaton keresztül két SMT berendezés közötti panelátadással kapcsolatos. \n\n## Műszaki információ vagy javasolt ellenőrzési sorrend\n\n1. Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n2. Ellenőrizze, hogy a következő berendezés \"Machine Ready\" jele aktív-e.\n3. Ellenőrizze, hogy az előző berendezés \"Board Available\" jele aktív-e.\n4. Ellenőrizze a két gép közötti SMEMA kábel csatlakozását.\n5. Ellenőrizze, hogy nincs-e aktív gépi riasztás vagy biztonsági reteszelés.\n6. Ha a hiba továbbra is fennáll, használja az érintett berendezés hivatalos gyártói dokumentációját, vagy kérje jogosult karbantartó segítségét.\n\n## Biztonsági megjegyzés\nMűködő gépen ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "role": "user",
+      "content": "Az összes ellenőrzést elvégeztem, és minden jelzés rendben van. A gép típusa SMT-XYZ, a hibakód pedig 1234. Kérlek, nézd meg, hogy van-e további lépés a hiba elhárításához."
+    },
+    {
+      "role": "assistant",
+      "content": "## Dokumentumalapú információ\nA hibaelhárítási folyamat alapján, mivel minden jelzés rendben van, és a hibakód 1234 az SMT-XYZ gépnél, a következő lépéseket javaslom:\n\n1. **Ellenőrizze a hibakód jelentését**: A 1234-es hibakód specifikus lehet a gép gyártói dokumentációjában. Ellenőrizze a gyártó hivatalos dokumentációját a hibakód részleteiért.\n2. **Fizikai ellenőrzés**: Győződjön meg arról, hogy nincsenek látható mechanikai akadályok vagy hibák, például szennyeződés a berendezés körüli területen.\n3. **Szoftverfrissítés**: Ellenőrizze, hogy a gép szoftvere naprakész-e. Lehet, hogy a frissítés tartalmaz hibajavításokat.\n4. **Újraindítás**: Üzemeltesse újra a gépet, és ellenőrizze, hogy a hiba továbbra is fennáll-e.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. \n\nEgyes SMT gépeknél a hibakódok különböző problémákat jelezhetnek, például kommunikációs hibát, szoftveres problémát vagy mechanikai akadályokat. További információkért érdemes lehet a gyártó ügyfélszolgálatával is kapcsolatba lépni, különösen, ha a hiba nem orvosolható a fenti lépésekkel.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    },
+    {
+      "role": "user",
+      "content": "A 1234-es hibakód jelentése alapján nem találtam semmilyen információt a gyártói dokumentációban. Milyen további lépéseket javasolsz, ha a gép újraindítása sem segített?"
+    },
+    {
+      "role": "assistant",
+      "content": "## Dokumentumalapú információ\nA 1234-es hibakód jelentésével kapcsolatban, mivel a gyártói dokumentációban nem talált információt, a következő lépéseket javaslom:\n\n1. **SMEMA kommunikáció ellenőrzése**: Biztosítsa, hogy a két gép közötti SMEMA kapcsolat működik. Ellenőrizze, hogy a \"Machine Ready\" és \"Board Available\" jelek aktívak, és nem voltak megszakadások a jelekben.\n\n2. **Fizikai ellenőrzés**: Mivel a gép már újraindult, érdemes megvizsgálni a kábeleket fizikai károsodás vagy laza csatlakozások jelei után.\n\n3. **Helyi rendszerek**: Nézze át, hogy van-e hibakód vagy riasztás más rendszerekben (pl. tápellátás, hűtés), amely befolyásolhatja a működést.\n\n4. **Karancsolati irányelv**: Ha a hiba továbbra is fennáll, javasolja, hogy vegye fel a kapcsolatot a gyártó ügyfélszolgálatával vagy egy képzett karbantartóval, akik specializálódtak az SMT-XYZ típusú gépekre.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. Ha a hibaüzenetek nem dokumentáltak, elképzelhető, hogy a gyártó weboldalán, fórumokon vagy a gép telepítője által nyújtott erőforrásokban további információt találhat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás"
+    }
+  ],
+  "totalResponseTime": 17134.099999999627,
+  "finalEvaluation": {
+    "answer": "## Dokumentumalapú információ\nA 1234-es hibakód jelentésével kapcsolatban, mivel a gyártói dokumentációban nem talált információt, a következő lépéseket javaslom:\n\n1. **SMEMA kommunikáció ellenőrzése**: Biztosítsa, hogy a két gép közötti SMEMA kapcsolat működik. Ellenőrizze, hogy a \"Machine Ready\" és \"Board Available\" jelek aktívak, és nem voltak megszakadások a jelekben.\n\n2. **Fizikai ellenőrzés**: Mivel a gép már újraindult, érdemes megvizsgálni a kábeleket fizikai károsodás vagy laza csatlakozások jelei után.\n\n3. **Helyi rendszerek**: Nézze át, hogy van-e hibakód vagy riasztás más rendszerekben (pl. tápellátás, hűtés), amely befolyásolhatja a működést.\n\n4. **Karancsolati irányelv**: Ha a hiba továbbra is fennáll, javasolja, hogy vegye fel a kapcsolatot a gyártó ügyfélszolgálatával vagy egy képzett karbantartóval, akik specializálódtak az SMT-XYZ típusú gépekre.\n\n## Általános műszaki tájékoztatás\nEz a rész nem a feltöltött dokumentumokból származik. Ha a hibaüzenetek nem dokumentáltak, elképzelhető, hogy a gyártó weboldalán, fórumokon vagy a gép telepítője által nyújtott erőforrásokban további információt találhat.\n\n## Források\n- smema_teszt_dokumentum.txt (FORRÁS 1 és FORRÁS 2)\n- Általános AI-tudás",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "conversational",
+    "knowledgeSourceMode": "hybrid",
+    "responseTime": 4328.5,
+    "resultCount": 2,
+    "contextCount": 2,
+    "sources": [
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "42d735d5-dab0-4193-aaaa-f6a3eff1b565",
+        "chunkIndex": 1,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.5583921273016131,
+        "content": "ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:\n\n1. Ellenorizze, hogy mindket berendezes automata uzemmodban van-e.\n2. Ellenorizze, hogy a kovetkezo berendezes Machine Ready jele aktiv-e.\n3. Ellenorizze, hogy az elozo berendezes Board Available jele aktiv-e.\n4. Ellenorizze a ket gep kozotti SMEMA kabel csatlakozasat.\n5. Ellenorizze, hogy nincs-e aktiv gepi riasztas vagy biztonsagi reteszeles.\n6. Ha a hiba tovabbra is fennall, hasznalja az erintett berendezes hivatalos gyartoi dokumentaciojat, vagy kerje jogosult karbantarto segitseget.\n\n4. Biztonsagi megjegyzes\nMukodo gepen ne bontsa meg a kabelcsatlakozast, es ne kerulje meg a biztonsagi reteszeket. Beavatkozas elott tartsa be a helyi biztonsagi es energia-levasztasi eloirasokat.\n\n5. Korlatozas\nEz a dokumentum kizarolag a szoftver mukodesenek tesztelesere hasznalhato. A tenyleges jelnevek, elektromos kialakitasok es hibakeresesi eljarasok berendezesenkent elterhetnek."
+      },
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "85eeb08f-d3fe-4851-88a0-d051998a5b95",
+        "chunkIndex": 0,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.45616543719522595,
+        "content": "SMEMA KOMMUNIKACIO - OKTATASI TESZTDOKUMENTUM\n\nDokumentum celja\nEz a sajat keszitesu, oktatasi celu tesztdokumentum az SMT Technical Assistant dokumentumfeltoltesi, RAG-keresesi es evaluacios funkcioinak ellenorzesere keszult. Nem gyartoi gepkonyv, es nem helyettesiti a helyi munkautasitast vagy a berendezes hivatalos dokumentaciojat.\n\n1. A SMEMA kommunikacio szerepe\nA SMEMA kommunikacio egyszeru jelkapcsolatot biztosit ket egymas mellett elhelyezett SMT berendezes kozott. A kapcsolat celja, hogy a gepek jelezzek egymasnak, mikor adhato at egy nyomtatott aramkori lap a kovetkezo berendezesnek.\n\n2. Alapveto jelek\nA jelen tesztdokumentumban hasznalt ket alapjel:\n\n- Machine Ready: a kovetkezo gep keszen all a panel fogadasara.\n- Board Available: az elozo gepnel atadasra kesz panel all rendelkezesre.\n\nA panel atadasa akkor indithato, ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:"
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 4,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 4.83,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "Az asszisztens válasza közvetlenül reagál a felhasználó kérdésére, és a javasolt lépések a dokumentumban található információkra építenek. Az általános AI-tudás világosan elkülönül a dokumentum alapú információktól, de a hibakód 1234 jelentésével kapcsolatos információ nem található a feltöltött dokumentumban, ami a groundedness pontszámot csökkenti."
+    }
+  }
+}

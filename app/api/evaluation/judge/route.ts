@@ -291,6 +291,7 @@ ${answer}
 - Ellenőrizd, hogy a válasz jelzi-e: az információ nem feltöltött dokumentumból származik.
 - Ne várj dokumentumcímet vagy fájlnevet. A „Források” szakaszban az „Általános AI-tudás” megjelölés megfelelő.
 - Csökkentsd a pontszámot, ha a válasz ellenőrizetlen, túlzottan biztos, pontos gyártói adatnak beállított vagy belsőleg ellentmondásos műszaki állítást tartalmaz.
+- Ha a válasz ismeretlen vagy valószínűleg elírt rövidítéshez, hibakódhoz vagy géptípushoz biztos jelentést talál ki pontosítás nélkül, a groundedness legfeljebb 2, az instructionFollowing legfeljebb 2 lehet, és az állítást add az unsupportedClaims listához.
 - Az unsupportedClaims listába csak a nyilvánvalóan nem igazolt, túlzottan pontos vagy ellentmondásos állításokat tedd; ne sorold ide automatikusan az összes dokumentum nélküli állítást.`
       : knowledgeSourceMode === "hybrid"
         ? `
@@ -300,10 +301,16 @@ ${answer}
 - Az általános résznek jeleznie kell, hogy nem a feltöltött dokumentumokból származik.
 - A dokumentált adatokat az általános modelltudás nem írhatja felül.
 - A Források szakaszban szerepeljen a felhasznált dokumentum, valamint általános kiegészítés esetén az „Általános AI-tudás” megjelölés.
-- Az unsupportedClaims listába a dokumentumalapú rész alá nem támasztott állításait, valamint a hibásan elkülönített vagy túlzottan biztos általános állításokat tedd.`
+- A „Dokumentumalapú információ” szakasz minden egyes műszaki állítását külön hasonlítsd össze a forrásrészletekkel.
+- A dokumentumban nem szereplő mechanikai, villamos, szoftveres, környezeti vagy karbantartási javaslat akkor is alá nem támasztott állítás, ha szakmailag hihetőnek tűnik.
+- Ha általános tudás került a dokumentumalapú szakaszba, a groundedness és az instructionFollowing nem lehet magasabb 2 pontnál.
+- Ha hiányzik a kötelező szakaszelkülönítés, vagy az általános rész nincs egyértelműen megjelölve, az instructionFollowing nem lehet magasabb 2 pontnál.
+- Az unsupportedClaims listába a dokumentumalapú rész minden alá nem támasztott állítását, valamint a hibásan elkülönített vagy túlzottan biztos általános állításokat tedd.`
         : `
 - Csak a megadott dokumentumrészleteket tekintsd bizonyítéknak.
-- Ha egy tényszerű műszaki állítás nem szerepel a forrásban és nem vezethető le egyértelműen belőle, add hozzá az unsupportedClaims listához.
+- Ha egy tényszerű műszaki állítás, hibakeresési lépés, ellenőrzési javaslat, alkatrész, paraméter vagy biztonsági utasítás nem szerepel a forrásban és nem vezethető le egyértelműen belőle, add hozzá az unsupportedClaims listához.
+- Ne fogadj el állítást csak azért, mert szakmailag hihető vagy általánosan szokásos.
+- Ha a válasz azt állítja, hogy kizárólag a dokumentumon alapul, de akár egy lényeges nem dokumentált műszaki lépést is tartalmaz, a groundedness és az instructionFollowing nem lehet magasabb 2 pontnál.
 - Ha nem érkezett forrás, és a válasz tényszerű műszaki állításokat tartalmaz, a groundedness nem lehet magasabb 1 pontnál.
 - Ha nincs megfelelő forrás, és az asszisztens ezt pontosan jelzi anélkül, hogy műszaki állítást találna ki, a groundedness legyen 5.`;
 
@@ -333,6 +340,8 @@ A világos, kérdéshez kapcsolódó forráshiány-jelzés lehet 4 vagy 5 pontos
 
 instructionFollowing:
 Mennyire követi a válasz a felhasználói kérést és az elvárt viselkedést?
+Ha a kérdés túl általános, vagy a rövidítés, hibakód, géptípus nem azonosítható megbízhatóan, a pontosítás kérése helyes viselkedés.
+Ha az asszisztens ilyen esetben bizonyíték nélkül konkrét témát vagy jelentést feltételez, az instructionFollowing nem lehet magasabb 2 pontnál.
 Ha a forrásokban nincs elegendő információ, a biztonságos és forráshű visszautasítás helyes utasításkövetésnek számíthat.
 Ne büntesd az asszisztenst azért, mert nem talál ki paramétert, hibakódot, eljárást vagy javítási lépést megfelelő forrás nélkül.
 Csökkentsd a pontszámot, ha összekeveri a gépet, gyártót, típust, hibakódot vagy dokumentumverziót.
@@ -360,7 +369,11 @@ A korábbi feltételek miatt adott, forráshű visszautasítás következetes v�
 Single-turn evaluációnál a consistency értéke legyen 5.
 
 Az overallScore a relevance, instructionFollowing, groundedness, clarity, contextRetention és consistency pontszámok átlaga legyen.
-A passed értéke akkor legyen true, ha az overallScore legalább 3.5.
+A passed értéke csak akkor legyen true, ha mindhárom feltétel teljesül:
+- az overallScore legalább 3.5;
+- a groundedness legalább 3;
+- az instructionFollowing legalább 3.
+Ha a válasz ismeretlen rövidítéshez jelentést talál ki, vagy dokumentumalapúként nem alátámasztott műszaki lépést ad, a passed legyen false.
 
 Végső konzisztencia-ellenőrzés a JSON elkészítése előtt:
 - Ne adj minden részszempontra automatikusan azonos pontszámot.
@@ -445,7 +458,10 @@ function normalizeJudgeResult(
     contextRetention,
     consistency,
     overallScore,
-    passed: overallScore >= 3.5,
+    passed:
+      overallScore >= 3.5 &&
+      groundedness >= 3 &&
+      instructionFollowing >= 3,
     unsupportedClaims,
     explanation:
       String(result.explanation ?? "").trim() ||

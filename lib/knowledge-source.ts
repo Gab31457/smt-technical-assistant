@@ -49,7 +49,10 @@ export function getKnowledgeSourceInstruction(
 Ha dokumentumalapú információt és általános modelltudást is használsz, a válaszban pontosan ezeket a külön szakaszcímeket használd:
 
 ## Dokumentumalapú információ
-Ebben a szakaszban kizárólag a feltöltött dokumentumokból származó információ szerepelhet.
+Ebben a szakaszban kizárólag olyan állítás szerepelhet, amely közvetlenül megtalálható a visszakeresett dokumentumrészletekben, vagy azokból egyértelműen levezethető.
+Minden hibakeresési lépést, paramétert, alkatrészt, okot, beállítást és biztonsági utasítást külön ellenőrizz a dokumentumrészletekhez képest.
+A dokumentumban nem szereplő általános javaslatot akkor sem írhatod ebbe a szakaszba, ha szakmailag ésszerűnek tűnik.
+Ha egy állítás dokumentumalapúságában bizonytalan vagy, tedd az „Általános műszaki tájékoztatás” szakaszba, vagy hagyd el.
 
 ## Általános műszaki tájékoztatás
 Ebben a szakaszban kizárólag az általános modelltudásból származó kiegészítés szerepelhet.
@@ -70,6 +73,8 @@ A szakasz elején kötelezően írd le ezt a mondatot:
   return `
 # TUDÁSFORRÁS: CSAK FELTÖLTÖTT DOKUMENTUMOK
 - Kizárólag a visszakeresett dokumentumok és dokumentumrészletek alapján válaszolj.
+- Minden műszaki állításnak, hibakeresési lépésnek, paraméternek, alkatrésznek és biztonsági utasításnak közvetlenül alátámaszthatónak kell lennie a visszakeresett forrásból.
+- Ne használj általános, „szokásos” vagy „érdemes ellenőrizni” jellegű javaslatot, ha az nem szerepel a forrásban.
 - Ne használd az általános modelltudásodat a hiányzó műszaki információ pótlására.
 - Ha nincs megfelelő dokumentumtalálat, ezt egyértelműen jelezd.
 - Ne találj ki hibakódot, paramétert, határértéket, alkatrészt, biztonsági előírást vagy eljárási lépést.

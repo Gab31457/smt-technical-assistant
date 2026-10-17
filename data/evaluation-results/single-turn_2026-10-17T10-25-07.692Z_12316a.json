@@ -1,0 +1,49 @@
+{
+  "savedAt": "2026-10-17T10:25:07.692Z",
+  "evaluationType": "single-turn",
+  "knowledgeSourceMode": "documents",
+  "question": "Mi a SMEBA kommunikáció?",
+  "expectedBehavior": "Az asszisztens kizárólag a feltöltött SMT műszaki dokumentumok alapján válaszoljon, ne találjon ki hiányzó műszaki információt, és nevezze meg a felhasznált forrást.",
+  "result": {
+    "answer": "1. Rövid válasz: A SMEBA kommunikáció nem azonosítható. Valószínű, hogy a SMEMA kommunikációra gondolt.\n\n2. Érintett gép, típus vagy funkció: SMEMA kommunikáció SMT berendezések között.\n\n3. Műszaki információ vagy eljárás: A SMEMA kommunikáció egyszerű jelkapcsolatot biztosít két egymás mellett elhelyezett SMT berendezés között, lehetővé téve a nyomtatott áramköri lapok átadását.\n\n4. Ellenőrzési pontok:\n   - Ellenőrizze, hogy mindkét berendezés automata üzemmódban van-e.\n   - Ellenőrizze a Machine Ready és Board Available jelek állapotát.\n   - Ellenőrizze a SMEMA kábel csatlakozását.\n\n5. Biztonsági megjegyzés: Működő gépen ne bontsa meg a kábelcsatlakozást, és ne kerülje meg a biztonsági reteszeket. Beavatkozás előtt tartsa be a helyi biztonsági és energia-leválasztási előírásokat.\n\n6. Források: \n- smema_teszt_dokumentum (FORRÁS 1 és FORRÁS 2)",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 4806.9000000003725,
+    "resultCount": 2,
+    "contextCount": 2,
+    "sources": [
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "85eeb08f-d3fe-4851-88a0-d051998a5b95",
+        "chunkIndex": 0,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.5336473868714702,
+        "content": "SMEMA KOMMUNIKACIO - OKTATASI TESZTDOKUMENTUM\n\nDokumentum celja\nEz a sajat keszitesu, oktatasi celu tesztdokumentum az SMT Technical Assistant dokumentumfeltoltesi, RAG-keresesi es evaluacios funkcioinak ellenorzesere keszult. Nem gyartoi gepkonyv, es nem helyettesiti a helyi munkautasitast vagy a berendezes hivatalos dokumentaciojat.\n\n1. A SMEMA kommunikacio szerepe\nA SMEMA kommunikacio egyszeru jelkapcsolatot biztosit ket egymas mellett elhelyezett SMT berendezes kozott. A kapcsolat celja, hogy a gepek jelezzek egymasnak, mikor adhato at egy nyomtatott aramkori lap a kovetkezo berendezesnek.\n\n2. Alapveto jelek\nA jelen tesztdokumentumban hasznalt ket alapjel:\n\n- Machine Ready: a kovetkezo gep keszen all a panel fogadasara.\n- Board Available: az elozo gepnel atadasra kesz panel all rendelkezesre.\n\nA panel atadasa akkor indithato, ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:"
+      },
+      {
+        "documentId": "594330d8-1901-4279-a764-98a2e5a09aa1",
+        "chunkId": "42d735d5-dab0-4193-aaaa-f6a3eff1b565",
+        "chunkIndex": 1,
+        "originalFilename": "smema_teszt_dokumentum.txt",
+        "documentTitle": "smema_teszt_dokumentum",
+        "similarity": 0.35052710608481186,
+        "content": "ha az elozo gep panelt kinal fel, a kovetkezo gep pedig keszen all annak fogadasara.\n\n3. Egyszeru hibakeresesi sorrend\nHa a panelatadas nem indul el, az alabbi ellenorzeseket kell elvegezni:\n\n1. Ellenorizze, hogy mindket berendezes automata uzemmodban van-e.\n2. Ellenorizze, hogy a kovetkezo berendezes Machine Ready jele aktiv-e.\n3. Ellenorizze, hogy az elozo berendezes Board Available jele aktiv-e.\n4. Ellenorizze a ket gep kozotti SMEMA kabel csatlakozasat.\n5. Ellenorizze, hogy nincs-e aktiv gepi riasztas vagy biztonsagi reteszeles.\n6. Ha a hiba tovabbra is fennall, hasznalja az erintett berendezes hivatalos gyartoi dokumentaciojat, vagy kerje jogosult karbantarto segitseget.\n\n4. Biztonsagi megjegyzes\nMukodo gepen ne bontsa meg a kabelcsatlakozast, es ne kerulje meg a biztonsagi reteszeket. Beavatkozas elott tartsa be a helyi biztonsagi es energia-levasztasi eloirasokat.\n\n5. Korlatozas\nEz a dokumentum kizarolag a szoftver mukodesenek tesztelesere hasznalhato. A tenyleges jelnevek, elektromos kialakitasok es hibakeresesi eljarasok berendezesenkent elterhetnek."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 4,
+      "instructionFollowing": 4,
+      "groundedness": 4,
+      "clarity": 4,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 4.33,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz a SMEBA kommunikációra vonatkozóan a SMEMA kommunikációra utal, amely a megadott forrásokban is szerepel. Az asszisztens a források alapján adta meg a válaszát, és a műszaki információk is helytállóak. A válasz világos és érthető, a kontextust is figyelembe vette."
+    }
+  }
+}
