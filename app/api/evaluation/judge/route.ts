@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 
 import { getOpenAIClient } from "../../../../lib/openai";
 
+
+type KnowledgeSourceMode =
+  | "documents"
+  | "model"
+  | "hybrid";
+
 interface JudgeSource {
   documentTitle?: string | null;
   originalFilename?: string;
@@ -46,6 +52,16 @@ export async function POST(request: Request) {
       body.evaluationType ?? "single-turn"
     ).trim();
 
+    const knowledgeSourceModeValue = String(
+      body.knowledgeSourceMode ?? "documents"
+    ).trim();
+
+    const knowledgeSourceMode: KnowledgeSourceMode =
+      knowledgeSourceModeValue === "model" ||
+      knowledgeSourceModeValue === "hybrid"
+        ? knowledgeSourceModeValue
+        : "documents";
+
     const sources = parseSources(body.sources);
 
     if (!answer) {
@@ -83,6 +99,7 @@ export async function POST(request: Request) {
       conversation,
       expectedBehavior,
       sources,
+      knowledgeSourceMode,
     });
 
     const completion =
@@ -93,7 +110,7 @@ export async function POST(request: Request) {
             role: "system",
             content:
               "Objektív AI-válasz értékelő vagy. " +
-              "A groundedness értékelésénél kizárólag a megadott forrásokra támaszkodj. " +
+              "A válasz forráshasználatát a megadott tudásforrás-mód szabályai szerint értékeld. " +
               "Kizárólag érvényes JSON formátumban válaszolj.",
           },
           {
@@ -128,6 +145,7 @@ export async function POST(request: Request) {
       success: true,
       model,
       evaluationType,
+      knowledgeSourceMode,
       sourceCount: sources.length,
       result,
     });
@@ -227,6 +245,7 @@ function createJudgePrompt({
   conversation,
   expectedBehavior,
   sources,
+  knowledgeSourceMode,
 }: {
   evaluationType: string;
   question: string;
@@ -234,6 +253,7 @@ function createJudgePrompt({
   conversation: string;
   expectedBehavior: string;
   sources: JudgeSource[];
+  knowledgeSourceMode: KnowledgeSourceMode;
 }) {
   const isMultiTurn =
     evaluationType === "multi-turn";
@@ -256,11 +276,45 @@ ${answer}
 
   const sourceText = createSourceText(sources);
 
+  const knowledgeSourceLabel =
+    knowledgeSourceMode === "model"
+      ? "Csak a modell általános tudása"
+      : knowledgeSourceMode === "hybrid"
+        ? "Feltöltött dokumentumok és általános modelltudás"
+        : "Csak feltöltött dokumentumok";
+
+  const groundednessRules =
+    knowledgeSourceMode === "model"
+      ? `
+- Ebben a módban a dokumentumforrás hiánya szándékos, ezért önmagában nem csökkentheti a groundedness pontszámot.
+- A groundedness azt mérje, hogy a válasz óvatosan, belső ellentmondás nélkül és a bizonytalanságokat jelezve használja-e az általános modelltudást.
+- Ellenőrizd, hogy a válasz jelzi-e: az információ nem feltöltött dokumentumból származik.
+- Ne várj dokumentumcímet vagy fájlnevet. A „Források” szakaszban az „Általános AI-tudás” megjelölés megfelelő.
+- Csökkentsd a pontszámot, ha a válasz ellenőrizetlen, túlzottan biztos, pontos gyártói adatnak beállított vagy belsőleg ellentmondásos műszaki állítást tartalmaz.
+- Az unsupportedClaims listába csak a nyilvánvalóan nem igazolt, túlzottan pontos vagy ellentmondásos állításokat tedd; ne sorold ide automatikusan az összes dokumentum nélküli állítást.`
+      : knowledgeSourceMode === "hybrid"
+        ? `
+- A dokumentumalapú állításokat kizárólag a megadott forrásrészletek alapján ellenőrizd.
+- Az általános modelltudásból származó kiegészítést ne büntesd pusztán azért, mert nem szerepel a dokumentumban, ha a válasz ezt világosan elkülöníti.
+- Ellenőrizd a „Dokumentumalapú információ” és az „Általános műszaki tájékoztatás” részek elkülönítését.
+- Az általános résznek jeleznie kell, hogy nem a feltöltött dokumentumokból származik.
+- A dokumentált adatokat az általános modelltudás nem írhatja felül.
+- A Források szakaszban szerepeljen a felhasznált dokumentum, valamint általános kiegészítés esetén az „Általános AI-tudás” megjelölés.
+- Az unsupportedClaims listába a dokumentumalapú rész alá nem támasztott állításait, valamint a hibásan elkülönített vagy túlzottan biztos általános állításokat tedd.`
+        : `
+- Csak a megadott dokumentumrészleteket tekintsd bizonyítéknak.
+- Ha egy tényszerű műszaki állítás nem szerepel a forrásban és nem vezethető le egyértelműen belőle, add hozzá az unsupportedClaims listához.
+- Ha nem érkezett forrás, és a válasz tényszerű műszaki állításokat tartalmaz, a groundedness nem lehet magasabb 1 pontnál.
+- Ha nincs megfelelő forrás, és az asszisztens ezt pontosan jelzi anélkül, hogy műszaki állítást találna ki, a groundedness legyen 5.`;
+
   return `
 Értékeld az SMT műszaki asszisztens működését.
 
 Evaluáció típusa:
 ${evaluationType}
+
+Tudásforrás-mód:
+${knowledgeSourceLabel}
 
 ${inputText}
 
@@ -283,20 +337,13 @@ Ha a forrásokban nincs elegendő információ, a biztonságos és forráshű vi
 Ne büntesd az asszisztenst azért, mert nem talál ki paramétert, hibakódot, eljárást vagy javítási lépést megfelelő forrás nélkül.
 Csökkentsd a pontszámot, ha összekeveri a gépet, gyártót, típust, hibakódot vagy dokumentumverziót.
 
- groundedness:
-Mennyire támasztható alá a válasz minden tényszerű műszaki állítása a megadott forrásokból?
+groundedness:
+Mennyire megbízható és a kiválasztott tudásforrás-módnak megfelelő a válasz?
 A groundedness értékelés szabályai:
-- Csak a megadott forrásrészleteket tekintsd bizonyítéknak.
-- Ne fogadj el egy állítást pusztán azért, mert szakmailag hihetőnek tűnik.
+${groundednessRules}
 - Ellenőrizd külön a gépneveket, típusszámokat, hibakódokat, paramétereket, mértékegységeket, határértékeket, ellenőrzési pontokat és eljárási lépéseket.
-- Ha egy tényszerű állítás nem szerepel a forrásban és nem vezethető le egyértelműen belőle, add hozzá az unsupportedClaims listához.
-- Különböztesd meg ezt a két állítást:
-  1. „A most visszakeresett forrásokban nem találtam megfelelő információt.” Ez óvatos, ellenőrizhető állítás lehet.
-  2. „A teljes dokumentumbázisban nincs ilyen információ.” Ez túl általános állítás, ha csak néhány forrásrészlet áll rendelkezésre.
-- Ha az asszisztens nem talál megfelelő forrást, ezt pontosan jelzi, és nem tesz nem igazolt műszaki állítást, a groundedness legyen 5.
-- Ha nem érkezett forrás, és a válasz tényszerű műszaki állításokat tartalmaz, a groundedness nem lehet magasabb 1 pontnál.
-- Ha az unsupportedClaims lista üres, a groundedness csak külön, világosan megindokolt súlyos probléma esetén lehet 1 vagy 2.
-- Ha az unsupportedClaims lista nem üres, az explanation röviden magyarázza el, miért nem támaszthatók alá az állítások.
+- Az unsupportedClaims lista és a groundedness pontszám legyen egymással összhangban.
+- Ha az unsupportedClaims lista nem üres, az explanation röviden magyarázza el a problémát.
 
 clarity:
 Mennyire világos, érthető és gyakorlatban használható a válasz?

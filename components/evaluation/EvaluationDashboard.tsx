@@ -260,6 +260,7 @@ const currentJudgePassed =
     conversation,
     expectedBehavior,
     sources,
+    knowledgeSourceMode,
   }: {
     evaluationType: "single-turn" | "multi-turn";
     question?: string;
@@ -267,6 +268,7 @@ const currentJudgePassed =
     conversation?: string;
     expectedBehavior: string;
     sources: Source[];
+    knowledgeSourceMode: KnowledgeSourceMode;
   }) {
     const response = await fetch(
       "/api/evaluation/judge",
@@ -282,6 +284,7 @@ const currentJudgePassed =
           conversation,
           expectedBehavior,
           sources,
+          knowledgeSourceMode,
         }),
       }
     );
@@ -343,6 +346,7 @@ const currentJudgePassed =
       answer: chat.data.answer,
       expectedBehavior: normalizedExpectation,
       sources: chat.data.sources,
+      knowledgeSourceMode: chat.data.knowledgeSourceMode,
     });
 
     return {
@@ -531,6 +535,7 @@ const currentJudgePassed =
       conversation: conversationText,
       expectedBehavior: expectation,
       sources: lastChat.sources,
+      knowledgeSourceMode: lastChat.knowledgeSourceMode,
     });
 
     const finalEvaluation: EvaluationResult = {
