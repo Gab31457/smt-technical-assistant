@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import type { ChatMessageInput } from "@/lib/chat-types";
 import { databasePool } from "@/lib/database";
 import {
+  createMultilingualSearchQueries,
+} from "@/lib/openai";
+import {
   DEFAULT_KNOWLEDGE_SOURCE_MODE,
   isKnowledgeSourceMode,
 } from "@/lib/knowledge-source";
@@ -18,7 +21,7 @@ import type {
 } from "@/lib/system-prompts";
 import {
   DEFAULT_VECTOR_SEARCH_OPTIONS,
-  searchSimilarChunks,
+  searchSimilarChunksForQueriesWithDebug,
 } from "@/lib/vector-search";
 
 export const runtime = "nodejs";
@@ -410,24 +413,77 @@ export async function POST(request: Request) {
 
     // A kereséshez csak a legutóbbi legfeljebb
     // négy felhasználói üzenetet használjuk.
-    const searchQuery = messages
+    const recentUserMessages = messages
       .filter(
         (chatMessage) =>
           chatMessage.role === "user"
       )
       .slice(-4)
-      .map((chatMessage) => chatMessage.content)
+      .map((chatMessage) => chatMessage.content.trim())
+      .filter((content) => content.length > 0);
+
+    const deduplicatedUserMessages =
+      recentUserMessages.filter(
+        (content, index) =>
+          index === 0 ||
+          content !== recentUserMessages[index - 1]
+      );
+
+    const searchQuery = deduplicatedUserMessages
       .join("\n")
       .slice(0, 2000);
 
-    const searchResults =
+    const multilingualSearchQueries =
       knowledgeSourceMode === "model"
-        ? []
-        : await searchSimilarChunks(searchQuery, {
-            limit,
-            minimumSimilarity,
-            documentIds: selectedDocumentIds,
-          });
+        ? null
+        : await createMultilingualSearchQueries(searchQuery);
+
+    const multiQuerySearchResponse =
+      knowledgeSourceMode === "model" ||
+      multilingualSearchQueries === null
+        ? {
+            results: [],
+            debugGroups: [],
+          }
+        : await searchSimilarChunksForQueriesWithDebug(
+            [
+              multilingualSearchQueries.originalQuery,
+              multilingualSearchQueries.hungarianQuery,
+              multilingualSearchQueries.englishQuery,
+            ],
+            {
+              limit,
+              minimumSimilarity,
+              documentIds: selectedDocumentIds,
+            }
+          );
+
+    const searchResults = multiQuerySearchResponse.results;
+
+    console.info(
+      "[RAG retrieval debug]",
+      JSON.stringify(
+        {
+          generatedQueries: multilingualSearchQueries,
+          selectedDocumentIds,
+          minimumSimilarity,
+          perQueryResults:
+            multiQuerySearchResponse.debugGroups,
+          finalResults: searchResults.map((result) => ({
+            documentTitle: result.documentTitle,
+            originalFilename: result.originalFilename,
+            chunkIndex: result.chunkIndex,
+            similarity: result.similarity,
+            pageNumber: result.pageNumber,
+            worksheetName: result.worksheetName,
+            rowStart: result.rowStart,
+            rowEnd: result.rowEnd,
+          })),
+        },
+        null,
+        2
+      )
+    );
 
     // A teljes beszélgetést továbbadjuk a válaszgenerálásnak.
     const ragAnswer = await generateRagAnswer({
@@ -526,6 +582,21 @@ export async function POST(request: Request) {
           isFiltered: selectedDocumentIds.length > 0,
         },
         retrieval: {
+          searchQueries: multilingualSearchQueries,
+          retrievalDebug: {
+            perQueryResults:
+              multiQuerySearchResponse.debugGroups,
+            finalResults: searchResults.map((result) => ({
+              documentTitle: result.documentTitle,
+              originalFilename: result.originalFilename,
+              chunkIndex: result.chunkIndex,
+              similarity: result.similarity,
+              pageNumber: result.pageNumber,
+              worksheetName: result.worksheetName,
+              rowStart: result.rowStart,
+              rowEnd: result.rowEnd,
+            })),
+          },
           resultCount: searchResults.length,
           contextCount: ragAnswer.contextCount,
           limit,

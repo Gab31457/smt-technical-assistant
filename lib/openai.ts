@@ -294,3 +294,135 @@ export async function createEmbeddings(
 
   return embeddings;
 }
+export interface MultilingualSearchQueries {
+  originalQuery: string;
+  hungarianQuery: string;
+  englishQuery: string;
+}
+
+interface MultilingualSearchQueryOutput {
+  hungarianQuery: string;
+  englishQuery: string;
+}
+
+function createSearchQueryFallback(
+  normalizedQuery: string
+): MultilingualSearchQueries {
+  return {
+    originalQuery: normalizedQuery,
+    hungarianQuery: normalizedQuery,
+    englishQuery: normalizedQuery,
+  };
+}
+
+function normalizeStructuredJsonText(outputText: string): string {
+  return outputText
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+}
+
+/*
+ * Magyar és angol műszaki keresőkérdések készítése.
+ *
+ * A Responses API strukturált JSON-kimenetét használjuk, ezért a modell
+ * válaszának kötelezően tartalmaznia kell a két előírt szövegmezőt.
+ * Ismeretlen rövidítést, hibakódot vagy géptípust nem oldhat fel és nem
+ * javíthat automatikusan.
+ */
+export async function createMultilingualSearchQueries(
+  originalQuery: string
+): Promise<MultilingualSearchQueries> {
+  const normalizedQuery = originalQuery.trim().slice(0, 2000);
+
+  if (normalizedQuery.length === 0) {
+    throw new Error(
+      "Üres szövegből nem készíthető keresőkérdés."
+    );
+  }
+
+  const client = getOpenAIClient();
+
+  try {
+    const response = await client.responses.create({
+      model:
+        process.env.OPENAI_CHAT_MODEL?.trim() ||
+        "gpt-4o-mini",
+      instructions: [
+        "Műszaki dokumentumkereső lekérdezéseket készítesz.",
+        "A felhasználói kérdésből készíts egy tömör magyar és egy tömör angol szemantikus keresőkérdést.",
+        "Ne válaszolj a kérdésre, kizárólag a keresőkérdéseket add vissza.",
+        "A magyar lekérdezés magyar, az angol lekérdezés angol nyelvű legyen.",
+        "A fordítást mindig a teljes műszaki kifejezés és a kérdés kontextusa alapján készítsd, ne egyetlen szó hétköznapi jelentése alapján.",
+        "ESD és személyi földelési környezetben a csuklópánt jelentése wrist strap, nem hinge.",
+        "A keresőkérdés tartalmazza a fontos szakmai szinonimákat is, de maradjon tömör. Például: csuklópánt földelés -> wrist strap personnel grounding system.",
+        "Őrizd meg változatlanul az összes számot, mértékegységet, dokumentumazonosítót, géptípust, hibakódot és rövidítést.",
+        "Ismeretlen vagy valószínűleg elírt rövidítést ne oldj fel, ne javíts és ne helyettesíts másik rövidítéssel.",
+        "Ne találj ki konkrét műszaki értéket, paramétert, dokumentumnevet vagy háttérinformációt.",
+      ].join(" "),
+      input: normalizedQuery,
+      text: {
+        format: {
+          type: "json_schema",
+          name: "multilingual_search_queries",
+          strict: true,
+          schema: {
+            type: "object",
+            properties: {
+              hungarianQuery: {
+                type: "string",
+                minLength: 1,
+                maxLength: 2000,
+              },
+              englishQuery: {
+                type: "string",
+                minLength: 1,
+                maxLength: 2000,
+              },
+            },
+            required: [
+              "hungarianQuery",
+              "englishQuery",
+            ],
+            additionalProperties: false,
+          },
+        },
+      },
+    });
+
+    const normalizedOutput = normalizeStructuredJsonText(
+      response.output_text
+    );
+    const parsed = JSON.parse(
+      normalizedOutput
+    ) as MultilingualSearchQueryOutput;
+
+    const hungarianQuery = parsed.hungarianQuery
+      .trim()
+      .slice(0, 2000);
+    const englishQuery = parsed.englishQuery
+      .trim()
+      .slice(0, 2000);
+
+    if (
+      hungarianQuery.length === 0 ||
+      englishQuery.length === 0
+    ) {
+      return createSearchQueryFallback(normalizedQuery);
+    }
+
+    return {
+      originalQuery: normalizedQuery,
+      hungarianQuery,
+      englishQuery,
+    };
+  } catch (error) {
+    console.error(
+      "Structured multilingual query generation failed:",
+      error
+    );
+
+    return createSearchQueryFallback(normalizedQuery);
+  }
+}
