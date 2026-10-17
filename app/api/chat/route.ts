@@ -460,30 +460,36 @@ export async function POST(request: Request) {
 
     const searchResults = multiQuerySearchResponse.results;
 
-    console.info(
-      "[RAG retrieval debug]",
-      JSON.stringify(
-        {
-          generatedQueries: multilingualSearchQueries,
-          selectedDocumentIds,
-          minimumSimilarity,
-          perQueryResults:
-            multiQuerySearchResponse.debugGroups,
-          finalResults: searchResults.map((result) => ({
-            documentTitle: result.documentTitle,
-            originalFilename: result.originalFilename,
-            chunkIndex: result.chunkIndex,
-            similarity: result.similarity,
-            pageNumber: result.pageNumber,
-            worksheetName: result.worksheetName,
-            rowStart: result.rowStart,
-            rowEnd: result.rowEnd,
-          })),
-        },
-        null,
-        2
-      )
-    );
+    const isRetrievalDebugEnabled =
+      process.env.RAG_RETRIEVAL_DEBUG?.trim().toLowerCase() ===
+      "true";
+
+    if (isRetrievalDebugEnabled) {
+      console.info(
+        "[RAG retrieval debug]",
+        JSON.stringify(
+          {
+            generatedQueries: multilingualSearchQueries,
+            selectedDocumentIds,
+            minimumSimilarity,
+            perQueryResults:
+              multiQuerySearchResponse.debugGroups,
+            finalResults: searchResults.map((result) => ({
+              documentTitle: result.documentTitle,
+              originalFilename: result.originalFilename,
+              chunkIndex: result.chunkIndex,
+              similarity: result.similarity,
+              pageNumber: result.pageNumber,
+              worksheetName: result.worksheetName,
+              rowStart: result.rowStart,
+              rowEnd: result.rowEnd,
+            })),
+          },
+          null,
+          2
+        )
+      );
+    }
 
     // A teljes beszélgetést továbbadjuk a válaszgenerálásnak.
     const ragAnswer = await generateRagAnswer({
@@ -583,20 +589,22 @@ export async function POST(request: Request) {
         },
         retrieval: {
           searchQueries: multilingualSearchQueries,
-          retrievalDebug: {
-            perQueryResults:
-              multiQuerySearchResponse.debugGroups,
-            finalResults: searchResults.map((result) => ({
-              documentTitle: result.documentTitle,
-              originalFilename: result.originalFilename,
-              chunkIndex: result.chunkIndex,
-              similarity: result.similarity,
-              pageNumber: result.pageNumber,
-              worksheetName: result.worksheetName,
-              rowStart: result.rowStart,
-              rowEnd: result.rowEnd,
-            })),
-          },
+          retrievalDebug: isRetrievalDebugEnabled
+            ? {
+                perQueryResults:
+                  multiQuerySearchResponse.debugGroups,
+                finalResults: searchResults.map((result) => ({
+                  documentTitle: result.documentTitle,
+                  originalFilename: result.originalFilename,
+                  chunkIndex: result.chunkIndex,
+                  similarity: result.similarity,
+                  pageNumber: result.pageNumber,
+                  worksheetName: result.worksheetName,
+                  rowStart: result.rowStart,
+                  rowEnd: result.rowEnd,
+                })),
+              }
+            : undefined,
           resultCount: searchResults.length,
           contextCount: ragAnswer.contextCount,
           limit,
