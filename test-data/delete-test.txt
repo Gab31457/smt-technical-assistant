@@ -1,3 +1,0 @@
-Törlési tesztdokumentum
-
-Ez a rövid dokumentum kizárólag a dokumentumtörlési API tesztelésére szolgál.
