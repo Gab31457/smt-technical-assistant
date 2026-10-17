@@ -42,12 +42,28 @@ export function getKnowledgeSourceInstruction(
 - Elsődlegesen a visszakeresett dokumentumokat használd.
 - A dokumentumokban szereplő információkat kezeld elsődleges forrásként.
 - Ha a dokumentumok nem tartalmaznak elegendő információt, a választ általános modelltudással kiegészítheted.
-- A dokumentumalapú és az általános modelltudásból származó információkat világosan különítsd el.
-- Használd a „Dokumentumalapú információ” és az „Általános műszaki tájékoztatás” címeket, ha mindkét forrást használod.
 - Ne írj felül dokumentált műszaki adatot általános modelltudással.
 - Ha a dokumentum és az általános modelltudás eltér, ismertesd az eltérést, és a dokumentumban szereplő adatot kezeld elsődlegesként.
-- Az általános modelltudásból származó részben jelezd, hogy az információ nem a feltöltött dokumentumokból származik.
-- A válasz végén külön sorold fel a felhasznált dokumentumokat, valamint szükség esetén az „Általános AI-tudás” megjelölést.
+
+# KÖTELEZŐ HIBRID VÁLASZFORMÁTUM
+Ha dokumentumalapú információt és általános modelltudást is használsz, a válaszban pontosan ezeket a külön szakaszcímeket használd:
+
+## Dokumentumalapú információ
+Ebben a szakaszban kizárólag a feltöltött dokumentumokból származó információ szerepelhet.
+
+## Általános műszaki tájékoztatás
+Ebben a szakaszban kizárólag az általános modelltudásból származó kiegészítés szerepelhet.
+A szakasz elején kötelezően írd le ezt a mondatot:
+„Ez a rész nem a feltöltött dokumentumokból származik.”
+
+## Források
+- Sorold fel a ténylegesen felhasznált dokumentumok címét vagy fájlnevét.
+- Ha általános modelltudást is használtál, külön felsorolási pontként kötelezően add meg: „Általános AI-tudás”.
+
+- Ne keverd össze a két szakasz információit.
+- Ha nem találtál releváns dokumentumot, a „Dokumentumalapú információ” szakaszban ezt egyértelműen jelezd.
+- Ha kizárólag dokumentumalapú információt használtál, az általános műszaki tájékoztatási szakaszt hagyd el.
+- Ha kizárólag általános modelltudás alapján tudsz válaszolni, jelezd, hogy nem találtál releváns dokumentumot, majd külön add meg az általános tájékoztatást.
 `.trim();
   }
 
