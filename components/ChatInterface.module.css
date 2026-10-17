@@ -606,3 +606,55 @@
   .statusRow { justify-content: flex-start; }
   .messageList { min-height: 460px; max-height: 640px; }
 }
+
+/* Összevont és áttekinthető forráslista. */
+.sourceDetails {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sourceName {
+  overflow-wrap: anywhere;
+  color: #334155;
+  font-weight: 650;
+}
+
+.sourceLocation,
+.sourceChunkCount {
+  color: #64748b;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.sourceChunkCount {
+  color: #475569;
+}
+
+.sourceScoreGroup {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sourceScoreGroup > small {
+  color: #64748b;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .sourceList li {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sourceScoreGroup {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+}

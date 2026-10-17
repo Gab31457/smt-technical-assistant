@@ -153,6 +153,62 @@ function formatSourceLocation(source: ChatSource): string | null {
   return parts.length > 0 ? parts.join(", ") : null;
 }
 
+interface GroupedChatSource {
+  key: string;
+  documentId: string;
+  originalFilename: string;
+  documentTitle: string | null;
+  bestSimilarity: number;
+  chunkCount: number;
+  location: string | null;
+}
+
+function createSourceGroupKey(source: ChatSource): string {
+  const location = formatSourceLocation(source);
+
+  if (location) {
+    return `${source.documentId}::${location}`;
+  }
+
+  return source.documentId;
+}
+
+function groupChatSources(
+  sources: ChatSource[]
+): GroupedChatSource[] {
+  const groupedSources = new Map<string, GroupedChatSource>();
+
+  for (const source of sources) {
+    const key = createSourceGroupKey(source);
+    const existingSource = groupedSources.get(key);
+
+    if (!existingSource) {
+      groupedSources.set(key, {
+        key,
+        documentId: source.documentId,
+        originalFilename: source.originalFilename,
+        documentTitle: source.documentTitle,
+        bestSimilarity: source.similarity,
+        chunkCount: 1,
+        location: formatSourceLocation(source),
+      });
+      continue;
+    }
+
+    existingSource.chunkCount += 1;
+    existingSource.bestSimilarity = Math.max(
+      existingSource.bestSimilarity,
+      source.similarity
+    );
+  }
+
+  return [...groupedSources.values()].sort(
+    (firstSource, secondSource) =>
+      secondSource.bestSimilarity -
+      firstSource.bestSimilarity
+  );
+}
+
 function getSystemPromptLabel(
   variant: SystemPromptVariant
 ): string {
@@ -869,33 +925,36 @@ A beszélgetés összes üzenete véglegesen törlődik.`
                       Felhasznált források
                     </div>
                     <ul className={styles.sourceList}>
-                      {message.sources.map((source) => (
-                        <li key={source.chunkId}>
-                          <span>
-                            <span>
-                              {source.documentTitle ||
-                                source.originalFilename}
+                      {groupChatSources(message.sources).map(
+                        (source) => (
+                          <li key={source.key}>
+                            <span className={styles.sourceDetails}>
+                              <span className={styles.sourceName}>
+                                {source.documentTitle ||
+                                  source.originalFilename}
+                              </span>
+                              {source.location && (
+                                <small className={styles.sourceLocation}>
+                                  {source.location}
+                                </small>
+                              )}
+                              {source.chunkCount > 1 && (
+                                <small className={styles.sourceChunkCount}>
+                                  {source.chunkCount} felhasznált dokumentumrészlet
+                                </small>
+                              )}
                             </span>
-                            {formatSourceLocation(source) && (
-                              <small
-                                style={{
-                                  display: "block",
-                                  marginTop: "2px",
-                                  color: "#64748b",
-                                  fontSize: "0.75rem",
-                                }}
-                              >
-                                {formatSourceLocation(source)}
-                              </small>
-                            )}
-                          </span>
-                          <span className={styles.similarity}>
-                            {formatSimilarity(
-                              source.similarity
-                            )}
-                          </span>
-                        </li>
-                      ))}
+                            <span className={styles.sourceScoreGroup}>
+                              <small>Legjobb egyezés</small>
+                              <span className={styles.similarity}>
+                                {formatSimilarity(
+                                  source.bestSimilarity
+                                )}
+                              </span>
+                            </span>
+                          </li>
+                        )
+                      )}
                     </ul>
                   </div>
                 )}

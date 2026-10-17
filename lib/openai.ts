@@ -298,11 +298,13 @@ export interface MultilingualSearchQueries {
   originalQuery: string;
   hungarianQuery: string;
   englishQuery: string;
+  usesPreviousContext: boolean;
 }
 
 interface MultilingualSearchQueryOutput {
   hungarianQuery: string;
   englishQuery: string;
+  usesPreviousContext: boolean;
 }
 
 function createSearchQueryFallback(
@@ -312,6 +314,7 @@ function createSearchQueryFallback(
     originalQuery: normalizedQuery,
     hungarianQuery: normalizedQuery,
     englishQuery: normalizedQuery,
+    usesPreviousContext: false,
   };
 }
 
@@ -332,9 +335,13 @@ function normalizeStructuredJsonText(outputText: string): string {
  * javíthat automatikusan.
  */
 export async function createMultilingualSearchQueries(
-  originalQuery: string
+  currentQuestion: string,
+  previousContext: string = ""
 ): Promise<MultilingualSearchQueries> {
-  const normalizedQuery = originalQuery.trim().slice(0, 2000);
+  const normalizedQuery = currentQuestion.trim().slice(0, 2000);
+  const normalizedPreviousContext = previousContext
+    .trim()
+    .slice(0, 3000);
 
   if (normalizedQuery.length === 0) {
     throw new Error(
@@ -357,11 +364,21 @@ export async function createMultilingualSearchQueries(
         "A fordítást mindig a teljes műszaki kifejezés és a kérdés kontextusa alapján készítsd, ne egyetlen szó hétköznapi jelentése alapján.",
         "ESD és személyi földelési környezetben a csuklópánt jelentése wrist strap, nem hinge.",
         "A keresőkérdés tartalmazza a fontos szakmai szinonimákat is, de maradjon tömör. Például: csuklópánt földelés -> wrist strap personnel grounding system.",
+        "Mindig az AKTUÁLIS KÉRDÉS a keresés elsődleges témája.",
+        "A KORÁBBI KONTEXTUST csak akkor használd, ha az aktuális kérdés önmagában hiányos, névmást vagy egyértelmű visszautalást tartalmaz, például: és annál, ehhez, abból, milyen nyomás kell hozzá.",
+        "Ha az aktuális kérdés megnevezi a témát, berendezést, dokumentumot vagy keresett adatot, akkor önálló kérdésnek tekintendő, és a korábbi eltérő témát teljesen hagyd figyelmen kívül.",
+        "A usesPreviousContext mező csak valódi visszautalás esetén legyen true.",
         "Őrizd meg változatlanul az összes számot, mértékegységet, dokumentumazonosítót, géptípust, hibakódot és rövidítést.",
         "Ismeretlen vagy valószínűleg elírt rövidítést ne oldj fel, ne javíts és ne helyettesíts másik rövidítéssel.",
         "Ne találj ki konkrét műszaki értéket, paramétert, dokumentumnevet vagy háttérinformációt.",
       ].join(" "),
-      input: normalizedQuery,
+      input: [
+        "AKTUÁLIS KÉRDÉS:",
+        normalizedQuery,
+        "",
+        "KORÁBBI KONTEXTUS:",
+        normalizedPreviousContext || "Nincs korábbi kontextus.",
+      ].join("\n"),
       text: {
         format: {
           type: "json_schema",
@@ -380,10 +397,14 @@ export async function createMultilingualSearchQueries(
                 minLength: 1,
                 maxLength: 2000,
               },
+              usesPreviousContext: {
+                type: "boolean",
+              },
             },
             required: [
               "hungarianQuery",
               "englishQuery",
+              "usesPreviousContext",
             ],
             additionalProperties: false,
           },
@@ -404,6 +425,8 @@ export async function createMultilingualSearchQueries(
     const englishQuery = parsed.englishQuery
       .trim()
       .slice(0, 2000);
+    const usesPreviousContext =
+      parsed.usesPreviousContext === true;
 
     if (
       hungarianQuery.length === 0 ||
@@ -416,6 +439,7 @@ export async function createMultilingualSearchQueries(
       originalQuery: normalizedQuery,
       hungarianQuery,
       englishQuery,
+      usesPreviousContext,
     };
   } catch (error) {
     console.error(

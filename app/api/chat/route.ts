@@ -411,32 +411,37 @@ export async function POST(request: Request) {
       knowledgeSourceMode = requestBody.knowledgeSourceMode;
     }
 
-    // A kereséshez csak a legutóbbi legfeljebb
-    // négy felhasználói üzenetet használjuk.
-    const recentUserMessages = messages
+    // Az aktuális kérdés mindig elsődleges. A korábbi felhasználói
+    // üzeneteket csak valódi visszautalás esetén használjuk.
+    const previousUserContext = messages
+      .slice(0, -1)
       .filter(
         (chatMessage) =>
           chatMessage.role === "user"
       )
-      .slice(-4)
+      .slice(-3)
       .map((chatMessage) => chatMessage.content.trim())
-      .filter((content) => content.length > 0);
-
-    const deduplicatedUserMessages =
-      recentUserMessages.filter(
-        (content, index) =>
+      .filter((content) => content.length > 0)
+      .filter(
+        (content, index, allContents) =>
           index === 0 ||
-          content !== recentUserMessages[index - 1]
-      );
-
-    const searchQuery = deduplicatedUserMessages
+          content !== allContents[index - 1]
+      )
       .join("\n")
-      .slice(0, 2000);
+      .slice(0, 3000);
 
     const multilingualSearchQueries =
       knowledgeSourceMode === "model"
         ? null
-        : await createMultilingualSearchQueries(searchQuery);
+        : await createMultilingualSearchQueries(
+            lastUserMessage.content,
+            previousUserContext
+          );
+
+    const messagesForAnswer =
+      multilingualSearchQueries?.usesPreviousContext === true
+        ? messages
+        : [lastUserMessage];
 
     const multiQuerySearchResponse =
       knowledgeSourceMode === "model" ||
@@ -494,7 +499,7 @@ export async function POST(request: Request) {
     // A teljes beszélgetést továbbadjuk a válaszgenerálásnak.
     const ragAnswer = await generateRagAnswer({
       question: lastUserMessage.content,
-      messages,
+      messages: messagesForAnswer,
       searchResults,
       systemPromptVariant,
       knowledgeSourceMode,
