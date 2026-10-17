@@ -1,164 +1,56 @@
-# AI Receptasszisztens és Evaluációs Központ
+# SMT Műszaki Asszisztens és Evaluációs Központ
 
-A projekt egy Next.js és TypeScript alapú AI receptasszisztenst, valamint egy különálló evaluációs felületet tartalmaz.
+A projekt egy Next.js és TypeScript alapú RAG-webalkalmazás SMT-, ESD-, berendezés-, karbantartási és gyártási dokumentumok lekérdezésére.
 
-Az AI-asszisztens részletes használati és technikai dokumentációja:
+## Dokumentáció
 
-```text
-README_AI-Assystant.md
-```
+- `README_AI-Assistant_SMT.md`: az asszisztens részletes működése
+- `README_Evaluation_SMT.md`: az evaluációs rendszer leírása
+- `requirements_SMT.txt`: technológiák és előfeltételek
 
-Az Evaluációs Központ részletes dokumentációja:
+## Fő funkciók
 
-```text
-README_Evaluation.md
-```
+- TXT, MD, PDF, DOCX és XLSX dokumentumok kezelése
+- PostgreSQL és pgvector alapú szemantikus keresés
+- magyar és angol keresőkérdések együttes használata
+- összes vagy kiválasztott dokumentumra korlátozott keresés
+- dokumentum-, modell- és hibrid tudásforrásmód
+- menthető többfordulós beszélgetések
+- PDF-oldalszám, XLSX-munkalap és sortartomány megjelenítése
+- Single-turn, A/B, Multi-turn és RAG-evaluáció
+- User Simulator, LLM-as-Judge és emberi felülvizsgálat
 
-## Előfeltételek
-
-A projekt futtatásához szükséges:
-
-- Node.js
-- npm
-- OpenAI API-kulcs
-- működő PostgreSQL-adatbázis
-- pgvector bővítmény
-- megfelelő környezeti változók
-
-A szükséges csomagok és szolgáltatások felsorolása a következő fájlban található:
-
-```text
-requirements.txt
-```
-
-## Csomagok telepítése
-
-A projekt gyökérkönyvtárában futtasd:
+## Indítás
 
 ```powershell
 npm install
+docker compose up -d
+npm run dev
+```
+
+Alapértelmezett cím:
+
+```text
+http://localhost:3000
 ```
 
 ## Környezeti változók
 
-A szükséges környezeti változókat a projekt gyökérkönyvtárában található környezeti fájlban kell megadni.
-
-Javasolt fájlnév:
-
-```text
-.env.local
+```env
+POSTGRES_PASSWORD=helyi_jelszo
+DATABASE_URL=postgresql://felhasznalo:jelszo@localhost:5432/adatbazis
+OPENAI_API_KEY=OpenAI_API_kulcs
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_CHAT_MODEL=gpt-4o-mini
+SYSTEM_PROMPT_VARIANT=strict
+RAG_RETRIEVAL_DEBUG=false
 ```
 
-A környezeti fájlokat és az API-kulcsokat nem szabad GitHubra feltölteni.
+A `.env` fájlt tilos Gitre feltölteni.
 
-## A projekt indítása
-
-A projekt gyökérkönyvtárában futtasd:
-
-```powershell
-npm run dev
-```
-
-A parancs egyszerre indítja el:
-
-- az AI Receptasszisztenst;
-- az Evaluációs Központot;
-- a dokumentumkezelési funkciókat;
-- a szükséges API-végpontokat.
-
-## AI Receptasszisztens
-
-Az AI Receptasszisztens a következő címen érhető el:
-
-```text
-http://localhost:3000
-```
-
-A részletes használati leírás:
-
-```text
-README_AI-Assystant.md
-```
-
-## Evaluációs Központ
-
-Az Evaluációs Központ külön oldalon érhető el:
-
-```text
-http://localhost:3000/evaluation
-```
-
-Az evaluációs felületet nem kell külön paranccsal elindítani. A felület automatikusan elérhető az `npm run dev` parancs futtatása után.
-
-A részletes használati leírás:
-
-```text
-README_Evaluation.md
-```
-
-## Eredménylista API
-
-Az evaluáció mentett eredményeit a következő belső API-végpont listázza:
-
-```text
-http://localhost:3000/api/evaluation/results
-```
-
-Ezt az API-végpontot nem kell külön elindítani, és normál használat közben nem szükséges közvetlenül megnyitni a böngészőben.
-
-Az Evaluációs Központ automatikusan használja az eredmények betöltéséhez. A közvetlen böngészős megnyitás csak ellenőrzéshez vagy hibakereséshez szükséges.
-
-## Port használata
-
-A fejlesztői szerver alapértelmezett címe:
-
-```text
-http://localhost:3000
-```
-
-Ha a 3000-es port foglalt, a Next.js másik portot használhat, például:
-
-```text
-http://localhost:3001
-```
-
-Ebben az esetben az AI-asszisztens és az Evaluációs Központ eléréséhez is a terminálban megjelenő portot kell használni.
-
-## Technikai ellenőrzés
-
-Kódellenőrzés:
+## Ellenőrzés
 
 ```powershell
 npm run lint
-```
-
-Production build ellenőrzése:
-
-```powershell
 npm run build
-```
-
-Fejlesztői szerver indítása:
-
-```powershell
-npm run dev
-```
-
-## Gyors indítási összefoglaló
-
-```powershell
-npm install
-npm run dev
-```
-
-Ezután nyisd meg az AI-asszisztenst:
-
-```text
-http://localhost:3000
-```
-
-Vagy az Evaluációs Központot:
-
-```text
-http://localhost:3000/evaluation
 ```

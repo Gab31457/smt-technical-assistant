@@ -1142,6 +1142,11 @@ const currentJudgePassed =
 
             <label className={styles.field}>
               <span>Felhasználói persona</span>
+              <small className={styles.fieldHelp}>
+                Írd le, ki a szimulált felhasználó, milyen
+                szakmai szerepben van, milyen nyelven kommunikál,
+                és hogyan viselkedjen a beszélgetés során.
+              </small>
 
               <textarea
                 value={simulatorPersona}
@@ -1156,6 +1161,11 @@ const currentJudgePassed =
 
             <label className={styles.field}>
               <span>Felhasználó célja</span>
+              <small className={styles.fieldHelp}>
+                Sorold fel, milyen információkat vagy eredményeket
+                szeretne megszerezni a felhasználó a teljes
+                beszélgetés során.
+              </small>
 
               <textarea
                 value={simulatorGoal}
@@ -1170,6 +1180,11 @@ const currentJudgePassed =
 
             <label className={styles.field}>
               <span>Rejtett feltételek</span>
+              <small className={styles.fieldHelp}>
+                Add meg azokat az információkat, nyelvváltásokat
+                vagy témaváltásokat, amelyeket a szimulált
+                felhasználó csak későbbi fordulókban közöljön.
+              </small>
 
               <textarea
                 value={simulatorHiddenConstraints}
@@ -1186,6 +1201,11 @@ const currentJudgePassed =
 
             <label className={styles.field}>
               <span>Kezdő felhasználói üzenet</span>
+              <small className={styles.fieldHelp}>
+                Ez lesz a beszélgetés első konkrét kérdése. A
+                további felhasználói üzeneteket a szimulátor
+                automatikusan készíti el.
+              </small>
 
               <textarea
                 value={simulatorInitialMessage}
@@ -1202,6 +1222,10 @@ const currentJudgePassed =
 
             <label className={styles.field}>
               <span>Maximális fordulók száma</span>
+              <small className={styles.fieldHelp}>
+                Egy forduló egy felhasználói kérdésből és az
+                asszisztens arra adott válaszából áll.
+              </small>
 
               <select
                 value={simulatorMaximumTurns}
@@ -1264,6 +1288,11 @@ const currentJudgePassed =
 
         <label className={styles.field}>
           <span>Elvárt viselkedés</span>
+          <small className={styles.fieldHelp}>
+            Írd le, milyen választ, nyelvet, forráshasználatot
+            és kontextuskezelést vársz el. A Judge ezt használja
+            az eredmény értékelésekor.
+          </small>
 
           <textarea
             value={expectedBehavior}

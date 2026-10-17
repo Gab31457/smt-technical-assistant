@@ -1,0 +1,19 @@
+Node.js
+npm
+Next.js
+React
+React DOM
+TypeScript
+OpenAI Node.js SDK
+PostgreSQL
+pgvector
+pg
+Docker Desktop
+Docker Compose
+tsx
+ESLint
+eslint-config-next
+CSS Modules
+OpenAI API-hozzaferes es aktiv API-egyenleg
+Helyi .env konfiguracio
+TXT, MD, PDF, DOCX es XLSX feldolgozasahoz szukseges projektfuggosegek
