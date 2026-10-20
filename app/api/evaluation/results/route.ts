@@ -67,7 +67,8 @@ export async function GET() {
     const automaticFiles = fileNames.filter(
       (fileName) =>
         fileName.endsWith(".json") &&
-        !fileName.startsWith("human-review_")
+        !fileName.startsWith("human-review_") &&
+        !fileName.startsWith("rag-batch_")
     );
 
     const results: ResultSummary[] = [];

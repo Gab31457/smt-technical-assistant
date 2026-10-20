@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { ChatMessageInput } from "@/lib/chat-types";
 import styles from "./EvaluationDashboard.module.css";
 import HumanReviewForm from "./HumanReviewForm";
+import RagBatchEvaluation from "./RagBatchEvaluation";
 import {
   evaluateRagResult,
   type RagCheckResult,
@@ -1705,7 +1706,9 @@ const currentJudgePassed =
           />
         </>
       )}
-            {savedFileName && (
+      <RagBatchEvaluation />
+
+      {savedFileName && (
         <HumanReviewForm
           key={savedFileName}
           evaluationFileName={savedFileName}

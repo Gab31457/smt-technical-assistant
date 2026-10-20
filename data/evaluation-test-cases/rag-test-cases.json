@@ -1,0 +1,24 @@
+[
+  {
+    "id": "rag-001",
+    "name": "NASA csuklópánt ellenállási tartomány",
+    "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+    "expectedBehavior": "A válasz kizárólag a kijelölt NASA-dokumentum alapján adja meg a dokumentált ellenállási tartományt.",
+    "expectedSource": "Test1_nasa-std-87396b",
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      95
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "topK": 5,
+    "minimumSimilarity": 0.2,
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "language": "hu",
+    "documentType": "pdf"
+  }
+]
