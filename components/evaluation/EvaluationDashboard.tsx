@@ -6,6 +6,7 @@ import styles from "./EvaluationDashboard.module.css";
 import HumanReviewForm from "./HumanReviewForm";
 import RagBatchEvaluation from "./RagBatchEvaluation";
 import PromptBatchEvaluation from "./PromptBatchEvaluation";
+import ApplicationBatchEvaluation from "./ApplicationBatchEvaluation";
 import {
   evaluateRagResult,
   type RagCheckResult,
@@ -1709,6 +1710,7 @@ const currentJudgePassed =
       )}
       <RagBatchEvaluation />
       <PromptBatchEvaluation />
+      <ApplicationBatchEvaluation />
 
       {savedFileName && (
         <HumanReviewForm

@@ -1,0 +1,84 @@
+[
+  {
+    "id": "app-001",
+    "name": "Dokumentumlista elérhetősége",
+    "scenario": "document-list"
+  },
+  {
+    "id": "app-002",
+    "name": "Dokumentumok feldolgozási állapota",
+    "scenario": "documents-ready"
+  },
+  {
+    "id": "app-003",
+    "name": "Embeddingek teljessége",
+    "scenario": "embeddings-complete"
+  },
+  {
+    "id": "app-004",
+    "name": "Magyar kérdés angol NASA PDF-hez",
+    "scenario": "document-chat",
+    "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+    "selectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+    "expectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+    "expectedAnswerIncludes": ["800", "1,2"],
+    "expectedSourceMetadata": "page",
+    "language": "hu"
+  },
+  {
+    "id": "app-005",
+    "name": "Magyar kérdés angol GrifEye dokumentumhoz",
+    "scenario": "document-chat",
+    "question": "Milyen sűrített levegős nyomás, légszállítás és csőátmérő szükséges a GrifEye V2 berendezéshez?",
+    "selectedDocumentFilename": "GrifEye V2.doc",
+    "expectedDocumentFilename": "GrifEye V2.doc",
+    "expectedAnswerIncludes": ["8 bar", "50", "8 mm"],
+    "expectedSourceMetadata": "none",
+    "language": "hu"
+  },
+  {
+    "id": "app-006",
+    "name": "XLSX forráshely visszaadása",
+    "scenario": "document-chat",
+    "question": "Milyen hőfokadatok szerepelnek az MPM és BOFA táblázatban?",
+    "selectedDocumentFilename": "MPM_Bofa höfokok.xlsx",
+    "expectedDocumentFilename": "MPM_Bofa höfokok.xlsx",
+    "expectedAnswerIncludes": [],
+    "expectedSourceMetadata": "worksheet",
+    "language": "hu"
+  },
+  {
+    "id": "app-007",
+    "name": "Második angol PDF dokumentumszűrése",
+    "scenario": "document-chat",
+    "question": "What technical requirements are described for quad flatpack components?",
+    "selectedDocumentFilename": "Test2_Quad_Flatpack_scba017d.pdf",
+    "expectedDocumentFilename": "Test2_Quad_Flatpack_scba017d.pdf",
+    "expectedAnswerIncludes": [],
+    "expectedSourceMetadata": "page",
+    "language": "en"
+  },
+  {
+    "id": "app-008",
+    "name": "Negatív dokumentumszűrés",
+    "scenario": "negative-document-filter",
+    "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+    "selectedDocumentFilename": "GrifEye V2.doc",
+    "expectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+    "language": "hu"
+  },
+  {
+    "id": "app-009",
+    "name": "Modellmód dokumentumforrás nélkül",
+    "scenario": "model-mode",
+    "question": "Mit jelent az SMT rövidítés?",
+    "language": "hu"
+  },
+  {
+    "id": "app-010",
+    "name": "Chat session mentés, visszatöltés és törlés",
+    "scenario": "session-roundtrip",
+    "question": "Mit jelent az SMT rövidítés?",
+    "language": "hu"
+  }
+]
