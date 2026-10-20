@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 
+import { runWithSpan } from "@/lib/telemetry";
+
 /*
  * Az embeddingmodell alapértelmezett neve.
  *
@@ -135,11 +137,19 @@ export async function createEmbedding(
    * Az encoding_format: "float" miatt az API
    * lebegőpontos számtömböt ad vissza.
    */
-  const response = await client.embeddings.create({
-    model,
-    input: normalizedInput,
-    encoding_format: "float",
-  });
+  const { value: response } = await runWithSpan(
+    "rag.embedding",
+    {
+      "gen_ai.operation.name": "embeddings",
+      "gen_ai.request.model": model,
+      "input.item_count": 1,
+    },
+    async () => client.embeddings.create({
+      model,
+      input: normalizedInput,
+      encoding_format: "float",
+    })
+  );
 
   /*
    * Egyetlen szöveget küldtünk, ezért az első
@@ -241,11 +251,19 @@ export async function createEmbeddings(
    * Az OpenAI embedding API egyszerre több szöveget
    * is képes fogadni.
    */
-  const response = await client.embeddings.create({
-    model,
-    input: normalizedInputs,
-    encoding_format: "float",
-  });
+  const { value: response } = await runWithSpan(
+    "rag.embedding.batch",
+    {
+      "gen_ai.operation.name": "embeddings",
+      "gen_ai.request.model": model,
+      "input.item_count": normalizedInputs.length,
+    },
+    async () => client.embeddings.create({
+      model,
+      input: normalizedInputs,
+      encoding_format: "float",
+    })
+  );
 
   /*
    * Az API válaszelemeit index szerint rendezzük.
@@ -352,7 +370,16 @@ export async function createMultilingualSearchQueries(
   const client = getOpenAIClient();
 
   try {
-    const response = await client.responses.create({
+    const { value: response } = await runWithSpan(
+      "rag.query_generation",
+      {
+        "gen_ai.operation.name": "chat",
+        "gen_ai.request.model":
+          process.env.OPENAI_CHAT_MODEL?.trim() ||
+          "gpt-4o-mini",
+      },
+      async () =>
+      client.responses.create({
       model:
         process.env.OPENAI_CHAT_MODEL?.trim() ||
         "gpt-4o-mini",
@@ -413,7 +440,8 @@ export async function createMultilingualSearchQueries(
           },
         },
       },
-    });
+    })
+    );
 
     const normalizedOutput = normalizeStructuredJsonText(
       response.output_text

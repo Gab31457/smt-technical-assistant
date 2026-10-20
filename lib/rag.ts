@@ -20,6 +20,9 @@ import type {
 import type {
   VectorSearchResult,
 } from "@/lib/vector-search";
+import { calculateEstimatedCostUsd } from "@/lib/model-pricing";
+import type { ModelTokenUsage } from "@/lib/model-pricing";
+import { runWithSpan } from "@/lib/telemetry";
 
 // A válaszgeneráláshoz használt alapértelmezett modell.
 //
@@ -64,6 +67,10 @@ export interface RagAnswerResult {
   systemPromptVariant: SystemPromptVariant;
   // A ténylegesen használt tudásforrás-mód.
   knowledgeSourceMode: KnowledgeSourceMode;
+  usage: ModelTokenUsage;
+  estimatedCostUsd: number;
+  generationMs: number;
+  contextBuildingMs: number;
 }
 
 // Visszaadja a konfigurált chatmodell nevét.
@@ -258,6 +265,10 @@ export async function generateRagAnswer(
         activeSystemPromptVariant,
       knowledgeSourceMode:
         activeKnowledgeSourceMode,
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
+      estimatedCostUsd: 0,
+      generationMs: 0,
+      contextBuildingMs: 0,
     };
   }
 
@@ -274,9 +285,12 @@ export async function generateRagAnswer(
       ? []
       : input.searchResults;
 
-  const context = buildContext(
-    effectiveSearchResults
-  );
+  const { value: context, durationMs: contextBuildingMs } =
+    await runWithSpan(
+      "rag.context_building",
+      { "rag.context.chunk_count": effectiveSearchResults.length },
+      async () => buildContext(effectiveSearchResults)
+    );
 
   // A Responses API meghívása.
   //
@@ -287,20 +301,28 @@ export async function generateRagAnswer(
   //
   // - a pgvector által visszakeresett forrásokat;
   // - a felhasználó eredeti kérdését.
-  const response =
-    await client.responses.create({
-      model,
-      instructions: getSystemPrompt(
-        activeSystemPromptVariant,
-        activeKnowledgeSourceMode
-      ),
-      input: buildConversationInput(
-        input.messages ?? [],
-        normalizedQuestion,
-        context,
-        activeKnowledgeSourceMode
-      ),
-    });
+  const { value: response, durationMs: generationMs } =
+    await runWithSpan(
+      "gen_ai.chat_completion",
+      {
+        "gen_ai.operation.name": "chat",
+        "gen_ai.request.model": model,
+        "rag.context.chunk_count": effectiveSearchResults.length,
+      },
+      async () => client.responses.create({
+        model,
+        instructions: getSystemPrompt(
+          activeSystemPromptVariant,
+          activeKnowledgeSourceMode
+        ),
+        input: buildConversationInput(
+          input.messages ?? [],
+          normalizedQuestion,
+          context,
+          activeKnowledgeSourceMode
+        ),
+      })
+    );
 
   // Az output_text az OpenAI SDK által összeállított
   // végleges szöveges válasz.
@@ -314,6 +336,17 @@ export async function generateRagAnswer(
     );
   }
 
+  const inputTokens = response.usage?.input_tokens ?? 0;
+  const outputTokens = response.usage?.output_tokens ?? 0;
+  const totalTokens = response.usage?.total_tokens ??
+    inputTokens + outputTokens;
+  const usage: ModelTokenUsage = {
+    inputTokens,
+    outputTokens,
+    totalTokens,
+  };
+  const estimatedCostUsd = calculateEstimatedCostUsd(usage);
+
   // A válasz, a modell és az aktív promptváltozat
   // visszaadása a chat API számára.
   return {
@@ -325,5 +358,153 @@ export async function generateRagAnswer(
       activeSystemPromptVariant,
     knowledgeSourceMode:
       activeKnowledgeSourceMode,
+    usage,
+    estimatedCostUsd,
+    generationMs,
+    contextBuildingMs,
+  };
+}
+export interface RagStreamCallbacks {
+  onTextDelta: (delta: string) => void | Promise<void>;
+  onFirstTextDelta?: (firstTokenMs: number) => void | Promise<void>;
+}
+
+export interface RagStreamResult extends RagAnswerResult {
+  firstTokenMs: number;
+}
+
+export async function generateRagAnswerStream(
+  input: RagAnswerInput,
+  callbacks: RagStreamCallbacks
+): Promise<RagStreamResult> {
+  const streamStartedAt = performance.now();
+  const normalizedQuestion = input.question.trim();
+
+  if (normalizedQuestion.length === 0) {
+    throw new Error(
+      "Üres kérdéshez nem készíthető RAG-válasz."
+    );
+  }
+
+  const activeSystemPromptVariant =
+    input.systemPromptVariant ??
+    getSystemPromptVariant();
+  const activeKnowledgeSourceMode =
+    input.knowledgeSourceMode ??
+    DEFAULT_KNOWLEDGE_SOURCE_MODE;
+
+  if (
+    activeKnowledgeSourceMode === "documents" &&
+    input.searchResults.length === 0
+  ) {
+    const answer =
+      "A műszaki dokumentumbázisban nem találtam a kérdéshez kellően releváns dokumentumot vagy dokumentumrészletet.";
+    await callbacks.onTextDelta(answer);
+
+    return {
+      answer,
+      model: getChatModel(),
+      contextCount: 0,
+      systemPromptVariant: activeSystemPromptVariant,
+      knowledgeSourceMode: activeKnowledgeSourceMode,
+      usage: {
+        inputTokens: 0,
+        outputTokens: 0,
+        totalTokens: 0,
+      },
+      estimatedCostUsd: 0,
+      generationMs: 0,
+      contextBuildingMs: 0,
+      firstTokenMs: 0,
+    };
+  }
+
+  const client = createOpenAIClient();
+  const model = getChatModel();
+  const effectiveSearchResults =
+    activeKnowledgeSourceMode === "model"
+      ? []
+      : input.searchResults;
+  const contextStartedAt = performance.now();
+  const context = buildContext(effectiveSearchResults);
+  const contextBuildingMs = Math.round(
+    performance.now() - contextStartedAt
+  );
+  const generationStartedAt = performance.now();
+  const stream = await client.responses.create({
+    model,
+    instructions: getSystemPrompt(
+      activeSystemPromptVariant,
+      activeKnowledgeSourceMode
+    ),
+    input: buildConversationInput(
+      input.messages ?? [],
+      normalizedQuestion,
+      context,
+      activeKnowledgeSourceMode
+    ),
+    stream: true,
+  });
+
+  let answer = "";
+  let firstTokenMs = 0;
+  let completedUsage: ModelTokenUsage = {
+    inputTokens: 0,
+    outputTokens: 0,
+    totalTokens: 0,
+  };
+
+  for await (const event of stream) {
+    if (event.type === "response.output_text.delta") {
+      if (firstTokenMs === 0) {
+        firstTokenMs = Math.round(
+          performance.now() - streamStartedAt
+        );
+        await callbacks.onFirstTextDelta?.(firstTokenMs);
+      }
+
+      answer += event.delta;
+      await callbacks.onTextDelta(event.delta);
+    }
+
+    if (event.type === "response.completed") {
+      const inputTokens =
+        event.response.usage?.input_tokens ?? 0;
+      const outputTokens =
+        event.response.usage?.output_tokens ?? 0;
+      const totalTokens =
+        event.response.usage?.total_tokens ??
+        inputTokens + outputTokens;
+
+      completedUsage = {
+        inputTokens,
+        outputTokens,
+        totalTokens,
+      };
+    }
+  }
+
+  const normalizedAnswer = answer.trim();
+
+  if (normalizedAnswer.length === 0) {
+    throw new Error(
+      "Az OpenAI API üres streamelt választ adott vissza."
+    );
+  }
+
+  return {
+    answer: normalizedAnswer,
+    model,
+    contextCount: effectiveSearchResults.length,
+    systemPromptVariant: activeSystemPromptVariant,
+    knowledgeSourceMode: activeKnowledgeSourceMode,
+    usage: completedUsage,
+    estimatedCostUsd:
+      calculateEstimatedCostUsd(completedUsage),
+    generationMs: Math.round(
+      performance.now() - generationStartedAt
+    ),
+    contextBuildingMs,
+    firstTokenMs,
   };
 }

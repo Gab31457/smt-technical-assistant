@@ -658,3 +658,48 @@
     flex-direction: row;
   }
 }
+
+/* Kérésenkénti, helyi monitoringadatok. */
+.monitoringPanel {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border: 1px solid #dbe3ec;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.75rem;
+}
+
+.monitoringPanel summary {
+  cursor: pointer;
+  color: #334155;
+  font-weight: 700;
+}
+
+.monitoringGrid {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(140px, 1.5fr);
+  gap: 6px 12px;
+  margin-top: 9px;
+}
+
+.monitoringGrid span {
+  color: #64748b;
+}
+
+.monitoringGrid strong {
+  color: #334155;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .monitoringGrid {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .monitoringGrid strong {
+    margin-bottom: 6px;
+  }
+}

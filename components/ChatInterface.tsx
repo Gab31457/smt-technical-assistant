@@ -39,6 +39,20 @@ interface ChatSource {
   content?: string;
 }
 
+interface ChatMonitoring {
+  firstTokenMs: number;
+  queryGenerationMs: number;
+  vectorSearchMs: number;
+  contextBuildingMs: number;
+  generationMs: number;
+  totalResponseMs: number;
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  estimatedCostUsd: number;
+  retrievedChunkCount: number;
+}
+
 type ChatMessageRole = "user" | "assistant";
 
 interface ChatMessage {
@@ -47,6 +61,7 @@ interface ChatMessage {
   content: string;
   sources?: ChatSource[];
   systemPromptVariant?: SystemPromptVariant;
+  monitoring?: ChatMonitoring;
 }
 
 interface ChatSession {
@@ -84,6 +99,7 @@ interface SuccessfulChatResponse {
     minimumSimilarity: number;
   };
   sources: ChatSource[];
+  monitoring: ChatMonitoring;
 }
 
 interface FailedApiResponse {
@@ -116,9 +132,23 @@ interface SessionDetailResponse {
   }>;
 }
 
-type ChatResponse =
-  | SuccessfulChatResponse
-  | FailedApiResponse;
+type ChatStreamEvent =
+  | {
+      type: "delta";
+      delta: string;
+    }
+  | {
+      type: "first-token";
+      firstTokenMs: number;
+    }
+  | {
+      type: "complete";
+      data: SuccessfulChatResponse;
+    }
+  | {
+      type: "error";
+      message: string;
+    };
 
 function createMessageId(): string {
   return crypto.randomUUID();
@@ -576,7 +606,20 @@ A beszélgetés összes üzenete véglegesen törlődik.`
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const assistantMessageId = createMessageId();
+      const assistantMessage: ChatMessage = {
+        id: assistantMessageId,
+        role: "assistant",
+        content: "",
+        systemPromptVariant: requestedPromptVariant,
+      };
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        assistantMessage,
+      ]);
+
+      const response = await fetch("/api/chat-stream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -595,40 +638,99 @@ A beszélgetés összes üzenete véglegesen törlődik.`
         }),
       });
 
-      const responseBody =
-        (await response.json()) as ChatResponse;
-
-      if (
-        !response.ok ||
-        responseBody.success === false
-      ) {
-        const apiErrorMessage =
-          responseBody.success === false
-            ? responseBody.error.message
-            : "A szerver nem tudta feldolgozni a kérést.";
-
-        throw new Error(apiErrorMessage);
+      if (!response.ok || !response.body) {
+        const failedResponse =
+          (await response.json()) as FailedApiResponse;
+        throw new Error(
+          failedResponse.success === false
+            ? failedResponse.error.message
+            : "A szerver nem tudta elindítani a streamelt választ."
+        );
       }
 
-      const assistantMessage: ChatMessage = {
-        id: createMessageId(),
-        role: "assistant",
-        content: responseBody.answer,
-        sources: responseBody.sources,
-        systemPromptVariant:
-          responseBody.systemPromptVariant,
-      };
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let completedResponse: SuccessfulChatResponse | null = null;
 
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        assistantMessage,
-      ]);
+      async function processLine(line: string): Promise<void> {
+        if (line.trim().length === 0) {
+          return;
+        }
+
+        const event = JSON.parse(line) as ChatStreamEvent;
+
+        if (event.type === "delta") {
+          setMessages((currentMessages) =>
+            currentMessages.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    content: message.content + event.delta,
+                  }
+                : message
+            )
+          );
+          return;
+        }
+
+        if (event.type === "first-token") {
+          return;
+        }
+
+        if (event.type === "error") {
+          throw new Error(event.message);
+        }
+
+        completedResponse = event.data;
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantMessageId
+              ? {
+                  ...message,
+                  content: event.data.answer,
+                  sources: event.data.sources,
+                  systemPromptVariant:
+                    event.data.systemPromptVariant,
+                  monitoring: event.data.monitoring,
+                }
+              : message
+          )
+        );
+      }
+
+      while (true) {
+        const { value, done } = await reader.read();
+        buffer += decoder.decode(value, { stream: !done });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          await processLine(line);
+        }
+
+        if (done) {
+          break;
+        }
+      }
+
+      if (buffer.trim().length > 0) {
+        await processLine(buffer);
+      }
+
+      if (!completedResponse) {
+        throw new Error(
+          "A streamelt válasz befejező eseménye nem érkezett meg."
+        );
+      }
 
       await refreshSessionList();
     } catch (error) {
       setMessages((currentMessages) =>
         currentMessages.filter(
-          (message) => message.id !== userMessage.id
+          (message) =>
+            message.id !== userMessage.id &&
+            message.content.length > 0
         )
       );
 
@@ -916,6 +1018,39 @@ A beszélgetés összes üzenete véglegesen törlődik.`
                       message.systemPromptVariant
                     )}
                   </div>
+                )}
+
+              {message.role === "assistant" &&
+                message.monitoring && (
+                  <details className={styles.monitoringPanel}>
+                    <summary>Technikai mérési adatok</summary>
+                    <div className={styles.monitoringGrid}>
+                      <span>Első token</span>
+                      <strong>{message.monitoring.firstTokenMs} ms</strong>
+                      <span>Keresőkérdés</span>
+                      <strong>{message.monitoring.queryGenerationMs} ms</strong>
+                      <span>Vektorkeresés</span>
+                      <strong>{message.monitoring.vectorSearchMs} ms</strong>
+                      <span>Kontextusépítés</span>
+                      <strong>{message.monitoring.contextBuildingMs} ms</strong>
+                      <span>Válaszgenerálás</span>
+                      <strong>{message.monitoring.generationMs} ms</strong>
+                      <span>Teljes válaszidő</span>
+                      <strong>{message.monitoring.totalResponseMs} ms</strong>
+                      <span>Tokenek</span>
+                      <strong>
+                        {message.monitoring.inputTokens} be /{" "}
+                        {message.monitoring.outputTokens} ki /{" "}
+                        {message.monitoring.totalTokens} összesen
+                      </strong>
+                      <span>Becsült költség</span>
+                      <strong>
+                        {message.monitoring.estimatedCostUsd.toFixed(6)} USD
+                      </strong>
+                      <span>Forráschunkok</span>
+                      <strong>{message.monitoring.retrievedChunkCount}</strong>
+                    </div>
+                  </details>
                 )}
 
               {message.sources &&

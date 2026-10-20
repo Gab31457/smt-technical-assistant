@@ -23,6 +23,7 @@ import {
   DEFAULT_VECTOR_SEARCH_OPTIONS,
   searchSimilarChunksForQueriesWithDebug,
 } from "@/lib/vector-search";
+import { runWithSpan } from "@/lib/telemetry";
 
 export const runtime = "nodejs";
 
@@ -87,6 +88,8 @@ function parseChatMessages(
 }
 
 export async function POST(request: Request) {
+  const requestStartedAt = performance.now();
+
   try {
     const requestBody =
       (await request.json()) as ChatRequestBody;
@@ -430,38 +433,63 @@ export async function POST(request: Request) {
       .join("\n")
       .slice(0, 3000);
 
-    const multilingualSearchQueries =
+    const queryGenerationResult =
       knowledgeSourceMode === "model"
-        ? null
-        : await createMultilingualSearchQueries(
-            lastUserMessage.content,
-            previousUserContext
+        ? { value: null, durationMs: 0 }
+        : await runWithSpan(
+            "chat.query_generation",
+            {
+              "chat.knowledge_source_mode": knowledgeSourceMode,
+              "chat.selected_document_count":
+                selectedDocumentIds.length,
+            },
+            async () => createMultilingualSearchQueries(
+              lastUserMessage.content,
+              previousUserContext
+            )
           );
+
+    const multilingualSearchQueries =
+      queryGenerationResult.value;
+    const queryGenerationMs =
+      queryGenerationResult.durationMs;
 
     const messagesForAnswer =
       multilingualSearchQueries?.usesPreviousContext === true
         ? messages
         : [lastUserMessage];
 
+    const vectorSearchResult =
+      await runWithSpan(
+        "rag.vector_search",
+        {
+          "chat.knowledge_source_mode": knowledgeSourceMode,
+          "chat.selected_document_count":
+            selectedDocumentIds.length,
+          "rag.requested_limit": limit,
+        },
+        async () =>
+          knowledgeSourceMode === "model" ||
+          multilingualSearchQueries === null
+            ? { results: [], debugGroups: [] }
+            : searchSimilarChunksForQueriesWithDebug(
+                [
+                  multilingualSearchQueries.originalQuery,
+                  multilingualSearchQueries.hungarianQuery,
+                  multilingualSearchQueries.englishQuery,
+                ],
+                {
+                  limit,
+                  minimumSimilarity,
+                  documentIds: selectedDocumentIds,
+                }
+              )
+      );
+
     const multiQuerySearchResponse =
-      knowledgeSourceMode === "model" ||
-      multilingualSearchQueries === null
-        ? {
-            results: [],
-            debugGroups: [],
-          }
-        : await searchSimilarChunksForQueriesWithDebug(
-            [
-              multilingualSearchQueries.originalQuery,
-              multilingualSearchQueries.hungarianQuery,
-              multilingualSearchQueries.englishQuery,
-            ],
-            {
-              limit,
-              minimumSimilarity,
-              documentIds: selectedDocumentIds,
-            }
-          );
+      vectorSearchResult.value;
+    const vectorSearchMs =
+      vectorSearchResult.durationMs;
 
     const searchResults = multiQuerySearchResponse.results;
 
@@ -576,6 +604,10 @@ export async function POST(request: Request) {
       }
     }
 
+    const totalResponseMs = Math.round(
+      performance.now() - requestStartedAt
+    );
+
     return NextResponse.json(
       {
         success: true,
@@ -614,6 +646,18 @@ export async function POST(request: Request) {
           contextCount: ragAnswer.contextCount,
           limit,
           minimumSimilarity,
+        },
+        monitoring: {
+          queryGenerationMs,
+          vectorSearchMs,
+          contextBuildingMs: ragAnswer.contextBuildingMs,
+          generationMs: ragAnswer.generationMs,
+          totalResponseMs,
+          inputTokens: ragAnswer.usage.inputTokens,
+          outputTokens: ragAnswer.usage.outputTokens,
+          totalTokens: ragAnswer.usage.totalTokens,
+          estimatedCostUsd: ragAnswer.estimatedCostUsd,
+          retrievedChunkCount: searchResults.length,
         },
         sources,
       },

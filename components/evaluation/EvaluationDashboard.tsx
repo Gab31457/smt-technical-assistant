@@ -56,6 +56,20 @@ interface DocumentListSuccess {
   documents: SearchableDocument[];
 }
 
+interface ChatMonitoring {
+  firstTokenMs?: number;
+  queryGenerationMs: number;
+  vectorSearchMs: number;
+  contextBuildingMs: number;
+  generationMs: number;
+  totalResponseMs: number;
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  estimatedCostUsd: number;
+  retrievedChunkCount: number;
+}
+
 interface ChatSuccess {
   success: true;
   answer: string;
@@ -67,6 +81,7 @@ interface ChatSuccess {
     contextCount: number;
   };
   sources: Source[];
+  monitoring?: ChatMonitoring;
 }
 
 interface ApiError {
@@ -102,6 +117,8 @@ interface EvaluationResult {
   promptVariant: PromptVariant;
   knowledgeSourceMode: KnowledgeSourceMode;
   responseTime: number;
+  retrievalTime: number;
+  monitoring: ChatMonitoring;
   resultCount: number;
   contextCount: number;
   sources: Source[];
@@ -128,6 +145,9 @@ interface RagEvaluationResult {
   ragCheck: RagCheckResult;
   expectedSource: string;
   minimumSimilarity: number;
+  topK: number;
+  relevantChunkIndexes: number[];
+  retrievalTime: number;
 }
 
 interface SaveResponse {
@@ -174,6 +194,10 @@ export default function EvaluationDashboard() {
 
   const [minimumSimilarity, setMinimumSimilarity] =
     useState(0.5);
+
+  const [ragTopK, setRagTopK] = useState(5);
+  const [relevantChunkIndexesText, setRelevantChunkIndexesText] =
+    useState("");
 
   const [simulatorPersona, setSimulatorPersona] = useState(
     "Olyan SMT technikus, aki egy géphibát vizsgál, de a géptípust, a hibakódot és a hiba körülményeit fokozatosan adja meg."
@@ -387,6 +411,28 @@ const currentJudgePassed =
     return data;
   }
 
+  function normalizeMonitoring(
+    monitoring: ChatMonitoring | undefined,
+    measuredResponseTime: number
+  ): ChatMonitoring {
+    return {
+      firstTokenMs: monitoring?.firstTokenMs,
+      queryGenerationMs: monitoring?.queryGenerationMs ?? 0,
+      vectorSearchMs: monitoring?.vectorSearchMs ?? 0,
+      contextBuildingMs: monitoring?.contextBuildingMs ?? 0,
+      generationMs: monitoring?.generationMs ?? 0,
+      totalResponseMs:
+        monitoring?.totalResponseMs ??
+        Math.round(measuredResponseTime),
+      inputTokens: monitoring?.inputTokens ?? 0,
+      outputTokens: monitoring?.outputTokens ?? 0,
+      totalTokens: monitoring?.totalTokens ?? 0,
+      estimatedCostUsd: monitoring?.estimatedCostUsd ?? 0,
+      retrievedChunkCount:
+        monitoring?.retrievedChunkCount ?? 0,
+    };
+  }
+
   // Lefuttatja az asszisztenst és a Judge értékelést.
   async function runAssistantAndJudge(
     variant: PromptVariant,
@@ -426,6 +472,12 @@ const currentJudgePassed =
       promptVariant: chat.data.systemPromptVariant,
       knowledgeSourceMode: chat.data.knowledgeSourceMode,
       responseTime: chat.responseTime,
+      retrievalTime:
+        chat.data.monitoring?.vectorSearchMs ?? 0,
+      monitoring: normalizeMonitoring(
+        chat.data.monitoring,
+        chat.responseTime
+      ),
       resultCount: chat.data.retrieval.resultCount,
       contextCount: chat.data.retrieval.contextCount,
       sources: chat.data.sources,
@@ -615,6 +667,12 @@ const currentJudgePassed =
       promptVariant: lastChat.systemPromptVariant,
       knowledgeSourceMode: lastChat.knowledgeSourceMode,
       responseTime: lastResponseTime,
+      retrievalTime:
+        lastChat.monitoring?.vectorSearchMs ?? 0,
+      monitoring: normalizeMonitoring(
+        lastChat.monitoring,
+        lastResponseTime
+      ),
       resultCount: lastChat.retrieval.resultCount,
       contextCount: lastChat.retrieval.contextCount,
       sources: lastChat.sources,
@@ -869,12 +927,27 @@ const currentJudgePassed =
             normalizedExpectation
           );
 
+        const relevantChunkIndexes =
+          relevantChunkIndexesText
+            .split(",")
+            .map((value) => Number(value.trim()))
+            .filter(
+              (value) => Number.isInteger(value) && value >= 0
+            );
+        const expectedDocumentIds =
+          documentSearchScope === "selected"
+            ? selectedDocumentIds
+            : [];
+
         const ragCheck = evaluateRagResult({
           sources: evaluation.sources,
           resultCount: evaluation.resultCount,
           contextCount: evaluation.contextCount,
           expectedSource: expectedSource.trim(),
           minimumSimilarity,
+          topK: ragTopK,
+          expectedDocumentIds,
+          relevantChunkIndexes,
         });
 
         const completedRagResult = {
@@ -882,6 +955,9 @@ const currentJudgePassed =
           ragCheck,
           expectedSource: expectedSource.trim(),
           minimumSimilarity,
+          topK: ragTopK,
+          relevantChunkIndexes,
+          retrievalTime: evaluation.retrievalTime,
         };
 
         setRagResult(completedRagResult);
@@ -893,6 +969,10 @@ const currentJudgePassed =
           expectedBehavior: normalizedExpectation,
           expectedSource: expectedSource.trim(),
           minimumSimilarity,
+          topK: ragTopK,
+          expectedDocumentIds,
+          relevantChunkIndexes,
+          retrievalTime: evaluation.retrievalTime,
           evaluation,
           ragCheck,
         });
@@ -1263,6 +1343,44 @@ const currentJudgePassed =
               />
             </label>
 
+            <div className={styles.ragMetricInputs}>
+              <label className={styles.field}>
+                <span>Top K</span>
+                <small className={styles.fieldHelp}>
+                  Ennyi legjobb találat alapján számoljuk a Precision,
+                  Recall és MRR metrikákat.
+                </small>
+                <select
+                  value={ragTopK}
+                  onChange={(event) =>
+                    setRagTopK(Number(event.target.value))
+                  }
+                  disabled={isRunning}
+                >
+                  <option value={3}>Top 3</option>
+                  <option value={5}>Top 5</option>
+                  <option value={10}>Top 10</option>
+                </select>
+              </label>
+
+              <label className={styles.field}>
+                <span>Releváns chunk indexek</span>
+                <small className={styles.fieldHelp}>
+                  Vesszővel elválasztott indexek, például: 94, 95.
+                  A találati forráslistából azonosíthatók.
+                </small>
+                <input
+                  type="text"
+                  value={relevantChunkIndexesText}
+                  onChange={(event) =>
+                    setRelevantChunkIndexesText(event.target.value)
+                  }
+                  placeholder="Például: 95"
+                  disabled={isRunning}
+                />
+              </label>
+            </div>
+
             <label className={styles.field}>
               <span>
                 Minimális hasonlóság:{" "}
@@ -1516,6 +1634,34 @@ const currentJudgePassed =
                   ragResult.minimumSimilarity.toFixed(3)
                 }
               />
+
+              <Metric
+                label={`Precision@${ragResult.topK}`}
+                value={ragResult.ragCheck.retrievalMetrics.precisionAtK.toFixed(3)}
+              />
+
+              <Metric
+                label={`Recall@${ragResult.topK}`}
+                value={ragResult.ragCheck.retrievalMetrics.recallAtK.toFixed(3)}
+              />
+
+              <Metric
+                label="MRR"
+                value={ragResult.ragCheck.retrievalMetrics.meanReciprocalRank.toFixed(3)}
+              />
+
+              <Metric
+                label="Első releváns helyezése"
+                value={
+                  ragResult.ragCheck.retrievalMetrics.firstRelevantRank?.toString() ??
+                  "Nincs"
+                }
+              />
+
+              <Metric
+                label="Retrieval idő"
+                value={`${ragResult.retrievalTime.toFixed(0)} ms`}
+              />
             </div>
 
             <div
@@ -1541,6 +1687,13 @@ const currentJudgePassed =
                 <strong>Elvárt dokumentum:</strong>{" "}
                 {ragResult.expectedSource ||
                   "Nem volt külön megadva"}
+              </p>
+
+              <p>
+                <strong>Releváns chunk indexek:</strong>{" "}
+                {ragResult.relevantChunkIndexes.length > 0
+                  ? ragResult.relevantChunkIndexes.join(", ")
+                  : "Nem volt külön megadva"}
               </p>
             </div>
           </section>
@@ -1583,6 +1736,36 @@ function ResultPanel({
             value={`${(
               result.responseTime / 1000
             ).toFixed(2)} s`}
+          />
+
+          <Metric
+            label="Retrieval idő"
+            value={`${result.monitoring.vectorSearchMs} ms`}
+          />
+
+          <Metric
+            label="Generálási idő"
+            value={`${result.monitoring.generationMs} ms`}
+          />
+
+          <Metric
+            label="Input tokenek"
+            value={String(result.monitoring.inputTokens)}
+          />
+
+          <Metric
+            label="Output tokenek"
+            value={String(result.monitoring.outputTokens)}
+          />
+
+          <Metric
+            label="Összes token"
+            value={String(result.monitoring.totalTokens)}
+          />
+
+          <Metric
+            label="Becsült költség"
+            value={`${result.monitoring.estimatedCostUsd.toFixed(6)} USD`}
           />
 
           <Metric

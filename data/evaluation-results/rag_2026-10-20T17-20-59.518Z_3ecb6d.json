@@ -1,0 +1,147 @@
+{
+  "savedAt": "2026-10-20T17:20:59.518Z",
+  "evaluationType": "rag",
+  "knowledgeSourceMode": "documents",
+  "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+  "expectedBehavior": "Az asszisztens kizárólag a kijelölt NASA-dokumentum alapján adja meg a csuklópánt személyi földelőrendszeréhez előírt ellenállási tartományt. Ne találjon ki műszaki értékeket",
+  "expectedSource": "Test1_nasa-std-87396b",
+  "minimumSimilarity": 0.2,
+  "topK": 5,
+  "expectedDocumentIds": [
+    "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+  ],
+  "relevantChunkIndexes": [
+    0
+  ],
+  "retrievalTime": 1744,
+  "evaluation": {
+    "answer": "1. **Rövid válasz**: A csuklópánt személyi földelőrendszerének ellenállási tartománya 800 kΩ és 1,2 MΩ között kell, hogy legyen.\n\n2. **Érintett gép, típus vagy funkció**: Csuklópánt, ESD (elektrosztatikus kisülés) védelmi rendszerek.\n\n3. **Műszaki információ vagy eljárás**: Az ellenállás mérése a csuklópánt kapcsolódási pontja és a bőrfelszín között történik.\n\n4. **Ellenőrzési pontok**: A csuklópánt földelő terminál ellenállása < 1 Ω legyen a csuklópánt földelő terminálja és a közös földelési pont (CPG) között.\n\n5. **Biztonsági megjegyzés**: A monitorozási rendszerek ajánlásait követve kell eljárni a földelőrendszerek folyamatos ellenőrzésekor.\n\n6. **Források**: Test1_nasa-std-87396b.pdf (Oldal 40, chunk index: 95).",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 8425.399999976158,
+    "retrievalTime": 1744,
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "9ce3684f-0e5d-4c03-a3d4-e117a43bfe0e",
+        "chunkIndex": 89,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.2897639304018238,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 38,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 38 of 50 Note: While a PC monitor may be considered essential, keyboards and mice are not. Note: Carbon dioxide ( CO ₂ ) snow cleaning or other compressed air nozzles may be considered essential insulators and are a source of charged ions that may pose significant risk to ESDS items. 7.2.4.2.3 Vacuum cleaning equipment, hoses, and associated tools, used for cleaning ESDS articles that cannot be grounded at the nozzle shall be treated as essential insulators. 7.2.4.2.4 ESDS hardwa re shall be either grounded or protected from charge accumulation during transport. 7.2.4.2.5 A subassembly (e.g., electrical box) shall have conductive or dissipative connector caps or plugs in place except when being mated to system cabling, or during environment al bake or test operations. 7.2.4.2.6 Requirements for reducing the static charge on connectors, cables and harnesses prior to mating system interface connectors to system test sets shall be defined in the ESD Control Program Plan . 7.2.4.3 Packaging 7.2.4.3.1 Electrostatic protectiv e packaging shall prevent the generation of static charge and provide protection from electrostatic fields."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "bcf9d9db-b6d4-4dcd-9fc6-65f159441dc8",
+        "chunkIndex": 91,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.30551553664382236,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 39,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 39 of 50 7.2.4.4 EPA Perimeter, Marking and Signage 7.2.4.4.1 The ESD Control Program Plan shall include requirements for signage and perimeter indicators. Note: EPA perimeter indicators s uch as floor tape, partitions, and rope guards are used to prevent unauthorized and untrained personnel as defined in 7.2.3.1.5 from entering the EPA and to prevent t he EPA from being used for unauthorized purposes. 7.2.4.4.2 ESD a ccess - controlled areas shall be li mited to ESD trained personnel and escorted visitors. 7.2.4.4.3 EPAs within access - controlled areas shall have a minimum 12 inch traffic buffer beyond the applicable sides of t he perimeter , including those sides that share a boundary with a non - EPA work bench or work area . 7.2.4.4.4 EPAs outside of access - controlled areas shall have a minimum one - meter traffic buffer beyond the applicable sides of the perimeter , including those sides that share a boundary with a non - EPA work bench or work area ."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "d1d3d142-4ede-4401-bc74-a410f89650f7",
+        "chunkIndex": 95,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.6967084980989159,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 40,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "each time before use. See Table 3 , #5 . 7.2.5.3.3 The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface . See Table 3 , #6 .\n\n7.2.5.3.4 The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG . Follow manufacturer’s recommendation for continuous monitoring systems . See Table 3 , #7 . 7.2.5.3.5 Elastic conductive fabric wristband s shall not be used where shedding of conductive fibers is a concern. Metal expansion bracelet or conductive thermoplastic wristband s ensur ing continuous conductive contact with the wearer’s skin are preferred. 7.2.5.3.6 Foot grounding devices, when used, shall be worn on both feet and measure < 3.5x 10 7 Ω . See Table 3 , #8 . 7.2.5.3.7 The method and frequency of calibration for Continuous Monitored System (CMS) ESD wrist strap systems shall be documented in the local ESD Control Program Plan. See Table 3 , #9 . 7.2.5.4 Stools , Chairs , and Mobile Equipment/Carts 7.2.5.4.1 Groundable, static dissipative seating is required in EPAs rated for processing HBM Class 0 items."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "b6881f50-2c9f-430d-aca1-dc0d22337d12",
+        "chunkIndex": 92,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.44841940229663535,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 39,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "Note 1: When an EPA is outside of an ESD Access - controlled area, the one - meter traffic buffer requirement may be tailored to 12 inches when technically justified by the use of al ternate controls that limit the presence of static charge sources and conductive grounding between 1 meter and 12 inches of the ESD item being processed . The use of cotton or cotton - blend garments is one such method. Note 2: ESD shielding material should be used w hen limited space is available, and non - ESD work is carried out in proximity to active EPAs. 7.2.5 Baseline ESD Control Technical Requirement s The following ESD Control components can be verified using the test methods provided in Section 7 herein , the methods i n ESD TR53 - 01 - 18, or the alternative methods provided in Table 3 . 7.2.5.1 Work S urfaces 7.2.5.1.1 The resistance of the work surface s where ESDS items are handled shall be in the dis sipative range , from 10 6 to < 10 9 Ω. See Table 3 , # 1. 7.2.5.1.2 The resistance from the center of the work surface to the common point ground (CPG) shall be 10 6 to < 10 9 Ω. See Table 3 , # 2."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "2fd7d254-70eb-47e8-8754-e600f7b4de4d",
+        "chunkIndex": 93,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.545286359596571,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 39,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "sipative range , from 10 6 to < 10 9 Ω. See Table 3 , # 1. 7.2.5.1.2 The resistance from the center of the work surface to the common point ground (CPG) shall be 10 6 to < 10 9 Ω. See Table 3 , # 2.\n\n7.2.5.1.3 When conductive surfaces must be used as an ESD work surface, control methods to prevent an ESD event shall be documented by the ESD Control Program P lan. Note: Conductive surfaces, grounded or ungrounded, can enable ESD events to occur."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz pontosan a megadott dokumentum alapján adta meg az ellenállási tartományt, amely a kérdéshez kapcsolódik, és minden szükséges információt tartalmazott a csuklópánt földelőrendszerével kapcsolatban."
+    }
+  },
+  "ragCheck": {
+    "hasResults": true,
+    "hasContext": true,
+    "expectedSourceFound": true,
+    "similarityPassed": true,
+    "bestSimilarity": 0.6967084980989159,
+    "retrievalMetrics": {
+      "topK": 5,
+      "evaluatedResultCount": 5,
+      "relevantRetrievedCount": 0,
+      "totalRelevantCount": 1,
+      "precisionAtK": 0,
+      "recallAtK": 0,
+      "meanReciprocalRank": 0,
+      "firstRelevantRank": null
+    },
+    "passed": false,
+    "explanation": "A keresés adott találatot. A válaszgenerálás kapott RAG-kontextust. Az elvárt dokumentum szerepel a források között. A legjobb hasonlóság 0.697, ami eléri a 0.200 küszöböt. A top 5 találat között nincs releváns eredmény. Precision@5: 0.000, Recall@5: 0.000, MRR: 0.000."
+  },
+  "documentSearchScope": "selected",
+  "selectedDocumentIds": [
+    "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+  ],
+  "selectedDocuments": [
+    {
+      "id": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+      "title": "Test1_nasa-std-87396b",
+      "originalFilename": "Test1_nasa-std-87396b.pdf"
+    }
+  ]
+}

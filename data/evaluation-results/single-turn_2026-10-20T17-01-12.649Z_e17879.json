@@ -1,0 +1,112 @@
+{
+  "savedAt": "2026-10-20T17:01:12.650Z",
+  "evaluationType": "single-turn",
+  "knowledgeSourceMode": "documents",
+  "question": "Milyen sűrített levegős csatlakozási követelmények vonatkoznak a GrifEye V2 berendezésre?",
+  "expectedBehavior": "Az asszisztens kizárólag a feltöltött SMT műszaki dokumentumok alapján válaszoljon, ne találjon ki hiányzó műszaki információt, és nevezze meg a felhasznált forrást.",
+  "result": {
+    "answer": "1. **Rövid válasz:** A GrifEye V2 berendezés pneumatikus rendszerének megfelelő sűrített levegős csatlakozási követelmények nem részletezettek a megadott forrásokban. Fontos azonban, hogy a rendszer ne ereszthessen levegőt, és nyomáscsökkenés esetén teljes körű ellenőrzés szükséges.\n\n2. **Érintett gép, típus vagy funkció:** GrifEye V2, stencil vizsgáló berendezés.\n\n3. **Műszaki információ vagy eljárás:** A rendszer telepítésekor az összes biztosító csavart meg kell húzni, és vízszintes ellenőrzést kell végezni. A pneumatikus rendszer esetleges sziszegését vagy nyomáscsökkenését figyelni kell.\n\n4. **Ellenőrzési pontok:** \n   - Ellenőrizze a pneumatikus rendszer tömítettségét.\n   - Figyelje a sziszegést és a nyomáscsökkenést.\n   - Győződjön meg róla, hogy a sűrített levegő nem szökik el.\n\n5. **Biztonsági megjegyzés:** Ne hagyja, hogy a sűrített levegő elszökjön, mivel ez az egyik legdrágább energia. Ha problémát észlel, hívja a Grif-Tools Kft.-t.\n\n6. **Források:** GrifEye V2 dokumetáció (FORRÁS 1, FORRÁS 2, FORRÁS 3).",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 7566.800000011921,
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "972273c4-e511-4487-a703-acb92862b246",
+        "chunkIndex": 0,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.6401756555988053,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "FELHASZNÁLÓI DOKUMENTÁCIÓ\n\n[16/2008. (VIII. 30.) NFGM rendelet 1.7.4. alapján]\n\nGrifEye V2.  típusjelű\n\nstencil vizsgáló berendezéshez\n\nGyártó cég neve, címe: Grif-Tools Kft\n\n3300 Eger, Vécseivölgy utca 99.\n\nMechanikai tervezés, kivitelezés, vezérlő szoftver:\n\nDEXMA Műszaki Fejlesztő Kft\n\n1026 Budapest, Lepke utca 29/b\n\nSzoftver:\n\nSanxo Sytem Kft\n\n2.)Gép megnevezése: GrifEye V2.\n\n3.)\n\n4.) A gép működésnek rövid bemutatása:\n\nA GrifEye stencil ellenőrző berendezés síkasztalos, pneumatikus stencil keret rögzítéssel rendelkező\n\noptikai ellenőrző készülék, amely a telecentrikus optikával és világítással ellátott 20Mpx felbontású kamerát nagy pontossággal mozgató X-Y mechanikára szerelve ellenőrzi a nyomtatott áramkörök gyártásában alkalmazott stencil lemezeket. A kamera által rögzített képeket a gép egy Windows 10 pro© operációs rendszert alkalmazó számítógépen futó program segítségével értékeli ki.\n\n5.) Összeállítási, beépítési és összekapcsolási utasítások, beleértve annak a váznak vagy szerkezetnek a rajzait, diagramjait és összekapcsolási eszközeit, amelyre a gépet felszerelik.\n\nNincs külön szerkezet, nem kell összekapcsolni más szerkezetekkel."
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "8aaa5215-8082-4e7d-8690-d966eb8d7d03",
+        "chunkIndex": 9,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.5767384043214578,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "meg a biztosító csavart. Az összes biztosító csavar meghúzása után is ellenőrizzük átlósan a vízszintet. (6. ábra szerint)\n\nA képeken szereplő ábrák stilizáltak, nem a valós gépet mutatják!\n\nVÉGSZÓ\n\nA jól beállított gépnek egyenletesen, erőlködés nélkül kell mozognia, semmilyen rezonancia, morgást, búgást nem szabad hallani. A pneumatika rendszer nem eresztheti a levegőt. Ha sziszegést hall, vagy nyomáscsökkenést észlel, ellenőrizze teljes rendszert, a sűrített levegő az egyik legdrágább energia, ne hagyja elszökni. Ha problémát észlel a telepítésnél, vagy nem képes önmaga telepíteni a gépet, hívja a Grif-Tools Kft-t!\n\n7.2 Használati Utasítás – Felhasználó Kézikönyv\n\nGrifEye V.2 stencil vizsgáló berendezéshez.\n\nA biztonságos és helyes üzemeltetés, illetve a termék lehetőségeinek teljes megértése érdekében kérjük, olvassa végig ezt a kézikönyvet, és tartsa azt biztos helyen.\n\nEzen kézikönyv engedély nélküli másolása, vagy terjesztése tilos.\n\nA kézikönyv tartalma és a termék műszaki adatai további figyelmeztetés nélkül megváltozhatnak.\n\nA kézikönyv és a termék többszörösen tesztelt. Ha mégis félrenyomtatást vagy hibát észlel, kérjük, tájékoztasson bennünket!"
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "8b50b8f5-c93c-429e-95d8-562e579aace7",
+        "chunkIndex": 15,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.5893946997403451,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "+ fényforrás\n\nFényforrás -alsó\n\nBehúzó mechanika és keret rögzítő egység\n\nKeret szélességállító mechanika\n\nVíztálca\n\nÁllítható géptalpak\n\nGrifEye V2. stencil vizsgáló berendezés rövid ismertetése\n\nA GrifEye V2. egy teljesen integrált, önálló mérési és ellenőrzési munkaállomás a nyomtatott áramköri lapok gyártásához használt acél stencil lapok gyártás előtti és gyártás közbeni ellenőrzésére használatra.  A stencilt használók számára a rendszer lehetővé teszi a gyártásba bejövő és a már használt stencilek, mosás és tisztítás utáni ellenőrzését az ismételt gyártás előtt.\n\nGrifEye V2 egy PC Windows-alapú, saját fejlesztésű gépi látásmód szoftvercsomagot használ, amely egy nagyfelbontású, telecentrikus optikával, telecentrikus alsó fényforrással, gyűrű alakú felső világítással ellátott X-Y irányban nagypontosságú és nagy dinamikájú AC szervomotoros hajtással ellátott mechanikával végzi el az ellenőrzést. Ez a kombináció lehetővé teszi a keretbe foglalt stencil lemezek pontosságának ellenőrzését, valamint a több ezer vagy millió apertúra, irányának jelenlétének, helyzetének és méretének 100%-os ellenőrzését."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "ec7f80bf-8b17-4ead-b8a6-959e003fa86b",
+        "chunkIndex": 99,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.35244248656808885,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 42,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 42 of 50 Note: The presence of ionized air may create an increased risk for corona discharge in the presence of energized power or r adio frequency equipment , therefore, the use of ionizers should be assessed before use in those environments . 7.2.5.6.2 Charge d issipation time from +1000 V to +100 V and - 1000 V to - 100 V shall be ≤ 20 seconds when measured in the center of the working area . See Table 3 , #13. 7.2.5.6.3 The o ffset voltage of ionizers shall be ≤ ± 35 V . Table 3 , #14 . Note: Cleaning ionizer charge tips may be used to return ionizers to within specifications and is recommended when performance testing indicates a trend towards an out - of - specification condition. 7.2.5.7 Grounding Configurations 7.2.5.7.1 EPA grounding connections shall not be daisy - chained. 7.2.5.7.2 Where the Auxiliary ground enters the EPA, the resistance between the Auxiliary ground and the e quipment ground shall be ≤ 1Ω . See Table 3 , #15. 7.2.5.7.3 The resistance of the Auxiliary gro und from end to end, shall be ≤ 25Ω . See Table 3 , #16. 7.2.5.7.4 Where used, the GFCI’s self - check sha ll be verified for proper shock protection and reset ."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "9ce3684f-0e5d-4c03-a3d4-e117a43bfe0e",
+        "chunkIndex": 89,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.34939844816222854,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 38,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 38 of 50 Note: While a PC monitor may be considered essential, keyboards and mice are not. Note: Carbon dioxide ( CO ₂ ) snow cleaning or other compressed air nozzles may be considered essential insulators and are a source of charged ions that may pose significant risk to ESDS items. 7.2.4.2.3 Vacuum cleaning equipment, hoses, and associated tools, used for cleaning ESDS articles that cannot be grounded at the nozzle shall be treated as essential insulators. 7.2.4.2.4 ESDS hardwa re shall be either grounded or protected from charge accumulation during transport. 7.2.4.2.5 A subassembly (e.g., electrical box) shall have conductive or dissipative connector caps or plugs in place except when being mated to system cabling, or during environment al bake or test operations. 7.2.4.2.6 Requirements for reducing the static charge on connectors, cables and harnesses prior to mating system interface connectors to system test sets shall be defined in the ESD Control Program Plan . 7.2.4.3 Packaging 7.2.4.3.1 Electrostatic protectiv e packaging shall prevent the generation of static charge and provide protection from electrostatic fields."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 1,
+      "instructionFollowing": 1,
+      "groundedness": 1,
+      "clarity": 1,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 2.33,
+      "passed": false,
+      "unsupportedClaims": [
+        "A GrifEye V2 berendezés pneumatikus rendszerének megfelelő sűrített levegős csatlakozási követelmények nem részletezettek a megadott forrásokban.",
+        "Fontos azonban, hogy a rendszer ne ereszthessen levegőt, és nyomáscsökkenés esetén teljes körű ellenőrzés szükséges."
+      ],
+      "explanation": "A válaszban szereplő állítások nem találhatók meg a megadott forrásokban, így a válasz nem megbízható. Az asszisztens nem követi az elvárt viselkedést, mivel nem támasztotta alá a műszaki információkat a dokumentumokkal."
+    }
+  },
+  "documentSearchScope": "all",
+  "selectedDocumentIds": [],
+  "selectedDocuments": []
+}
