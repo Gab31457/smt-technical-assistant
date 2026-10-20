@@ -1,0 +1,15 @@
+[
+  {
+    "id": "prompt-001",
+    "name": "NASA csuklópánt dokumentált érték",
+    "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+    "expectedBehavior": "A válasz kizárólag a kijelölt NASA-dokumentum alapján, magyarul adja meg a 800 kΩ és 1,2 MΩ közötti tartományt. Ne találjon ki további műszaki követelményt.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "category": "multilingual",
+    "language": "hu"
+  }
+]

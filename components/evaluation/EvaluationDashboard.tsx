@@ -5,6 +5,7 @@ import type { ChatMessageInput } from "@/lib/chat-types";
 import styles from "./EvaluationDashboard.module.css";
 import HumanReviewForm from "./HumanReviewForm";
 import RagBatchEvaluation from "./RagBatchEvaluation";
+import PromptBatchEvaluation from "./PromptBatchEvaluation";
 import {
   evaluateRagResult,
   type RagCheckResult,
@@ -1707,6 +1708,7 @@ const currentJudgePassed =
         </>
       )}
       <RagBatchEvaluation />
+      <PromptBatchEvaluation />
 
       {savedFileName && (
         <HumanReviewForm

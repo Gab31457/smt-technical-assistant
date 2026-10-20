@@ -1,0 +1,167 @@
+.panel {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #dbe3ec;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #2563eb;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.headerRow h2,
+.resultSection h3 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.description,
+.status {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.runButton {
+  flex: 0 0 auto;
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.runButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.error {
+  margin-top: 16px;
+  padding: 11px 13px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.caseList {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.caseCard,
+.passedCase,
+.failedCase {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #dbe3ec;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.caseCard span,
+.passedCase span,
+.failedCase span {
+  font-size: 0.84rem;
+}
+
+.caseCard small,
+.passedCase small,
+.failedCase small {
+  color: #64748b;
+}
+
+.passedCase {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.failedCase {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.resultSection {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.metric {
+  padding: 11px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.metric span,
+.metric strong {
+  display: block;
+}
+
+.metric span {
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+.metric strong {
+  margin-top: 3px;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.savedFile {
+  margin: 15px 0 0;
+  color: #475569;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .headerRow {
+    flex-direction: column;
+  }
+
+  .runButton {
+    width: 100%;
+  }
+
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+}

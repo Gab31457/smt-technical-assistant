@@ -68,7 +68,8 @@ export async function GET() {
       (fileName) =>
         fileName.endsWith(".json") &&
         !fileName.startsWith("human-review_") &&
-        !fileName.startsWith("rag-batch_")
+        !fileName.startsWith("rag-batch_") &&
+        !fileName.startsWith("prompt-batch_")
     );
 
     const results: ResultSummary[] = [];
