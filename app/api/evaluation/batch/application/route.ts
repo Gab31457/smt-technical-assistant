@@ -662,10 +662,13 @@ function createSummary(
         : 0,
     averageCaseDurationMs: average(
       completed.map((result) =>
-        result.steps.reduce(
-          (total, step) => total + step.durationMs,
-          0
-        )
+        result.steps.length > 0
+          ? Math.max(
+              ...result.steps.map(
+                (step) => step.durationMs
+              )
+            )
+          : 0
       )
     ),
     averageRetrievalTimeMs: average(

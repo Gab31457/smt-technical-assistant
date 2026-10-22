@@ -1,0 +1,156 @@
+[
+  {
+    "id": "multi-001",
+    "name": "NASA ESD csuklópánt visszautalás",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "language": "hu",
+    "maximumTurns": 3,
+    "expectedBehavior": "A beszélgetés végig a kijelölt NASA-dokumentumra támaszkodjon, őrizze meg a csuklópánt témáját, és a visszautalásoknál ne váltson más ESD-eszközre.",
+    "turns": [
+      {"user": "Milyen ellenállási tartomány szükséges az ESD csuklópánt wristband részéhez?", "expected": "800 kΩ–1,2 MΩ"},
+      {"user": "És a földelőkapocsnál mekkora érték az elfogadható?", "expected": "1 Ω alatti érték, a korábbi csuklópánt-kontextus megtartásával"},
+      {"user": "Foglalj össze mindkét követelményt két pontban.", "expected": "A két korábbi érték pontos, elkülönített összefoglalása"}
+    ]
+  },
+  {
+    "id": "multi-002",
+    "name": "NASA ionizátor követelmények",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "language": "hu",
+    "maximumTurns": 3,
+    "expectedBehavior": "Tartsa meg az ionizátor témáját, és különböztesse meg a töltéslevezetési időt az offsetfeszültségtől.",
+    "turns": [
+      {"user": "Mennyi az ionizátor maximális töltéslevezetési ideje?", "expected": "Legfeljebb 20 másodperc"},
+      {"user": "És a másik határérték?", "expected": "Az offsetfeszültség legfeljebb ±35 V"},
+      {"user": "Írd le egy rövid ellenőrzési mondatban.", "expected": "Mindkét határértéket tartalmazó rövid mondat"}
+    ]
+  },
+  {
+    "id": "multi-003",
+    "name": "QFN stencil és paszta",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "language": "hu",
+    "maximumTurns": 4,
+    "expectedBehavior": "Őrizze meg a QFN stencil témáját, és ne keverje össze a stencilvastagságot a forrasztási kötés vastagságával.",
+    "turns": [
+      {"user": "Milyen stencilvastagság ajánlott QFN tokokhoz?", "expected": "0,1016–0,125 mm ajánlott tartomány"},
+      {"user": "Milyen pasztatípust javasol a dokumentum?", "expected": "Alacsony maradékú no-clean Type 3 vagy Type 4"},
+      {"user": "Mekkora legyen a lehúzó keménysége?", "expected": "Legalább 95 durométer"},
+      {"user": "Foglalj össze mindent három rövid pontban.", "expected": "A három korábbi követelmény pontos összefoglalása"}
+    ]
+  },
+  {
+    "id": "multi-004",
+    "name": "QFN elhelyezés és reflow",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "language": "en",
+    "maximumTurns": 3,
+    "expectedBehavior": "Keep the conversation in English and preserve the distinction between mild and gross placement errors.",
+    "turns": [
+      {"user": "What happens when QFN placement error is below 50 percent?", "expected": "It may self-align during reflow"},
+      {"user": "What if it is above that threshold?", "expected": "Remove the component before reflow"},
+      {"user": "Summarize the decision rule in one sentence.", "expected": "A correct one-sentence below/above 50% decision rule"}
+    ]
+  },
+  {
+    "id": "multi-005",
+    "name": "GrifEye telepítési követelmények",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "maximumTurns": 4,
+    "expectedBehavior": "Tartsa meg a GrifEye telepítési témáját, és a későbbi visszautalásoknál a korábban tárgyalt telepítési környezetre válaszoljon.",
+    "turns": [
+      {"user": "Milyen telepítési hőmérséklet szükséges a GrifEye V2-höz?", "expected": "20–24 °C"},
+      {"user": "Tárolásnál mennyi az elfogadható?", "expected": "15–25 °C"},
+      {"user": "És a páratartalom?", "expected": "Legfeljebb 60%, nem kondenzálódó"},
+      {"user": "Készíts rövid telepítési ellenőrzőlistát ezekből.", "expected": "A három korábbi követelmény listája"}
+    ]
+  },
+  {
+    "id": "multi-006",
+    "name": "GrifEye sűrített levegő",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "maximumTurns": 4,
+    "expectedBehavior": "A teljes beszélgetésben maradjon a GrifEye pneumatikus csatlakozás témájánál.",
+    "turns": [
+      {"user": "Mekkora lehet legfeljebb a sűrített levegő nyomása?", "expected": "Legfeljebb 8 bar"},
+      {"user": "Mekkora légszállítás szükséges?", "expected": "50 l/perc"},
+      {"user": "Milyen csövet kell használni?", "expected": "8 mm-es PU cső"},
+      {"user": "Van még fontos levegőminőségi feltétel?", "expected": "Vízmentes ipari levegő"}
+    ]
+  },
+  {
+    "id": "multi-007",
+    "name": "MPM hőmérséklet-eltérés vizsgálata",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "language": "hu",
+    "maximumTurns": 3,
+    "expectedBehavior": "Kövesse az XLSX-ben szereplő mérési és hibakeresési adatokat, és ne inventáljon új hőmérsékleteket.",
+    "turns": [
+      {"user": "Mekkora volt az MPM és a befújt levegő hőmérséklete a 24 °C-ra állított BOFA esetén?", "expected": "24,1 °C és 16,5 °C"},
+      {"user": "Mit kell ellenőrizni, ha eltérés van?", "expected": "Klímacsatlakozó kontakthiba és tisztítás, illetve mérőegység"},
+      {"user": "Hol találhatók az érintett szenzorok?", "expected": "A gép belsejében, jobb oldalt elöl"}
+    ]
+  },
+  {
+    "id": "multi-008",
+    "name": "SMEMA panelátadás hibakeresése",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "language": "hu",
+    "maximumTurns": 4,
+    "expectedBehavior": "Tartsa meg a SMEMA panelátadás kontextusát, és a hibakeresést a dokumentum szerinti sorrendben vezesse.",
+    "turns": [
+      {"user": "Melyik két jelzés szükséges a panelátadáshoz?", "expected": "Board Available és Machine Ready"},
+      {"user": "Mennyi ideig kell stabilnak lennie a fogadókész jelzésnek?", "expected": "Legalább 200 ms"},
+      {"user": "Mikor keletkezik időtúllépési hiba?", "expected": "Ha 10 másodpercen belül nem indul el a panelátadás"},
+      {"user": "Sorold fel a fő ellenőrzéseket.", "expected": "Fogadókészség, mechanikai akadály, kábel, kontaktusok, panelérzékelők"}
+    ]
+  },
+  {
+    "id": "multi-009",
+    "name": "Forráshiány következetes kezelése",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "maximumTurns": 3,
+    "expectedBehavior": "A rendszer minden fordulóban jelezze a forráshiányt, és ne váltson át modellismeretre vagy másik dokumentumra.",
+    "turns": [
+      {"user": "Mekkora az ESD csuklópánt előírt ellenállása?", "expected": "A GrifEye dokumentumból nem állapítható meg"},
+      {"user": "Biztosan nincs benne semmilyen hasonló érték?", "expected": "Következetes forráshiányos válasz"},
+      {"user": "Akkor ne becsülj, csak mondd meg, mi hiányzik.", "expected": "A releváns ESD forrás hiányának rövid jelzése"}
+    ]
+  },
+  {
+    "id": "multi-010",
+    "name": "Modellmód általános SMT párbeszéd",
+    "promptVariant": "conversational",
+    "knowledgeSourceMode": "model",
+    "selectedDocumentIds": [],
+    "language": "hu",
+    "maximumTurns": 3,
+    "expectedBehavior": "Dokumentumhivatkozás nélkül tartsa meg az SMT alapfogalmak kontextusát, és válaszoljon közérthetően.",
+    "turns": [
+      {"user": "Mit jelent az SMT rövidítés?", "expected": "Surface Mount Technology"},
+      {"user": "Mi a fő előnye a furatszerelt technológiához képest?", "expected": "Kisebb alkatrészméret és nagyobb beültetési sűrűség, rövid magyarázattal"},
+      {"user": "Foglalj össze mindent két mondatban.", "expected": "A rövidítés és a fő előny tömör összefoglalása"}
+    ]
+  }
+]

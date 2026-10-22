@@ -1,0 +1,167 @@
+[
+  {
+    "id": "single-001",
+    "name": "NASA csuklópánt ellenállás magyar kérdéssel",
+    "question": "Milyen ellenállási tartomány szükséges az ESD csuklópánt wristband részéhez?",
+    "expectedBehavior": "Magyarul, kizárólag a kijelölt NASA-dokumentum alapján adja meg a 800 kΩ és 1,2 MΩ közötti tartományt. Ne találjon ki további értéket.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "language": "hu",
+    "category": "multilingual-document-fact"
+  },
+  {
+    "id": "single-002",
+    "name": "NASA ionizátor követelmények angolul",
+    "question": "What are the maximum charge dissipation time and offset voltage for air ionizers?",
+    "expectedBehavior": "Answer in English and state no more than 20 seconds and no more than ±35 V, based only on the selected document.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "language": "en",
+    "category": "documented-fact"
+  },
+  {
+    "id": "single-003",
+    "name": "NASA EPA páratartalom összehasonlítása",
+    "question": "Hasonlítsd össze a szükséges EPA páratartalmat HBM Class 1A és HBM Class 0A esetén.",
+    "expectedBehavior": "Különítse el a 30–70% és 40–70% relatív páratartalom-tartományokat, röviden és forráshűen.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "language": "hu",
+    "category": "comparison"
+  },
+  {
+    "id": "single-004",
+    "name": "QFN stencil ajánlások",
+    "question": "Foglalj össze három fontos stencilajánlást a QFN tokokhoz.",
+    "expectedBehavior": "Térjen ki a stencilvastagságra, a legalább 95 durométeres lehúzóra és a Type 3 vagy Type 4 no-clean pasztára.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "language": "hu",
+    "category": "instruction-following"
+  },
+  {
+    "id": "single-005",
+    "name": "QFN elhelyezési eltérés",
+    "question": "Explain how placement errors below and above 50 percent should be handled.",
+    "expectedBehavior": "Explain that slight misalignment can self-align during reflow, while gross misalignment should be removed before reflow.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "language": "en",
+    "category": "documented-procedure"
+  },
+  {
+    "id": "single-006",
+    "name": "QFN hiányzó adat kezelése",
+    "question": "Mekkora a dokumentumban szereplő QFN alkatrészek garantált villamos élettartama üzemórában?",
+    "expectedBehavior": "Jelezze, hogy a kijelölt dokumentum nem tartalmaz ilyen adatot, és ne találjon ki üzemóraértéket.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "language": "hu",
+    "category": "missing-information"
+  },
+  {
+    "id": "single-007",
+    "name": "GrifEye sűrített levegő",
+    "question": "Sorold fel röviden a GrifEye V2 sűrített levegős követelményeit.",
+    "expectedBehavior": "Legfeljebb 8 bar, 50 l/perc, vízmentes ipari levegő és 8 mm PU cső szerepeljen.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "category": "multilingual-document-fact"
+  },
+  {
+    "id": "single-008",
+    "name": "GrifEye telepítési környezet angolul",
+    "question": "List the installation environment requirements for GrifEye V2 in four bullet points.",
+    "expectedBehavior": "Give four concise points covering installation temperature, storage temperature, humidity and required clearance.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "en",
+    "category": "instruction-following"
+  },
+  {
+    "id": "single-009",
+    "name": "GrifEye hiányzó energiaadat",
+    "question": "Mekkora a GrifEye V2 óránkénti villamosenergia-fogyasztása?",
+    "expectedBehavior": "Jelezze, hogy a kijelölt dokumentumból ez nem állapítható meg, és ne találjon ki értéket.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "category": "missing-information"
+  },
+  {
+    "id": "single-010",
+    "name": "MPM és BOFA hőmérsékletek",
+    "question": "Készíts rövid összehasonlítást a 24 °C-ra állított BOFA klíma, az MPM és a befújt levegő hőmérsékletéről.",
+    "expectedBehavior": "Pontosan használja a 24 °C, 24,1 °C és 16,5 °C értékeket.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "language": "hu",
+    "category": "xlsx-fact"
+  },
+  {
+    "id": "single-011",
+    "name": "MPM hibakeresési javaslat",
+    "question": "Mit kell ellenőrizni, ha az MPM hőmérséklete eltér, és hol vannak a szenzorok?",
+    "expectedBehavior": "Említse a klímacsatlakozó kontakthibáját és tisztítását, a cserélhető mérőegységet, valamint a jobb oldalt elöl lévő szenzorpozíciót.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "language": "hu",
+    "category": "xlsx-procedure"
+  },
+  {
+    "id": "single-012",
+    "name": "SMEMA jelzések közérthetően",
+    "question": "Magyarázd el egyszerűen a Board Available és Machine Ready jelzések szerepét.",
+    "expectedBehavior": "Közérthetően különítse el az upstream panel rendelkezésre állását és a downstream fogadókészséget.",
+    "promptVariant": "conversational",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "language": "hu",
+    "category": "conversational"
+  },
+  {
+    "id": "single-013",
+    "name": "SMEMA_TIMEOUT hibakeresés",
+    "question": "Adj lépésről lépésre hibakeresési listát SMEMA_TIMEOUT esetére.",
+    "expectedBehavior": "Sorolja a fogadókészséget, mechanikai akadályokat, kábelt, kontaktusokat és panelérzékelőket.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "language": "hu",
+    "category": "documented-procedure"
+  },
+  {
+    "id": "single-014",
+    "name": "Modellmód alapfogalom",
+    "question": "Mit jelent az SMT rövidítés?",
+    "expectedBehavior": "Dokumentumforrás nélkül adjon rövid, helyes általános választ, és ne állítson dokumentumhivatkozást.",
+    "promptVariant": "default",
+    "knowledgeSourceMode": "model",
+    "selectedDocumentIds": [],
+    "language": "hu",
+    "category": "model-mode"
+  },
+  {
+    "id": "single-015",
+    "name": "Negatív dokumentumszűrés",
+    "question": "Milyen ellenállási tartomány szükséges az ESD csuklópánthoz?",
+    "expectedBehavior": "A kizárólag GrifEye dokumentumra korlátozott keresés ne adjon NASA-specifikus ellenállási értéket; jelezze a forráshiányt.",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "language": "hu",
+    "category": "negative-filter"
+  }
+]
