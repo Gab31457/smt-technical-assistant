@@ -1,0 +1,656 @@
+{
+  "savedAt": "2026-10-23T10:18:46.057Z",
+  "evaluationType": "prompt-batch",
+  "summary": {
+    "totalCases": 15,
+    "completedCases": 15,
+    "failedCases": 0,
+    "passedCases": 15,
+    "passRate": 1,
+    "averageRelevance": 5,
+    "averageInstructionFollowing": 5,
+    "averageGroundedness": 5,
+    "averageClarity": 5,
+    "averageOverallScore": 5,
+    "unsupportedClaimCount": 0,
+    "averageRetrievalTimeMs": 360.6,
+    "averageGenerationTimeMs": 4182.5333,
+    "averageTotalResponseTimeMs": 5756,
+    "totalInputTokens": 57788,
+    "totalOutputTokens": 4439,
+    "totalTokens": 62227,
+    "totalEstimatedCostUsd": 0.0113316
+  },
+  "results": [
+    {
+      "testCase": {
+        "id": "prompt-001",
+        "name": "NASA csuklópánt forráshű válasz",
+        "question": "Milyen ellenállási tartomány szükséges az ESD csuklópánt wristband részéhez?",
+        "expectedBehavior": "Magyarul, kizárólag a kijelölt dokumentum alapján adja meg a 800 kΩ–1,2 MΩ tartományt, és ne találjon ki további értéket.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+        ],
+        "category": "source-grounding",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. Rövid válasz: A ESD csuklópánt (wristband) ellenállási tartományának 800 kΩ és 1,2 MΩ között kell lennie.\n\n2. Érintett gép, típus vagy funkció: ESD védelmi rendszerek.\n\n3. Műszaki információ vagy eljárás: A csuklópánt ellenállását a csatlakozási pont és a bőrkontaktus felület között kell mérni.\n\n4. Ellenőrzési pontok: Minden használat előtt el kell végezni a funkcionális ellenőrzést (Go/No Go).\n\n5. Biztonsági megjegyzés: A megfelelő ESD védelem érdekében a csuklópánt állapotát mindig ellenőrizni kell használat előtt.\n\n6. Források: [FORRÁS 1], [FORRÁS 3], [FORRÁS 4].",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tükrözi a megadott forrást, amelyben az ESD csuklópánt ellenállási tartománya 800 kΩ és 1,2 MΩ között van. A válasz világos, érthető és a felhasználói kérdésre közvetlenül reagál."
+      },
+      "monitoring": {
+        "vectorSearchMs": 502,
+        "generationMs": 3498,
+        "totalResponseMs": 5561,
+        "inputTokens": 3862,
+        "outputTokens": 209,
+        "totalTokens": 4071,
+        "estimatedCostUsd": 0.0007047
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-002",
+        "name": "NASA páratartalom két osztályhoz",
+        "question": "Hasonlítsd össze a szükséges EPA páratartalmat HBM Class 1A és HBM Class 0A esetén.",
+        "expectedBehavior": "Különítse el pontosan a 30–70% és 40–70% tartományokat, röviden és forráshűen.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+        ],
+        "category": "instruction-following",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: Az EPA páratartalom követelményei eltérnek HBM Class 1A és HBM Class 0A esetén.\n\n2. **Érintett gép, típus vagy funkció**: ESD érzékeny hardverek, HBM Class 1A és HBM Class 0A.\n\n3. **Műszaki információ vagy eljárás**:\n   - **HBM Class 1A**: A relatív páratartalom 30% és 70% között kell legyen.\n   - **HBM Class 0A**: A relatív páratartalom 40% és 70% között kell legyen.\n\n4. **Ellenőrzési pontok**:\n   - Ellenőrizze a páratartalom mérésének gyakoriságát a személyzet által, illetve az eszköz beállításait.\n   - Rögzítse a mért adatokat a megadott ESD Control Program terv szerint.\n\n5. **Biztonsági megjegyzés**: A megfelelő páratartalom fenntartása elengedhetetlen a fémesztetikai hibák és a kondenzáció elkerülése érdekében.\n\n6. **Források**: \n   - [FORRÁS 1] - 7.2.5.5\n   - [FORRÁS 2] - 12",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan és világosan összehasonlítja a HBM Class 1A és HBM Class 0A páratartalom követelményeit a megadott források alapján, és minden szükséges információt tartalmaz a kérdés megválaszolásához."
+      },
+      "monitoring": {
+        "vectorSearchMs": 515,
+        "generationMs": 4480,
+        "totalResponseMs": 6419,
+        "inputTokens": 3612,
+        "outputTokens": 311,
+        "totalTokens": 3923,
+        "estimatedCostUsd": 0.0007284
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-003",
+        "name": "NASA angol kérdés magyar válasszal",
+        "question": "What are the ionizer charge dissipation time and offset voltage limits? Answer in Hungarian.",
+        "expectedBehavior": "Magyarul adja meg a legfeljebb 20 másodpercet és a legfeljebb ±35 V értéket.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+        ],
+        "category": "multilingual",
+        "language": "en"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. Az ionizátorok töltéselvezetési ideje és eltolási feszültség határértékei:\n   - Töltéselvezetési idő: ≤ 20 másodperc (+1000 V-ról +100 V-ra és -1000 V-ról -100 V-ra).\n   - Eltolási feszültség: ≤ ± 35 V.\n\n2. Érintett szabvány: ANSI/ESD S20.20 - 2014.\n\n3. Ellenőrzési pontok:\n   - Ellenőrizni kell a töltéselvezetési időt a munka területének középpontjában.\n   - Az ionizátorok tisztításához használhatóak a töltés elvezető hegyek a teljesítmény tesztelésekor.\n\n4. Biztonsági megjegyzés:\n   - Az ionizátorok használata előtt szükséges az ionizált levegő jelenlétét figyelembe venni a potenciális kárhitelesség érdekében.\n\n5. Források:\n   - Test1_nasa-std-87396b.pdf, 42. oldal.",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tartalmazza az ionizátorok töltéselvezetési idejét és eltolási feszültségét, amelyek a megadott forrásokban is szerepelnek. A válasz világos és érthető, valamint a felhasználói kérdésre közvetlenül reagál."
+      },
+      "monitoring": {
+        "vectorSearchMs": 305,
+        "generationMs": 3522,
+        "totalResponseMs": 5106,
+        "inputTokens": 3533,
+        "outputTokens": 257,
+        "totalTokens": 3790,
+        "estimatedCostUsd": 0.00068415
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-004",
+        "name": "NASA képzési időszak",
+        "question": "Meddig kell megőrizni a képzési nyilvántartást, és milyen gyakran kell újraképzést végezni?",
+        "expectedBehavior": "Adja meg az öt éves megőrzést és a 24 hónapos újraképzési időszakot.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+        ],
+        "category": "documented-fact",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: A képzési nyilvántartást legalább öt évig meg kell őrizni, és az újraképzést 24 havonta kell elvégezni.\n\n2. **Érintett gép, típus vagy funkció**: NASA képzési standardok.\n\n3. **Műszaki információ vagy eljárás**:\n   - A képzési nyilvántartást az oktatónak vagy az oktató szervezetnek minimum öt évig kell megőriznie (Forrás 5).\n   - Az újraképzés (retraining) minden operátor, inspektor és Level B oktató számára a korábbi képzés befejezése után 24 hónapon belül kötelező (Forrás 3).\n\n4. **Ellenőrzési pontok**: \n   - Ellenőrizze a képzési nyilvántartásokat és azok megőrzési idejét.\n   - Győződjön meg arról, hogy az újraképzés határidőn belül történik.\n\n5. **Biztonsági megjegyzés**: A képzési nyilvántartások pontossága és a rendszeres újraképzés nemcsak jogi kötelezettség, hanem a munkahelyi biztonság és a minőség biztosításának szempontjából is elengedhetetlen.\n\n6. **Források**: Test1_nasa-std-87396b.pdf, Oldal 24, 23.",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tükrözi a felhasználói kérdést, és a megadott források alapján alátámasztott információkat tartalmaz a képzési nyilvántartás megőrzési idejéről és az újraképzés gyakoriságáról."
+      },
+      "monitoring": {
+        "vectorSearchMs": 276,
+        "generationMs": 5345,
+        "totalResponseMs": 6850,
+        "inputTokens": 3408,
+        "outputTokens": 343,
+        "totalTokens": 3751,
+        "estimatedCostUsd": 0.000717
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-005",
+        "name": "QFN stencil összefoglaló",
+        "question": "Foglalj össze három fontos stencilajánlást a QFN tokokhoz.",
+        "expectedBehavior": "Térjen ki a stencilvastagságra, a legalább 95 durométeres lehúzóra és a Type 3 vagy Type 4 no-clean pasztára.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+        ],
+        "category": "instruction-following",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Stencil Design**: A stencil vastagsága általában 100-150 μm (0.004-0.006 in.) tartományban ajánlott, figyelembe véve az IPC-7525 előírásait. A trapéz alakú nyílások javasoltak a forrasztópaszta egyenletes kiadása érdekében.\n\n2. **Squeegee Hardness and Thickness**: A squeegee durometer mérése 95, vagy annál keményebb legyen. A javasolt stencilvastagság QFN csomagokhoz 0.1016 mm-től 0.125 mm-ig (4-5 mils) terjed, a megfelelő területarányok figyelembevételével.\n\n3. **Alignment and Paste Transfer**: A pick-and-place gépek pontossága kritikus a csomagok elhelyezésében. A gyenge illeszkedésű alkatrészeknek (50%-nál kisebb eltérés) automatikusan önigazodik a forrasztás során, míg a jelentős eltéréseket (50%-nál nagyobb eltérés) el kell távolítani a forrasztás előtt.\n\n### Források:\n- Test2_Quad_Flatpack_scba017d.pdf (Chunk index: 45, 46, 49)",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan összefoglalja a stencilajánlásokat a QFN tokokhoz, és minden fontos paramétert, mint a stencilvastagság, a lehúzó keménysége és a forrasztópaszta típusa, a megadott források alapján tartalmazza."
+      },
+      "monitoring": {
+        "vectorSearchMs": 279,
+        "generationMs": 4241,
+        "totalResponseMs": 5643,
+        "inputTokens": 3350,
+        "outputTokens": 304,
+        "totalTokens": 3654,
+        "estimatedCostUsd": 0.0006849
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-006",
+        "name": "QFN placement English",
+        "question": "Explain how placement errors below and above 50 percent should be handled.",
+        "expectedBehavior": "Explain that slight misalignment can self-align during reflow, while gross misalignment should be removed before reflow.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+        ],
+        "category": "documented-fact",
+        "language": "en"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: A 50% alatti elhelyezési hibák automatikusan önállósítanak a visszaáramlás során, míg a 50% feletti hibákat el kell távolítani a visszaáramlás előtt.\n\n2. **Érintett gép, típus vagy funkció**: Pick-and-place gépek, QFN csomagok.\n\n3. **Műszaki információ vagy eljárás**:\n   - **50% alatti hiba**:\n     - Az enyhén elhelyezett alkatrészek (kevesebb mint 50% eltérés a terminál-pad középpontjától) automatikusan önállósodnak visszaáramlás alatt.\n   - **50% feletti hiba**:\n     - A grossz elhelyezett alkatrészeket (több mint 50% eltérés a terminál-pad középpontjától) el kell távolítani a visszaáramlás előtt, mivel elektromos rövidzárlatot okozhatnak a forrasztási hidak miatt.\n\n4. **Ellenőrzési pontok**:\n   - Ellenőrizze az elhelyezés pontosságát a gép beállt helyén.\n   - Vizuális ellenőrzés a VOD (vision on demand) használatával.\n\n5. **Biztonsági megjegyzés**: Mindig kövesse a gyártó ajánlásait a gépek és alkatrészek biztonságos kezelése érdekében.\n\n6. **Források**:\n   - Test2_Quad_Flatpack_scba017d.pdf (Chunk index: 49, 50)",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tükrözi a felhasználói kérdést, és a megadott források alapján részletesen kifejti a 50% alatti és feletti elhelyezési hibák kezelését. A forrásokból származó információk egyértelműen alátámasztják a válaszban szereplő állításokat."
+      },
+      "monitoring": {
+        "vectorSearchMs": 311,
+        "generationMs": 4103,
+        "totalResponseMs": 5460,
+        "inputTokens": 3256,
+        "outputTokens": 384,
+        "totalTokens": 3640,
+        "estimatedCostUsd": 0.0007188
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-007",
+        "name": "QFN száraz csomagolás",
+        "question": "Milyen a QFN alkatrészek száraz csomagolása és minimális eltarthatósága?",
+        "expectedBehavior": "Nevezze meg a nedvességzáró zacskót, nedvszívót, páratartalom-jelző kártyát és a legalább 12 hónapos eltarthatóságot.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+        ],
+        "category": "source-grounding",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: A QFN alkatrészeket száraz csomagolásban kell tárolni, és a minimális eltarthatóságuk a csomagolás időpontjától számítva legalább 12 hónap.\n\n2. **Érintett gép, típus vagy funkció**: SCBA017D Quad Flatpack No-Lead Logic Packages.\n\n3. **Műszaki információ vagy eljárás**: \n   - A QFN alkatrészek száraz csomagolása desiccant anyagból és egy páratartalom jelző kártyából áll, amelyet egy nedvességgátló zsákban (MBB) zárnak. \n   - A száraz csomagolás célja a párának való kitettség minimalizálása annak érdekében, hogy az alkatrészek ne „popcorning” jelenséggel találkozzanak reflow folyamat során.\n\n4. **Ellenőrzési pontok**: \n   - Ellenőrizze a csomagolás teherviselő szintjét (MSL) a J-STD-020 szabvány szerint.\n   - Győződjön meg arról, hogy a desiccant és a nedvességjelző kártya jelen van a csomagolásban.\n\n5. **Biztonsági megjegyzés**: A nedvesség érzékeny anyagokat a szabványoknak megfelelően kell kezelni, hogy elkerüljük az esetleges hibák és anyagkárok kialakulását.\n\n6. **Források**: \n   - [FORRÁS 1]\n   - [FORRÁS 3]",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan reagál a felhasználó kérdésére, tartalmazza a QFN alkatrészek száraz csomagolására és eltarthatóságára vonatkozó információkat, amelyek a megadott forrásokból származnak. A válasz világos és érthető, valamint következetes a korábbi információkkal."
+      },
+      "monitoring": {
+        "vectorSearchMs": 306,
+        "generationMs": 5910,
+        "totalResponseMs": 7378,
+        "inputTokens": 3694,
+        "outputTokens": 389,
+        "totalTokens": 4083,
+        "estimatedCostUsd": 0.0007875
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-008",
+        "name": "GrifEye levegocsatlakozas reszletei",
+        "question": "Milyen nyomasu es legszallitasu suritett levego szukseges a GrifEye V2 berendezeshez, es milyen csovel kell csatlakoztatni?",
+        "expectedBehavior": "A valasz tartalmazza a maximum 8 bar nyomast, az 50 l/perc legszallitast, a vizmentes ipari suritett levegot es a 8 mm-es PU csovet.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "5737e1cf-2028-400a-b301-b87f1b691cba"
+        ],
+        "category": "documented-fact",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: A GrifEye V2 berendezéshez max. 8 bar nyomású, 50 l/perc légszállítású, vízmentes ipari sűrített levegő szükséges, 8 mm-es PU csővel kell csatlakoztatni.\n\n2. **Érintett gép, típus vagy funkció**: GrifEye V2 stencil vizsgáló berendezés\n\n3. **Műszaki információ vagy eljárás**: \n   - **Nyomás**: Max 8 bar\n   - **Légszállítás**: 50 l/perc\n   - **Cső**: 8 mm-es PU cső\n\n4. **Ellenőrzési pontok**: \n   - Ellenőrizzük, hogy a léghálózat nyomása nem haladja meg a 8 bar-t. Ha még magasabb, nyomáscsökkentő egységet szükséges beiktatni.\n\n5. **Biztonsági megjegyzés**: A berendezés esetén a nyomás szabályozása fontos a biztonságos működés érdekében, ne csatlakoztassa a gépet 8 bar-nál magasabb nyomású hálózathoz.\n\n6. **Források**: GrifEye V2 (FORRÁS 5)",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tartalmazza a GrifEye V2 berendezéshez szükséges műszaki paramétereket, amelyek a megadott forrásokban is szerepelnek. A válasz világos és érthető, valamint követi a felhasználói kérdést."
+      },
+      "monitoring": {
+        "vectorSearchMs": 379,
+        "generationMs": 3804,
+        "totalResponseMs": 5565,
+        "inputTokens": 4214,
+        "outputTokens": 309,
+        "totalTokens": 4523,
+        "estimatedCostUsd": 0.0008175
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-009",
+        "name": "GrifEye installation temperature English",
+        "question": "List the installation temperature, storage temperature and maximum humidity requirements for GrifEye V2 in three bullet points.",
+        "expectedBehavior": "Give exactly three concise points: 20-24 C installation temperature, 15-25 C storage temperature and maximum 60% non-condensing humidity.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "5737e1cf-2028-400a-b301-b87f1b691cba"
+        ],
+        "category": "multilingual",
+        "language": "en"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Telepítési hőmérséklet**: 20-24 °C közötti helyiségbe telepíthető.\n2. **Tárolási hőmérséklet**: 15 °C és 25 °C között tárolható és raktározható.\n3. **Maximális páratartalom**: maximum 60% nem kondenzálódó páratartalmú helyiség.\n\n### Források\n- GrifEye V2.docx (Chunk index: 3, 4)",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tükrözi a felhasználói kérdést, és a megadott források alapján helyes információkat tartalmaz a GrifEye V2 telepítési és tárolási hőmérsékletéről, valamint a maximális páratartalomról."
+      },
+      "monitoring": {
+        "vectorSearchMs": 525,
+        "generationMs": 1979,
+        "totalResponseMs": 3784,
+        "inputTokens": 4380,
+        "outputTokens": 126,
+        "totalTokens": 4506,
+        "estimatedCostUsd": 0.0007326
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-010",
+        "name": "GrifEye hiányzó adat kezelése",
+        "question": "Mekkora a GrifEye V2 óránkénti villamosenergia-fogyasztása?",
+        "expectedBehavior": "Jelezze egyértelműen, hogy a kijelölt dokumentumból ez az adat nem állapítható meg, és ne találjon ki értéket.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "5737e1cf-2028-400a-b301-b87f1b691cba"
+        ],
+        "category": "missing-information",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "A GrifEye V2 óránkénti villamosenergia-fogyasztására vonatkozó információ a megadott forrásokban nem szerepel. Javaslom a gyártó, Grif-Tools Kft. vagy a forgalmazó által biztosított dokumentációk átnézését, ahol valószínűleg részletes adatokat találhat.",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "Az asszisztens pontosan jelezte, hogy a GrifEye V2 óránkénti villamosenergia-fogyasztására vonatkozó információ nem áll rendelkezésre a megadott forrásokban. A válasz világos, érthető és a felhasználói kérdésre közvetlenül reagál."
+      },
+      "monitoring": {
+        "vectorSearchMs": 401,
+        "generationMs": 1894,
+        "totalResponseMs": 3330,
+        "inputTokens": 4256,
+        "outputTokens": 84,
+        "totalTokens": 4340,
+        "estimatedCostUsd": 0.0006888
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-011",
+        "name": "MPM mérési adatok",
+        "question": "Készíts rövid összehasonlítást a 24 °C-ra állított BOFA klíma, az MPM és a befújt levegő hőmérsékletéről.",
+        "expectedBehavior": "A válasz pontosan használja a 24 °C, 24,1 °C és 16,5 °C értékeket.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+        ],
+        "category": "documented-fact",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: A 24 °C-ra állított BOFA klíma, az MPM és a befújt levegő hőmérsékleti adatok a következőképpen alakulnak: a klíma kijelzett hőmérséklete 24 °C, az MPM hőmérséklete 24,1 °C, míg a befújt levegő hőmérséklete 16,5 °C.\n\n2. **Érintett gép, típus vagy funkció**: BOFA klíma és MPM pasztázógép.\n\n3. **Műszaki információ vagy eljárás**:\n   - BOFA klíma beállított hőmérséklete: 24 °C (C18).\n   - MPM szoftver által kijelzett hőmérséklet: 24,1 °C (E18).\n   - Klíma csövén az MPM-be kilépő hőmérséklet: 16,5 °C (F18).\n\n4. **Ellenőrzési pontok**: \n   - A klíma és az MPM hőmérséklete közel azonos (a klíma és MPM szenzor pozíciója: gép belsejében, jobb oldalt elöl).\n   - Helyes hőmérséklet mérése feltétele, hogy ne legyen kontakthiba a klíma csatlakozónál (C24).\n\n5. **Biztonsági megjegyzés**: Ellenőrizze a klíma csatlakozásait, hogy elkerülje a kontakthibákat, amelyek befolyásolhatják a méréseket.\n\n6. **Források**: MPM_Bofa höfokok (MPM-Bofa munkalap, sorok: C18, E18, F18, C23, C24).",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan tükrözi a felhasználói kérdést, a hőmérsékleti adatokat a megadott források alapján helyesen használja, és világosan, érthetően van megfogalmazva. Minden szükséges információt tartalmaz, és a források is alátámasztják az állításokat."
+      },
+      "monitoring": {
+        "vectorSearchMs": 299,
+        "generationMs": 6674,
+        "totalResponseMs": 8286,
+        "inputTokens": 4293,
+        "outputTokens": 435,
+        "totalTokens": 4728,
+        "estimatedCostUsd": 0.00090495
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-012",
+        "name": "MPM hibakeresési javaslat",
+        "question": "Mit kell ellenőrizni, ha az MPM hőmérséklete eltér, és hol vannak a szenzorok?",
+        "expectedBehavior": "Említse a klímacsatlakozó kontakthibáját és tisztítását, a cserélhető mérőegységet, valamint a jobb oldalt elöl lévő szenzorpozíciót.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+        ],
+        "category": "source-grounding",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**: Ellenőrizni kell a klíma csatlakozóját kontakthiba szempontjából, valamint a hőmérséklet mérőegység állapotát.\n\n2. **Érintett gép, típus vagy funkció**: MPM pasztázógép.\n\n3. **Műszaki információ vagy eljárás**:\n   - **Szenzorok elhelyezkedése**: Az MPM szenzor belfelé nézve a gép belsejében, jobb oldalt elöl található (C23).\n   - **Helyes mérés feltétele**: A klíma csatlakozója ne legyen kontakthiba, ezt tisztítani kell (C24).\n   - Ha az MPM hőmérséklete eltér, a mérőegység meghibásodhatott, és cserélhető (C25).\n\n4. **Ellenőrzési pontok**:\n   - Ellenőrizni a klíma csatlakozót a kontakthiba elhárítása érdekében.\n   - Ha a hőmérsékletek továbbra is eltérnek, mérjük meg a MPM és a klíma által kiírt hőmérsékletet egy kontrol mérő, mint például a Vaisala logger segítségével (B14).\n\n5. **Biztonsági megjegyzés**: Minden ellenőrzést és karbantartást képzett szakember végezzen, betartva a gyártói utasításokat és biztonsági előírásokat.\n\n6. **Források**: MPM_Bofa höfokok.xlsx, Munkalap: MPM-Bofa.",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan reagál a felhasználó kérdésére, részletesen tartalmazza a szükséges ellenőrzési lépéseket és a szenzorok elhelyezkedését, mindezt a megadott források alapján. A válasz világos és érthető, a korábbi információkat is figyelembe veszi."
+      },
+      "monitoring": {
+        "vectorSearchMs": 278,
+        "generationMs": 5465,
+        "totalResponseMs": 6787,
+        "inputTokens": 4278,
+        "outputTokens": 388,
+        "totalTokens": 4666,
+        "estimatedCostUsd": 0.0008745
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-013",
+        "name": "SMEMA jelzések",
+        "question": "Magyarázd el egyszerűen a Board Available és Machine Ready jelzések szerepét.",
+        "expectedBehavior": "Közérthetően különítse el az upstream panel rendelkezésre állását és a downstream fogadókészséget.",
+        "promptVariant": "conversational",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+        ],
+        "category": "instruction-following",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz**\n   A Board Available és Machine Ready jelzések kulcsszerepet játszanak a panel mozgatásának engedélyezésében az SMT gyártósoron.\n\n2. **Érintett gép, típus vagy funkció**\n   Ezek a jelzések minden SMEMA (Surface Mount Equipment Manufacturers Association) kompatibilis gép esetén érvényesek.\n\n3. **Műszaki információ vagy javasolt ellenőrzési sorrend**\n   - **Board Available**: Ez a jelzés azt mutatja, hogy az upstream (feljebb álló) gépen a nyomtatott áramkör (panel) fogadásra kész. Csak akkor aktiválódik, ha van átadható panel.\n   - **Machine Ready**: Ez a jelzés azt jelzi, hogy a downstream (lejjebb álló) gép készen áll a panel fogadására. Fontos, hogy legalább 200 ms-ig stabilan aktív állapotban kell tartania azt a panelátadás megkezdése előtt.\n   - A panel átadása csak abban az esetben engedélyezett, ha a Board Available jelzés aktív az upstream gépen, és a Machine Ready jelzés aktiválódott a downstream gépen is.\n\n4. **Biztonsági megjegyzés**\n   A SMEMA jelek nem helyettesítik a védelmi mechanizmusokat, ezért a karbantartás során mindig a megfelelő biztonsági előírásokat be kell tartani.\n\n5. **Források**\n   - smema_teszt_dokumentum (FORRÁS 1, 2, 3, 4)",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan és világosan magyarázza el a Board Available és Machine Ready jelzések szerepét, a megadott források alapján. A válasz minden elvárt szempontot teljesít, és a forrásokból származó információkat helyesen alkalmazza."
+      },
+      "monitoring": {
+        "vectorSearchMs": 364,
+        "generationMs": 5539,
+        "totalResponseMs": 6909,
+        "inputTokens": 3950,
+        "outputTokens": 376,
+        "totalTokens": 4326,
+        "estimatedCostUsd": 0.0008181
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-014",
+        "name": "SMEMA_TIMEOUT hibakeresés",
+        "question": "Adj lépésről lépésre hibakeresési listát SMEMA_TIMEOUT esetére.",
+        "expectedBehavior": "A dokumentum alapján sorolja a fogadókészséget, mechanikai akadályokat, kábelt, kontaktusokat és panelérzékelőket.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+        ],
+        "category": "instruction-following",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "1. **Rövid válasz:**\n   A SMEMA_TIMEOUT hiba esetén a következő lépéseket kell végrehajtani.\n\n2. **Érintett gép, típus vagy funkció:**\n   SMEMA-kompatibilis gépek.\n\n3. **Műszaki információ vagy eljárás:**\n   - Ellenőrizze, hogy a downstream gép Machine Ready jelzése aktív-e.\n   - Ellenőrizze a szállítószalag mechanikai akadályait.\n   - Ellenőrizze a SMEMA kábel csatlakozását.\n   - Ellenőrizze a kontaktusok váltását.\n   - Ellenőrizze a panelérzékelők állapotát.\n\n4. **Ellenőrzési pontok:**\n   - Stabil Machine Ready jelzés legalább 200 ms-ig.\n   - Panelátadási időkorlát: 10 másodperc.\n   - Ha a jelzések aktívak, de a panelátadás nem indul, a fenti ellenőrzéseket kell elvégezni.\n\n5. **Biztonsági megjegyzés:**\n   - A SMEMA jelzés nem helyettesíti a vészleállító áramkört, és nem használható személyvédelmi funkciókhoz.\n\n6. **Források:**\n   - smema_teszt_dokumentum.txt",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan követi a felhasználói kérdést, és a megadott források alapján részletes hibakeresési lépéseket tartalmaz a SMEMA_TIMEOUT hiba esetére. Minden információ a dokumentumból származik, és világosan van megfogalmazva."
+      },
+      "monitoring": {
+        "vectorSearchMs": 342,
+        "generationMs": 3601,
+        "totalResponseMs": 5036,
+        "inputTokens": 3851,
+        "outputTokens": 307,
+        "totalTokens": 4158,
+        "estimatedCostUsd": 0.00076185
+      }
+    },
+    {
+      "testCase": {
+        "id": "prompt-015",
+        "name": "SMEMA hiányzó szabványadat",
+        "question": "Mi a SMEMA szabvány hivatalos csatlakozójának teljes lábkiosztása?",
+        "expectedBehavior": "Jelezze, hogy a kijelölt tesztdokumentum nem tartalmaz teljes hivatalos lábkiosztást, és ne egészítse ki modellismeretből.",
+        "promptVariant": "strict",
+        "knowledgeSourceMode": "documents",
+        "selectedDocumentIds": [
+          "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+        ],
+        "category": "missing-information",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "answer": "A SMEMA szabvány hivatalos csatlakozójának teljes lábkiosztása a megadott SMT műszaki forrásokban nem szerepel. A források a SMEMA interfész működésére, a jelzések jelentésére és a hibakeresési eljárásokra koncentrálnak, de nem tartalmaznak konkrét lábkiosztást. \n\n### Javasolt további lépések:\n1. Ellenőrizze a gyártói dokumentációt, ahol a pontos lábkiosztás megtalálható lehet.\n2. Kérjen szakmai segítséget a SMEMA releváns mérnökétől vagy technikai csapatától.\n\n### Biztonsági megjegyzés:\nKérjük, hogy mindig tartsa be a gyártói utasításokat és a biztonsági előírásokat a rendszerek karbantartása és ellenőrzése során. \n\n### Források:\n- smema_teszt_dokumentum.txt",
+      "answerModel": "gpt-4o-mini",
+      "judgeModel": "gpt-4o-mini",
+      "judge": {
+        "relevance": 5,
+        "instructionFollowing": 5,
+        "groundedness": 5,
+        "clarity": 5,
+        "contextRetention": 5,
+        "consistency": 5,
+        "overallScore": 5,
+        "passed": true,
+        "unsupportedClaims": [],
+        "explanation": "A válasz pontosan jelzi, hogy a megadott források nem tartalmazzák a SMEMA csatlakozó lábkiosztását, és javaslatokat ad a további lépésekre, ami a forrásokkal összhangban van."
+      },
+      "monitoring": {
+        "vectorSearchMs": 327,
+        "generationMs": 2683,
+        "totalResponseMs": 4226,
+        "inputTokens": 3851,
+        "outputTokens": 217,
+        "totalTokens": 4068,
+        "estimatedCostUsd": 0.00070785
+      }
+    }
+  ]
+}

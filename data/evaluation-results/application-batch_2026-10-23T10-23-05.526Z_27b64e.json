@@ -1,0 +1,405 @@
+{
+  "savedAt": "2026-10-23T10:23:05.526Z",
+  "evaluationType": "application-batch",
+  "summary": {
+    "totalCases": 10,
+    "completedCases": 10,
+    "failedCases": 0,
+    "passedCases": 10,
+    "passRate": 1,
+    "totalSteps": 22,
+    "passedSteps": 22,
+    "stepPassRate": 1,
+    "averageCaseDurationMs": 3746.9,
+    "averageRetrievalTimeMs": 229.5,
+    "averageGenerationTimeMs": 3174.8,
+    "averageTotalResponseTimeMs": 4107.4,
+    "totalInputTokens": 23469,
+    "totalOutputTokens": 2199,
+    "totalTokens": 25668,
+    "totalEstimatedCostUsd": 0.00483975
+  },
+  "results": [
+    {
+      "testCase": {
+        "id": "app-001",
+        "name": "Dokumentumlista elérhetősége",
+        "scenario": "document-list"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Dokumentumlista lekérése",
+          "passed": true,
+          "durationMs": 0,
+          "details": "5 dokumentum található."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 0,
+        "generationMs": 0,
+        "totalResponseMs": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "estimatedCostUsd": 0
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-002",
+        "name": "Dokumentumok feldolgozási állapota",
+        "scenario": "documents-ready"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Feldolgozási állapot ellenőrzése",
+          "passed": true,
+          "durationMs": 0,
+          "details": "Minden dokumentum feldolgozása befejeződött."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 0,
+        "generationMs": 0,
+        "totalResponseMs": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "estimatedCostUsd": 0
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-003",
+        "name": "Embeddingek teljessége",
+        "scenario": "embeddings-complete"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Embeddingek ellenőrzése",
+          "passed": true,
+          "durationMs": 0,
+          "details": "Minden chunk rendelkezik embeddinggel."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 0,
+        "generationMs": 0,
+        "totalResponseMs": 0,
+        "inputTokens": 0,
+        "outputTokens": 0,
+        "totalTokens": 0,
+        "estimatedCostUsd": 0
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-004",
+        "name": "Magyar kérdés angol NASA PDF-hez",
+        "scenario": "document-chat",
+        "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+        "selectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+        "expectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+        "expectedAnswerIncludes": [
+          "800",
+          "1,2"
+        ],
+        "expectedSourceMetadata": "page",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Elvárt forrás használata",
+          "passed": true,
+          "durationMs": 8901,
+          "details": "Test1_nasa-std-87396b.pdf, Test1_nasa-std-87396b.pdf, Test1_nasa-std-87396b.pdf, Test1_nasa-std-87396b.pdf, Test1_nasa-std-87396b.pdf"
+        },
+        {
+          "name": "Elvárt választartalom",
+          "passed": true,
+          "durationMs": 8901,
+          "details": "Az elvárt válaszelemek megtalálhatók."
+        },
+        {
+          "name": "Forrásmetaadat",
+          "passed": true,
+          "durationMs": 8901,
+          "details": "Elvárt metaadat: page."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 534,
+        "generationMs": 6685,
+        "totalResponseMs": 8840,
+        "inputTokens": 3865,
+        "outputTokens": 293,
+        "totalTokens": 4158,
+        "estimatedCostUsd": 0.00075555
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-005",
+        "name": "Magyar kérdés angol GrifEye dokumentumhoz",
+        "scenario": "document-chat",
+        "question": "Milyen sűrített levegős nyomás, légszállítás és csőátmérő szükséges a GrifEye V2 berendezéshez?",
+        "selectedDocumentFilename": "GrifEye V2.doc",
+        "expectedDocumentFilename": "GrifEye V2.doc",
+        "expectedAnswerIncludes": [
+          "8 bar",
+          "50",
+          "8 mm"
+        ],
+        "expectedSourceMetadata": "none",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Elvárt forrás használata",
+          "passed": true,
+          "durationMs": 6366,
+          "details": "GrifEye V2.docx, GrifEye V2.docx, GrifEye V2.docx, GrifEye V2.docx, GrifEye V2.docx"
+        },
+        {
+          "name": "Elvárt választartalom",
+          "passed": true,
+          "durationMs": 6367,
+          "details": "Az elvárt válaszelemek megtalálhatók."
+        },
+        {
+          "name": "Forrásmetaadat",
+          "passed": true,
+          "durationMs": 6367,
+          "details": "Elvárt metaadat: none."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 869,
+        "generationMs": 4089,
+        "totalResponseMs": 6358,
+        "inputTokens": 4257,
+        "outputTokens": 350,
+        "totalTokens": 4607,
+        "estimatedCostUsd": 0.00084855
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-006",
+        "name": "XLSX forráshely visszaadása",
+        "scenario": "document-chat",
+        "question": "Milyen hőfokadatok szerepelnek az MPM és BOFA táblázatban?",
+        "selectedDocumentFilename": "MPM_Bofa höfokok.xlsx",
+        "expectedDocumentFilename": "MPM_Bofa höfokok.xlsx",
+        "expectedAnswerIncludes": [],
+        "expectedSourceMetadata": "worksheet",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Elvárt forrás használata",
+          "passed": true,
+          "durationMs": 7612,
+          "details": "MPM_Bofa höfokok.xlsx, MPM_Bofa höfokok.xlsx, MPM_Bofa höfokok.xlsx, MPM_Bofa höfokok.xlsx, MPM_Bofa höfokok.xlsx"
+        },
+        {
+          "name": "Elvárt választartalom",
+          "passed": true,
+          "durationMs": 7612,
+          "details": "Az elvárt válaszelemek megtalálhatók."
+        },
+        {
+          "name": "Forrásmetaadat",
+          "passed": true,
+          "durationMs": 7612,
+          "details": "Elvárt metaadat: worksheet."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 313,
+        "generationMs": 6108,
+        "totalResponseMs": 7602,
+        "inputTokens": 4271,
+        "outputTokens": 453,
+        "totalTokens": 4724,
+        "estimatedCostUsd": 0.00091245
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-007",
+        "name": "Második angol PDF dokumentumszűrése",
+        "scenario": "document-chat",
+        "question": "What technical requirements are described for quad flatpack components?",
+        "selectedDocumentFilename": "Test2_Quad_Flatpack_scba017d.pdf",
+        "expectedDocumentFilename": "Test2_Quad_Flatpack_scba017d.pdf",
+        "expectedAnswerIncludes": [],
+        "expectedSourceMetadata": "page",
+        "language": "en"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Elvárt forrás használata",
+          "passed": true,
+          "durationMs": 5929,
+          "details": "Test2_Quad_Flatpack_scba017d.pdf, Test2_Quad_Flatpack_scba017d.pdf, Test2_Quad_Flatpack_scba017d.pdf, Test2_Quad_Flatpack_scba017d.pdf, Test2_Quad_Flatpack_scba017d.pdf"
+        },
+        {
+          "name": "Elvárt választartalom",
+          "passed": true,
+          "durationMs": 5929,
+          "details": "Az elvárt válaszelemek megtalálhatók."
+        },
+        {
+          "name": "Forrásmetaadat",
+          "passed": true,
+          "durationMs": 5929,
+          "details": "Elvárt metaadat: page."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 261,
+        "generationMs": 4418,
+        "totalResponseMs": 5920,
+        "inputTokens": 3149,
+        "outputTokens": 428,
+        "totalTokens": 3577,
+        "estimatedCostUsd": 0.00072915
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-008",
+        "name": "Negatív dokumentumszűrés",
+        "scenario": "negative-document-filter",
+        "question": "Milyen ellenállási tartomány szükséges a csuklópánt személyi földelőrendszeréhez?",
+        "selectedDocumentFilename": "GrifEye V2.doc",
+        "expectedDocumentFilename": "Test1_nasa-std_87396b.pdf",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Nem kijelölt dokumentum kizárása",
+          "passed": true,
+          "durationMs": 5466,
+          "details": "A nem kijelölt dokumentum nem szerepel a források között."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 318,
+        "generationMs": 3568,
+        "totalResponseMs": 5459,
+        "inputTokens": 4183,
+        "outputTokens": 209,
+        "totalTokens": 4392,
+        "estimatedCostUsd": 0.00075285
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-009",
+        "name": "Modellmód dokumentumforrás nélkül",
+        "scenario": "model-mode",
+        "question": "Mit jelent az SMT rövidítés?",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Modellmód válasza",
+          "passed": true,
+          "durationMs": 3173,
+          "details": "A modellmód választ adott."
+        },
+        {
+          "name": "Dokumentumforrások hiánya",
+          "passed": true,
+          "durationMs": 3173,
+          "details": "0 dokumentumforrás érkezett."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 0,
+        "generationMs": 3165,
+        "totalResponseMs": 3165,
+        "inputTokens": 1872,
+        "outputTokens": 220,
+        "totalTokens": 2092,
+        "estimatedCostUsd": 0.0004128
+      }
+    },
+    {
+      "testCase": {
+        "id": "app-010",
+        "name": "Chat session mentés, visszatöltés és törlés",
+        "scenario": "session-roundtrip",
+        "question": "Mit jelent az SMT rövidítés?",
+        "language": "hu"
+      },
+      "success": true,
+      "passed": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "Session létrehozása",
+          "passed": true,
+          "durationMs": 11,
+          "details": "Session: 82198f32-f6dd-4926-a6f9-fdaf449964ae"
+        },
+        {
+          "name": "Üzenet mentése",
+          "passed": true,
+          "durationMs": 0,
+          "details": "Az asszisztensválasz elkészült."
+        },
+        {
+          "name": "Session visszatöltése",
+          "passed": true,
+          "durationMs": 21,
+          "details": "2 üzenet töltődött vissza."
+        },
+        {
+          "name": "Tesztsession törlése",
+          "passed": true,
+          "durationMs": 14,
+          "details": "A tesztsession törölve."
+        }
+      ],
+      "monitoring": {
+        "vectorSearchMs": 0,
+        "generationMs": 3715,
+        "totalResponseMs": 3730,
+        "inputTokens": 1872,
+        "outputTokens": 246,
+        "totalTokens": 2118,
+        "estimatedCostUsd": 0.0004284
+      }
+    }
+  ]
+}

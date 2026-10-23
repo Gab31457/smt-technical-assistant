@@ -5,9 +5,16 @@
     "question": "Milyen ellenállási tartomány szükséges az ESD csuklópánt wristband részéhez?",
     "expectedBehavior": "A válasz a kijelölt NASA-dokumentum alapján adja meg a 800 kΩ és 1,2 MΩ közötti tartományt.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [94, 95],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      94,
+      95
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -21,9 +28,16 @@
     "question": "Mekkora ellenállási tartományt ír elő a NASA az ESD munkafelületekre?",
     "expectedBehavior": "A válasz adja meg a 10^6 Ω és 10^9 Ω közötti disszipatív tartományt.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [92, 93],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      92,
+      93
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -37,9 +51,16 @@
     "question": "Milyen relatív páratartalom szükséges HBM Class 1A és HBM Class 0A hardver feldolgozásakor?",
     "expectedBehavior": "A válasz külön adja meg a 30–70% és 40–70% RH tartományokat.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [97, 103],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      97,
+      103
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -53,9 +74,16 @@
     "question": "What are the maximum charge dissipation time and offset voltage for air ionizers?",
     "expectedBehavior": "The answer states no more than 20 seconds and no more than ±35 V.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [99, 103],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      99,
+      103
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -69,9 +97,16 @@
     "question": "Mekkora lehet legfeljebb a forrasztópákacsúcs és a föld közötti ellenállás?",
     "expectedBehavior": "A válasz szerint az ellenállásnak 5 Ω alatt kell lennie.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [100, 103],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      100,
+      103
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -85,9 +120,17 @@
     "question": "How long must training records be retained, and how recent must training evidence be?",
     "expectedBehavior": "The answer states at least five years for records and evidence within the prior 24 months.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [47, 48, 55],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      47,
+      48,
+      55
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -101,9 +144,15 @@
     "question": "Milyen hőmérsékleti tartományon kívül ajánlott korlátozni a workmanship műveleteket?",
     "expectedBehavior": "A válasz szerint 18 °C alatt vagy 30 °C felett célszerű korlátozni a műveleteket.",
     "expectedSource": "Test1_nasa-std-87396b",
-    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
-    "relevantChunkIndexes": [74],
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "expectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
+    "relevantChunkIndexes": [
+      74
+    ],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -117,9 +166,15 @@
     "question": "What are the nominal package dimensions and thickness of the QFN-14, QFN-16 and QFN-20 packages?",
     "expectedBehavior": "The answer gives 3.5×3.5 mm, 4.0×3.5 mm, 4.5×3.5 mm and 0.90 mm thickness.",
     "expectedSource": "Test2_Quad_Flatpack_scba017d",
-    "expectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
-    "relevantChunkIndexes": [15],
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
+    "relevantChunkIndexes": [
+      15
+    ],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -133,9 +188,16 @@
     "question": "Milyen általános és ajánlott stencilvastagságot ad meg a QFN dokumentum?",
     "expectedBehavior": "A válasz tartalmazza a 100–150 µm általános és a 0,1016–0,125 mm ajánlott tartományt.",
     "expectedSource": "Test2_Quad_Flatpack_scba017d",
-    "expectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
-    "relevantChunkIndexes": [45, 46],
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
+    "relevantChunkIndexes": [
+      45,
+      46
+    ],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -149,9 +211,16 @@
     "question": "Mi történik 50%-nál kisebb, illetve 50%-nál nagyobb QFN elhelyezési eltérésnél?",
     "expectedBehavior": "A válasz szerint a kisebb eltérés reflow közben önbeállhat, a nagyobb eltérésű alkatrészt reflow előtt el kell távolítani.",
     "expectedSource": "Test2_Quad_Flatpack_scba017d",
-    "expectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
-    "relevantChunkIndexes": [49, 50],
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
+    "relevantChunkIndexes": [
+      49,
+      50
+    ],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -165,9 +234,15 @@
     "question": "What peak reflow temperatures are given for SnPb and lead-free solder paste?",
     "expectedBehavior": "The answer states approximately 235 °C for SnPb and 250–260 °C for lead-free paste.",
     "expectedSource": "Test2_Quad_Flatpack_scba017d",
-    "expectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
-    "relevantChunkIndexes": [51],
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
+    "relevantChunkIndexes": [
+      51
+    ],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -181,9 +256,16 @@
     "question": "Mekkora a szárazon csomagolt QFN alkatrészek minimális eltarthatósága, és milyen tárolási feltételek mellett?",
     "expectedBehavior": "A válasz legalább 12 hónapot, 40 °C alatti és 90% RH alatti nem kondenzáló környezetet ad meg.",
     "expectedSource": "Test2_Quad_Flatpack_scba017d",
-    "expectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
-    "relevantChunkIndexes": [61, 62],
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
+    "relevantChunkIndexes": [
+      61,
+      62
+    ],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -193,13 +275,20 @@
   },
   {
     "id": "rag-013",
-    "name": "GrifEye sűrített levegő",
-    "question": "Milyen sűrített levegős követelmények vonatkoznak a GrifEye V2 berendezésre?",
-    "expectedBehavior": "A válasz tartalmazza a maximum 8 bar nyomást, az 50 l/perc légszállítást, a vízmentes levegőt és a 8 mm-es PU csövet.",
+    "name": "GrifEye suritett levego",
+    "question": "Milyen suritett levegos csatlakozasi kovetelmenyek vonatkoznak a GrifEye V2 berendezesre?",
+    "expectedBehavior": "A valasz tartalmazza a maximum 8 bar nyomast, az 50 l/perc legszallitast, a vizmentes ipari suritett levegot es a 8 mm-es PU csovet.",
     "expectedSource": "GrifEye V2",
-    "expectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
-    "relevantChunkIndexes": [5, 6],
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
+    "relevantChunkIndexes": [
+      5,
+      6
+    ],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -213,9 +302,16 @@
     "question": "What installation temperature, storage temperature and maximum humidity are specified for GrifEye V2?",
     "expectedBehavior": "The answer states 20–24 °C installation, 15–25 °C storage and maximum 60% non-condensing humidity.",
     "expectedSource": "GrifEye V2",
-    "expectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
-    "relevantChunkIndexes": [2, 3],
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
+    "relevantChunkIndexes": [
+      2,
+      3
+    ],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -225,13 +321,20 @@
   },
   {
     "id": "rag-015",
-    "name": "GrifEye telepítési távolság",
-    "question": "Mekkora szabad távolságot kell tartani a GrifEye V2 hátuljánál és oldalainál?",
-    "expectedBehavior": "A válasz 750 mm ajánlott távolságot ad meg.",
+    "name": "GrifEye levegocsatlakozas reszletei",
+    "question": "Milyen nyomasu es legszallitasu suritett levego szukseges a GrifEye V2 berendezeshez, es milyen csovel kell csatlakoztatni?",
+    "expectedBehavior": "A valasz tartalmazza a maximum 8 bar nyomast, az 50 l/perc legszallitast, a vizmentes ipari suritett levegot es a 8 mm-es PU csovet.",
     "expectedSource": "GrifEye V2",
-    "expectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
-    "relevantChunkIndexes": [4],
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
+    "relevantChunkIndexes": [
+      5,
+      6
+    ],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -241,13 +344,20 @@
   },
   {
     "id": "rag-016",
-    "name": "GrifEye stencilméret",
-    "question": "Mekkora stencilkeret-mérettartományt kezel automatikusan a GrifEye V2?",
-    "expectedBehavior": "A válasz a 330×330 mm és 796×796 mm közötti tartományt adja meg.",
+    "name": "GrifEye telepitesi homerseklet es paratartalom",
+    "question": "Milyen telepitesi es tarolasi homersekletet, valamint maximalis paratartalmat ir elo a GrifEye V2 dokumentacioja?",
+    "expectedBehavior": "A valasz megadja a 20-24 C telepitesi homersekletet, a 15-25 C tarolasi homersekletet es a legfeljebb 60%-os, nem kondenzalo paratartalmat.",
     "expectedSource": "GrifEye V2",
-    "expectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
-    "relevantChunkIndexes": [17],
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
+    "relevantChunkIndexes": [
+      2,
+      3
+    ],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -261,9 +371,15 @@
     "question": "Milyen hőmérsékleteket mutatott a 24 °C-ra állított BOFA klíma, az MPM és a befújt levegő?",
     "expectedBehavior": "A válasz 24 °C BOFA kijelzést, 24,1 °C MPM értéket és 16,5 °C befújt levegőt ad meg.",
     "expectedSource": "MPM_Bofa höfokok",
-    "expectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
-    "relevantChunkIndexes": [1],
-    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "expectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
+    "relevantChunkIndexes": [
+      1
+    ],
+    "selectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -277,9 +393,15 @@
     "question": "Mely soroknál szerepel a táblázatban, hogy a klíma rossz, és milyen hőmérsékleteket mértek ott?",
     "expectedBehavior": "A válasz az 8-as és 17-es sort, valamint a hozzájuk tartozó MPM és Vaisala hőmérsékleteket adja meg.",
     "expectedSource": "MPM_Bofa höfokok",
-    "expectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
-    "relevantChunkIndexes": [4],
-    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "expectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
+    "relevantChunkIndexes": [
+      4
+    ],
+    "selectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -293,9 +415,17 @@
     "question": "Mely két SMEMA jelzés egyidejű aktív állapota szükséges a panel továbbításához?",
     "expectedBehavior": "A válasz a Board Available és Machine Ready jelzéseket nevezi meg.",
     "expectedSource": "smema_teszt_dokumentum",
-    "expectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
-    "relevantChunkIndexes": [0, 1, 4],
-    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "expectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
+    "relevantChunkIndexes": [
+      0,
+      1,
+      4
+    ],
+    "selectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",
@@ -309,9 +439,17 @@
     "question": "Mikor keletkezik SMEMA_TIMEOUT hiba, és mit kell először ellenőrizni?",
     "expectedBehavior": "A válasz megadja a 10 másodperces időkorlátot és a downstream Machine Ready, mechanikai akadályok, kábel, kontaktusok és panelérzékelők ellenőrzését.",
     "expectedSource": "smema_teszt_dokumentum",
-    "expectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
-    "relevantChunkIndexes": [2, 3, 4],
-    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "expectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
+    "relevantChunkIndexes": [
+      2,
+      3,
+      4
+    ],
+    "selectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
     "topK": 5,
     "minimumSimilarity": 0.2,
     "promptVariant": "strict",

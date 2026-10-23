@@ -6,7 +6,9 @@
     "expectedBehavior": "Magyarul, kizárólag a kijelölt NASA-dokumentum alapján adja meg a 800 kΩ és 1,2 MΩ közötti tartományt. Ne találjon ki további értéket.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "language": "hu",
     "category": "multilingual-document-fact"
   },
@@ -17,7 +19,9 @@
     "expectedBehavior": "Answer in English and state no more than 20 seconds and no more than ±35 V, based only on the selected document.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "language": "en",
     "category": "documented-fact"
   },
@@ -28,7 +32,9 @@
     "expectedBehavior": "Különítse el a 30–70% és 40–70% relatív páratartalom-tartományokat, röviden és forráshűen.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "selectedDocumentIds": [
+      "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+    ],
     "language": "hu",
     "category": "comparison"
   },
@@ -39,7 +45,9 @@
     "expectedBehavior": "Térjen ki a stencilvastagságra, a legalább 95 durométeres lehúzóra és a Type 3 vagy Type 4 no-clean pasztára.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "language": "hu",
     "category": "instruction-following"
   },
@@ -50,7 +58,9 @@
     "expectedBehavior": "Explain that slight misalignment can self-align during reflow, while gross misalignment should be removed before reflow.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "language": "en",
     "category": "documented-procedure"
   },
@@ -61,29 +71,35 @@
     "expectedBehavior": "Jelezze, hogy a kijelölt dokumentum nem tartalmaz ilyen adatot, és ne találjon ki üzemóraértéket.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "selectedDocumentIds": [
+      "490dd0be-0d44-4852-bca4-e1aff38e0d35"
+    ],
     "language": "hu",
     "category": "missing-information"
   },
   {
     "id": "single-007",
     "name": "GrifEye sűrített levegő",
-    "question": "Sorold fel röviden a GrifEye V2 sűrített levegős követelményeit.",
-    "expectedBehavior": "Legfeljebb 8 bar, 50 l/perc, vízmentes ipari levegő és 8 mm PU cső szerepeljen.",
+    "question": "Milyen nyomasu es legszallitasu suritett levego szukseges a GrifEye V2 berendezeshez, es milyen csovel kell csatlakoztatni?",
+    "expectedBehavior": "A valasz tartalmazza a maximum 8 bar nyomast, az 50 l/perc legszallitast, a vizmentes ipari suritett levegot es a 8 mm-es PU csovet.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "language": "hu",
     "category": "multilingual-document-fact"
   },
   {
     "id": "single-008",
-    "name": "GrifEye telepítési környezet angolul",
-    "question": "List the installation environment requirements for GrifEye V2 in four bullet points.",
-    "expectedBehavior": "Give four concise points covering installation temperature, storage temperature, humidity and required clearance.",
+    "name": "GrifEye telepitesi kornyezet angolul",
+    "question": "List the installation temperature, storage temperature and maximum humidity requirements for GrifEye V2 in three bullet points.",
+    "expectedBehavior": "Give exactly three concise points: 20-24 C installation temperature, 15-25 C storage temperature and maximum 60% non-condensing humidity.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "language": "en",
     "category": "instruction-following"
   },
@@ -94,7 +110,9 @@
     "expectedBehavior": "Jelezze, hogy a kijelölt dokumentumból ez nem állapítható meg, és ne találjon ki értéket.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "language": "hu",
     "category": "missing-information"
   },
@@ -105,7 +123,9 @@
     "expectedBehavior": "Pontosan használja a 24 °C, 24,1 °C és 16,5 °C értékeket.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "selectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
     "language": "hu",
     "category": "xlsx-fact"
   },
@@ -116,7 +136,9 @@
     "expectedBehavior": "Említse a klímacsatlakozó kontakthibáját és tisztítását, a cserélhető mérőegységet, valamint a jobb oldalt elöl lévő szenzorpozíciót.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["77aa5551-ad8b-46e6-b4f0-b589a11535ae"],
+    "selectedDocumentIds": [
+      "77aa5551-ad8b-46e6-b4f0-b589a11535ae"
+    ],
     "language": "hu",
     "category": "xlsx-procedure"
   },
@@ -127,7 +149,9 @@
     "expectedBehavior": "Közérthetően különítse el az upstream panel rendelkezésre állását és a downstream fogadókészséget.",
     "promptVariant": "conversational",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "selectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
     "language": "hu",
     "category": "conversational"
   },
@@ -138,7 +162,9 @@
     "expectedBehavior": "Sorolja a fogadókészséget, mechanikai akadályokat, kábelt, kontaktusokat és panelérzékelőket.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "selectedDocumentIds": [
+      "825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"
+    ],
     "language": "hu",
     "category": "documented-procedure"
   },
@@ -160,7 +186,9 @@
     "expectedBehavior": "A kizárólag GrifEye dokumentumra korlátozott keresés ne adjon NASA-specifikus ellenállási értéket; jelezze a forráshiányt.",
     "promptVariant": "strict",
     "knowledgeSourceMode": "documents",
-    "selectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "selectedDocumentIds": [
+      "5737e1cf-2028-400a-b301-b87f1b691cba"
+    ],
     "language": "hu",
     "category": "negative-filter"
   }
