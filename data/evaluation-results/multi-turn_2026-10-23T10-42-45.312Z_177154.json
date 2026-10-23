@@ -1,0 +1,180 @@
+{
+  "savedAt": "2026-10-23T10:42:45.312Z",
+  "evaluationType": "multi-turn",
+  "promptVariant": "strict",
+  "knowledgeSourceMode": "documents",
+  "expectedBehavior": "Az első válasz adja meg a csuklópánt 800 kΩ és 1,2 MΩ közötti ellenállási tartományát.\nA második fordulóban az asszisztens értse meg a visszautalást, és adja meg a földelőcsatlakozó dokumentált ellenállási követelményét.\nA harmadik fordulóban foglalja össze a két értéket.\nMinden válasz magyarul, kizárólag a kijelölt NASA-dokumentum alapján készüljön. Az asszisztens ne találjon ki műszaki értékeket, és őrizze meg a beszélgetési kontextust.",
+  "simulator": {
+    "persona": "Magyarul kommunikáló SMT-technikus, aki a NASA ESD-követelményeiről kérdez. Rövid, egyértelmű kérdéseket tesz fel, és a korábbi válaszokra visszautal.",
+    "goal": "A felhasználó szeretné megtudni az ESD-csuklópánt ellenállási tartományát, a földelőcsatlakozó megengedett ellenállását és ezek dokumentumforrását.",
+    "hiddenConstraints": "A második kérdés az első válaszban említett csuklópánt földelőcsatlakozójára utal. A harmadik kérdés minkét korábbi érték összefoglalását kéri.",
+    "initialMessage": "Milyen ellenállási tartomány szükséges az ESD-csuklópánt wristband részéhez?",
+    "maximumTurns": 3,
+    "model": "gpt-4o-mini",
+    "stopReason": "A szimuláció elérte a maximális fordulószámot."
+  },
+  "turns": [
+    {
+      "user": "Milyen ellenállási tartomány szükséges az ESD-csuklópánt wristband részéhez?",
+      "assistant": "1. **Rövid válasz**: Az ESD-csuklópánt (wristband) ellenállási tartománya 800 kΩ és 1.2 MΩ között kell legyen.\n\n2. **Érintett gép, típus vagy funkció**: ESD védelmi rendszerek.\n\n3. **Műszaki információ vagy eljárás**: A csuklópánt ellenállását a csuklópánt csatlakozási pontja és a bőr kontaktfelület között kell mérni.\n\n4. **Ellenőrzési pontok**: Minden használat előtt a csuklópánt működőképességét ellenőrizni kell.\n\n5. **Biztonsági megjegyzés**: A nem megfelelő ellenállású csuklópánt használata ESD eseményekhez vezethet.\n\n6. **Források**: [FORRÁS 1], [FORRÁS 3], [FORRÁS 4]."
+    },
+    {
+      "user": "Mi a földelőcsatlakozó megengedett ellenállása az ESD-csuklópánt esetében?",
+      "assistant": "1. **Rövid válasz:** Az ESD-csuklópánt földelőcsatlakozó megengedett ellenállása kevesebb mint 1 Ω.\n\n2. **Érintett gép, típus vagy funkció:** ESD-csuklópánt.\n\n3. **Műszaki információ vagy eljárás:** A csuklópánt földelőcsatlakozó ellenállását a gyártó ajánlásainak megfelelően kell mérni.\n\n4. **Ellenőrzési pontok:** Minden használat előtt ellenőrizni kell a rendszer működőképességét.\n\n5. **Biztonsági megjegyzés:** A rossz földelés növelheti az ESD-károk kockázatát.\n\n6. **Források:** Test1_nasa-std-87396b.pdf [Chunk index: 95], [Chunk index: 94]."
+    },
+    {
+      "user": "Milyen dokumentumforrásokban találhatóak az ESD-csuklópánt ellenállási tartománya és a földelőcsatlakozó megengedett ellenállása?",
+      "assistant": "Az ESD-csuklópánt ellenállási tartománya és a földelőcsatlakozó megengedett ellenállása a következő dokumentumforrásokban található:\n\n1. **ESD-csuklópánt ellenállási tartománya:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 4]\n   - **Tartalom:** \"The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface.\"\n\n2. **Földelőcsatlakozó megengedett ellenállása:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 2]\n   - **Tartalom:** \"The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG.\"\n\nEzek a források részletes műszaki információkat tartalmaznak az ESD-csuklópántok működéséről és követelményeiről."
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Milyen ellenállási tartomány szükséges az ESD-csuklópánt wristband részéhez?"
+    },
+    {
+      "role": "assistant",
+      "content": "1. **Rövid válasz**: Az ESD-csuklópánt (wristband) ellenállási tartománya 800 kΩ és 1.2 MΩ között kell legyen.\n\n2. **Érintett gép, típus vagy funkció**: ESD védelmi rendszerek.\n\n3. **Műszaki információ vagy eljárás**: A csuklópánt ellenállását a csuklópánt csatlakozási pontja és a bőr kontaktfelület között kell mérni.\n\n4. **Ellenőrzési pontok**: Minden használat előtt a csuklópánt működőképességét ellenőrizni kell.\n\n5. **Biztonsági megjegyzés**: A nem megfelelő ellenállású csuklópánt használata ESD eseményekhez vezethet.\n\n6. **Források**: [FORRÁS 1], [FORRÁS 3], [FORRÁS 4]."
+    },
+    {
+      "role": "user",
+      "content": "Mi a földelőcsatlakozó megengedett ellenállása az ESD-csuklópánt esetében?"
+    },
+    {
+      "role": "assistant",
+      "content": "1. **Rövid válasz:** Az ESD-csuklópánt földelőcsatlakozó megengedett ellenállása kevesebb mint 1 Ω.\n\n2. **Érintett gép, típus vagy funkció:** ESD-csuklópánt.\n\n3. **Műszaki információ vagy eljárás:** A csuklópánt földelőcsatlakozó ellenállását a gyártó ajánlásainak megfelelően kell mérni.\n\n4. **Ellenőrzési pontok:** Minden használat előtt ellenőrizni kell a rendszer működőképességét.\n\n5. **Biztonsági megjegyzés:** A rossz földelés növelheti az ESD-károk kockázatát.\n\n6. **Források:** Test1_nasa-std-87396b.pdf [Chunk index: 95], [Chunk index: 94]."
+    },
+    {
+      "role": "user",
+      "content": "Milyen dokumentumforrásokban találhatóak az ESD-csuklópánt ellenállási tartománya és a földelőcsatlakozó megengedett ellenállása?"
+    },
+    {
+      "role": "assistant",
+      "content": "Az ESD-csuklópánt ellenállási tartománya és a földelőcsatlakozó megengedett ellenállása a következő dokumentumforrásokban található:\n\n1. **ESD-csuklópánt ellenállási tartománya:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 4]\n   - **Tartalom:** \"The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface.\"\n\n2. **Földelőcsatlakozó megengedett ellenállása:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 2]\n   - **Tartalom:** \"The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG.\"\n\nEzek a források részletes műszaki információkat tartalmaznak az ESD-csuklópántok működéséről és követelményeiről."
+    }
+  ],
+  "totalResponseTime": 16287.299999952316,
+  "finalEvaluation": {
+    "answer": "Az ESD-csuklópánt ellenállási tartománya és a földelőcsatlakozó megengedett ellenállása a következő dokumentumforrásokban található:\n\n1. **ESD-csuklópánt ellenállási tartománya:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 4]\n   - **Tartalom:** \"The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface.\"\n\n2. **Földelőcsatlakozó megengedett ellenállása:**\n   - **Forrás:** [FORRÁS 1], [FORRÁS 2]\n   - **Tartalom:** \"The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG.\"\n\nEzek a források részletes műszaki információkat tartalmaznak az ESD-csuklópántok működéséről és követelményeiről.",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 5979.299999952316,
+    "retrievalTime": 787,
+    "monitoring": {
+      "queryGenerationMs": 1985,
+      "vectorSearchMs": 787,
+      "contextBuildingMs": 0,
+      "generationMs": 3199,
+      "totalResponseMs": 5972,
+      "inputTokens": 4573,
+      "outputTokens": 231,
+      "totalTokens": 4804,
+      "estimatedCostUsd": 0.00082455,
+      "retrievedChunkCount": 5
+    },
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "d1d3d142-4ede-4401-bc74-a410f89650f7",
+        "chunkIndex": 95,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.6988698050949592,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 40,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "each time before use. See Table 3 , #5 . 7.2.5.3.3 The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface . See Table 3 , #6 .\n\n7.2.5.3.4 The wrist strap ground terminal resistance shall be < 1Ω as measured from the wrist strap ground terminal to the CPG . Follow manufacturer’s recommendation for continuous monitoring systems . See Table 3 , #7 . 7.2.5.3.5 Elastic conductive fabric wristband s shall not be used where shedding of conductive fibers is a concern. Metal expansion bracelet or conductive thermoplastic wristband s ensur ing continuous conductive contact with the wearer’s skin are preferred. 7.2.5.3.6 Foot grounding devices, when used, shall be worn on both feet and measure < 3.5x 10 7 Ω . See Table 3 , #8 . 7.2.5.3.7 The method and frequency of calibration for Continuous Monitored System (CMS) ESD wrist strap systems shall be documented in the local ESD Control Program Plan. See Table 3 , #9 . 7.2.5.4 Stools , Chairs , and Mobile Equipment/Carts 7.2.5.4.1 Groundable, static dissipative seating is required in EPAs rated for processing HBM Class 0 items."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "c1b695b4-7131-4aff-ab12-6084af412d33",
+        "chunkIndex": 102,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.6727907824852835,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 43,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "Summary of ESD Control V erification Values # ESD Control Verification Values (Alternate Test Methods) Recommended Verification Intervals Continual Daily Monthly Biannual Annual 1 Work Surface Resistance 10 6 to < 10 9 Ω ( ANSI/ESD S TM 4.1 - 2017 ) × 2 Work Surface Grounding 10 6 to < 10 9 Ω ( ANSI/ESD S TM 4.1 - 2017 ) × 3 Protective Floor Resistance If Dissipative: 10 6 to < 10 9 Ω ( ANSI/ESD S TM 7.1 - 2013 ) If Conductive: < 10 6 Ω ( ANSI/ESD S TM 7.1 - 2013 ) × 4 Protective Floor Grounding If Dissipative: 10 6 to < 10 9 Ω ( ANSI/ESD S TM 7.1 - 2013 ) If Conductive: < 1 x10 6 Ω ( ANSI/ESD S TM 7.1 - 2013 ) × 5 Wrist Strap Check Go/No Go functional check before use × 6 Wristband Resistance R ange From 800kΩ to 1.2MΩ per ANSI/ESD S20.20 - 2014 ( ANSI/ESD S1.1 - 2013 ) × 7 Personnel Ground System Resistance < 1Ω (if no CMS) × 8 Foot Grounding Device Integrity < 3.5x10 7 Ω ( ANSI/ESD S TM 97.1 - 2015 ) × 9 ESD CMS Calibration is required × 10 Stool / Chair Grounding 10 6 to < 10 9 Ω ( ANSI/ESD S TM 12.1 - 2013 ) × 11 Mobile Equipment/ Carts  < 1Ω if tied directly to CPG per ANSI/ESD S20.20 - 2014  10 6 Ω to < 10 9 Ω if tied thru flooring ( ANSI/ESD S 6 .1 - 2014 ) ×"
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "b6881f50-2c9f-430d-aca1-dc0d22337d12",
+        "chunkIndex": 92,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.5943848135979009,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 39,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "Note 1: When an EPA is outside of an ESD Access - controlled area, the one - meter traffic buffer requirement may be tailored to 12 inches when technically justified by the use of al ternate controls that limit the presence of static charge sources and conductive grounding between 1 meter and 12 inches of the ESD item being processed . The use of cotton or cotton - blend garments is one such method. Note 2: ESD shielding material should be used w hen limited space is available, and non - ESD work is carried out in proximity to active EPAs. 7.2.5 Baseline ESD Control Technical Requirement s The following ESD Control components can be verified using the test methods provided in Section 7 herein , the methods i n ESD TR53 - 01 - 18, or the alternative methods provided in Table 3 . 7.2.5.1 Work S urfaces 7.2.5.1.1 The resistance of the work surface s where ESDS items are handled shall be in the dis sipative range , from 10 6 to < 10 9 Ω. See Table 3 , # 1. 7.2.5.1.2 The resistance from the center of the work surface to the common point ground (CPG) shall be 10 6 to < 10 9 Ω. See Table 3 , # 2."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "64ec18e0-ded4-434c-b759-2c2cf2069d81",
+        "chunkIndex": 94,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.6597081761505796,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 40,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 40 of 50 7.2.5.2 ESD - Protective Floor Surfaces 7.2.5.2.1 A dissipative floor or floor mat shall be used for EPAs certified for processing HBM Class 0A (<125 volts) ESDS hardware . 7.2.5.2.2 The surface resistanc e for d issipative floors and floor mats shall measure from 10 6 to < 10 9 Ω. See Table 3 , #3. 7.2.5.2.3 The surface resistance for conductive floors and floor mats shall measure less than 10 6 Ω. See Table 3 , # 3 . 7.2.5.2.4 Protective floor grounding for dissipative floors shall measure from 10 6 to < 10 9 Ω. See Table 3 , #4. 7.2.5.2.5 Protective floor grounding for conductive floors shall use GFCI and measure less than 1 x10 6 Ω. See Table 3 , #4. 7.2.5.3 Personnel Grounding Systems. 7.2.5.3.1 Local ESD C ontrol Program P lans shall address how personnel will connect ESD wrist straps within the 1 meter buf f er region to protect exposed ESDS hardware. 7.2.5.3.2 ESD wrist straps systems or heel strap systems shall be verified to be functional each time before use. See Table 3 , #5 . 7.2.5.3.3 The wristband resistance shall be 800kΩ to 1.2MΩ as measured between wristband connection point and skin contact surface . See Table 3 , #6 ."
+      },
+      {
+        "documentId": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+        "chunkId": "9ce3684f-0e5d-4c03-a3d4-e117a43bfe0e",
+        "chunkIndex": 89,
+        "originalFilename": "Test1_nasa-std-87396b.pdf",
+        "documentTitle": "Test1_nasa-std-87396b",
+        "similarity": 0.4965360704700852,
+        "sourceType": "pdf",
+        "extractionMethod": "pdf-text-layer",
+        "pageNumber": 38,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "NASA - STD - 8739.6B 38 of 50 Note: While a PC monitor may be considered essential, keyboards and mice are not. Note: Carbon dioxide ( CO ₂ ) snow cleaning or other compressed air nozzles may be considered essential insulators and are a source of charged ions that may pose significant risk to ESDS items. 7.2.4.2.3 Vacuum cleaning equipment, hoses, and associated tools, used for cleaning ESDS articles that cannot be grounded at the nozzle shall be treated as essential insulators. 7.2.4.2.4 ESDS hardwa re shall be either grounded or protected from charge accumulation during transport. 7.2.4.2.5 A subassembly (e.g., electrical box) shall have conductive or dissipative connector caps or plugs in place except when being mated to system cabling, or during environment al bake or test operations. 7.2.4.2.6 Requirements for reducing the static charge on connectors, cables and harnesses prior to mating system interface connectors to system test sets shall be defined in the ESD Control Program Plan . 7.2.4.3 Packaging 7.2.4.3.1 Electrostatic protectiv e packaging shall prevent the generation of static charge and provide protection from electrostatic fields."
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "Az asszisztens válaszai pontosan követték a felhasználói kérdéseket, a megadott források alapján adtak műszaki értékeket, és a válaszok világosak és érthetőek voltak. Minden lényeges elvárt lépés teljesült."
+    }
+  },
+  "documentSearchScope": "selected",
+  "selectedDocumentIds": [
+    "1b220ec9-eba0-4c5e-a19b-62193eecfa6e"
+  ],
+  "selectedDocuments": [
+    {
+      "id": "1b220ec9-eba0-4c5e-a19b-62193eecfa6e",
+      "title": "Test1_nasa-std-87396b",
+      "originalFilename": "Test1_nasa-std-87396b.pdf"
+    }
+  ]
+}

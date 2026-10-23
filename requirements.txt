@@ -1,19 +1,204 @@
-Node.js
-npm
-Next.js
-React
-React DOM
-TypeScript
-OpenAI Node.js SDK
-PostgreSQL
-pgvector
-pg
-Docker Desktop
-Docker Compose
-tsx
-ESLint
-eslint-config-next
-CSS Modules
-OpenAI API-hozzaferes es aktiv API-egyenleg
-Helyi .env konfiguracio
-TXT, MD, PDF, DOCX es XLSX feldolgozasahoz szukseges projektfuggosegek
+SMT MŰSZAKI ASSZISZTENS - KÖVETELMÉNYEK
+========================================
+
+Projekt típusa
+--------------
+- Full-stack webalkalmazás
+- Next.js 16 és TypeScript
+- Node.js futtatókörnyezet
+- PostgreSQL-adatbázis pgvector bővítménnyel
+- Docker-alapú helyi adatbázis-környezet
+- OpenAI API-integráció
+- Helyi OpenTelemetry-instrumentáció
+
+Fontos megjegyzés a függőségekről
+---------------------------------
+Ez egy Node.js- és TypeScript-projekt, nem Python-projekt.
+
+A pontos npm-csomagokat és a rögzített verziókat az alábbi fájlok tartalmazzák:
+- package.json
+- package-lock.json
+
+Az alkalmazás függőségeinek telepítése:
+
+npm install
+
+Ehhez a projekthez ne használd a következő parancsot:
+
+pip install -r requirements.txt
+
+
+Szükséges helyi szoftverek
+--------------------------
+- Node.js 20 vagy újabb
+- npm
+- Docker Desktop Docker Compose támogatással
+- Git
+- Modern webböngésző
+
+
+Szükséges szolgáltatások
+------------------------
+- PostgreSQL
+- pgvector PostgreSQL-bővítmény
+- OpenAI API-hozzáférés
+
+
+Az alkalmazás fő technológiái
+-----------------------------
+- Next.js 16
+- React
+- TypeScript
+- PostgreSQL
+- pgvector
+- OpenAI Node.js SDK
+- OpenTelemetry Node.js-hez
+
+
+Támogatott dokumentumformátumok
+-------------------------------
+Az alkalmazás a következő feltöltött dokumentumformátumokat dolgozza fel:
+- TXT
+- Markdown
+- meglévő szövegréteggel rendelkező PDF
+- DOCX
+- XLSX
+
+OCR nincs beépítve.
+
+
+AI-modellek
+-----------
+A pontos modellnevek környezeti változókon keresztül állíthatók be.
+
+A projekt jelenlegi alapértelmezett modelljei:
+- Chatmodell: gpt-4o-mini
+- Embeddingmodell: text-embedding-3-small
+
+
+Szükséges környezeti beállítások
+-------------------------------
+Hozz létre egy helyi .env fájlt a projekt gyökérkönyvtárában.
+
+Legalább a következő értékeket állítsd be:
+
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/DATABASE_NAME
+POSTGRES_PASSWORD=replace_with_local_database_password
+OPENAI_API_KEY=replace_with_openai_api_key
+OPENAI_CHAT_MODEL=gpt-4o-mini
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_INPUT_COST_PER_1M_TOKENS=0.15
+OPENAI_OUTPUT_COST_PER_1M_TOKENS=0.60
+RAG_RETRIEVAL_DEBUG=false
+
+
+Biztonsági követelmények
+------------------------
+- A valódi .env fájlt soha ne töltsd fel Gitbe.
+- OpenAI API-kulcsot vagy adatbázisjelszót soha ne tölts fel Gitbe.
+- A szerveroldali titkos változók neve ne kezdődjön NEXT_PUBLIC_ előtaggal.
+- A .env.example fájl csak biztonságos mintaértékeket tartalmazzon.
+
+
+Adatbázis-követelmények
+-----------------------
+A PostgreSQL-adatbázisnak támogatnia kell:
+- UUID-azonosítókat
+- JSON/JSONB-metaadatokat
+- ON DELETE CASCADE kapcsolatokat
+- pgvector vektormezőket
+- koszinusztávolság-alapú vektorkeresést
+
+Az alkalmazás az alábbi adatokat tárolja:
+- feltöltött dokumentumok metaadatai
+- kinyert dokumentumchunkok
+- embeddingek
+- tartós chatbeszélgetések
+- chatüzenetek
+- evaluációs adatok és eredmények
+
+
+Telepítés és indítás
+--------------------
+1. Telepítsd az npm-függőségeket:
+
+npm install
+
+2. Indítsd el a PostgreSQL- és pgvector-konténereket:
+
+docker compose up -d
+
+3. Ellenőrizd a konténereket:
+
+docker compose ps
+
+4. Futtasd a lintellenőrzést:
+
+npm run lint
+
+5. Készíts production buildet:
+
+npm run build
+
+6. Indítsd el a fejlesztői szervert:
+
+npm run dev
+
+7. Nyisd meg az alkalmazást:
+
+http://localhost:3000
+
+8. Nyisd meg az Evaluation felületet:
+
+http://localhost:3000/evaluation
+
+
+Ellenőrzési követelmények
+-------------------------
+Minden jelentős módosítás után mindkét parancsnak sikeresen le kell futnia:
+
+npm run lint
+npm run build
+
+
+Megvalósított evaluációs funkciók
+---------------------------------
+- Single-turn evaluáció
+- Multi-turn evaluáció
+- Prompt A/B teszt
+- RAG-szintű evaluáció
+- LLM-as-Judge
+- User Simulator
+- Emberi felülvizsgálat
+- Baseline és iteráció összehasonlítása
+- Precision@K
+- Recall@K
+- Mean Reciprocal Rank (MRR)
+- Retrieval idő mérése
+- Batch evaluáció
+- Eredmények mentése JSON-fájlba
+
+
+Megvalósított monitoringfunkciók
+--------------------------------
+- Streamelt modellválaszok
+- Első token ideje
+- Teljes válaszidő
+- Keresőkérdés-generálás ideje
+- Vektorkeresés ideje
+- Kontextusépítés ideje
+- Válaszgenerálás ideje
+- Inputtokenek száma
+- Outputtokenek száma
+- Összes token száma
+- Becsült API-költség
+- Visszakeresett chunkok száma
+- Helyi OpenTelemetry-instrumentáció
+
+
+A projekt korlátozásai
+----------------------
+- OCR nincs beépítve.
+- Fizetős observability backend nem szükséges.
+- Választható bónuszfunkciók nincsenek beépítve.
+- A retrieval a kötelező tesztekben előre meghatározott releváns dokumentumokkal a legmegbízhatóbb.
