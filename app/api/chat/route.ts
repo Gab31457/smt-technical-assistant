@@ -474,7 +474,6 @@ export async function POST(request: Request) {
             ? { results: [], debugGroups: [] }
             : searchSimilarChunksForQueriesWithDebug(
                 [
-                  multilingualSearchQueries.originalQuery,
                   multilingualSearchQueries.hungarianQuery,
                   multilingualSearchQueries.englishQuery,
                 ],

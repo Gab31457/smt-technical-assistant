@@ -1,0 +1,160 @@
+{
+  "savedAt": "2026-10-23T05:52:20.371Z",
+  "evaluationType": "rag",
+  "knowledgeSourceMode": "documents",
+  "question": "Milyen sűrített levegős csatlakozási követelmények vonatkoznka a GrifEye V2 berendezésre?",
+  "expectedBehavior": "A választ kizárólag a kijelölt GrifEye V2 dokumentum alapján sorolja fel a maxiumum 8 bar nyomást, az 50 l/perc légszállítást, a vízmentes ipari sűrített levegőt és a 8mm-es PU csövet.",
+  "expectedSource": "GrifEye V2",
+  "minimumSimilarity": 0.15,
+  "topK": 5,
+  "expectedDocumentIds": [
+    "5737e1cf-2028-400a-b301-b87f1b691cba"
+  ],
+  "relevantChunkIndexes": [
+    5,
+    6
+  ],
+  "retrievalTime": 1826,
+  "evaluation": {
+    "answer": "1. **Rövid válasz:** A GrifEye V2 berendezéshez max 8 bar nyomású, 50 l/perc légszállítású, vízmentes ipari sűrített levegő szükséges.\n\n2. **Érintett gép, típus vagy funkció:** GrifEye V2 stencil vizsgáló berendezés.\n\n3. **Műszaki információ vagy eljárás:**\n   - A gép 8 mm PU csővel kapcsolódik a léghálózathoz.\n   - Ha a léghálózat nyomása meghaladja a 8 bar-t, nyomáscsökkentő egységet szükséges beiktatni.\n\n4. **Ellenőrzési pontok:** Ellenőrizni kell a léghálózat nyomását, hogy ne lépje túl a megengedett értéket.\n\n5. **Biztonsági megjegyzés:** A berendezést semmilyen körülmények között nem szabad 8 bar nyomásnál nagyobb léghálózathoz csatlakoztatni.\n\n6. **Források:** GrifEye V2 (FORRÁS 2).",
+    "answerModel": "gpt-4o-mini",
+    "promptVariant": "strict",
+    "knowledgeSourceMode": "documents",
+    "responseTime": 8588,
+    "retrievalTime": 1826,
+    "monitoring": {
+      "queryGenerationMs": 2916,
+      "vectorSearchMs": 1826,
+      "contextBuildingMs": 0,
+      "generationMs": 3652,
+      "totalResponseMs": 8397,
+      "inputTokens": 4228,
+      "outputTokens": 265,
+      "totalTokens": 4493,
+      "estimatedCostUsd": 0.0007932,
+      "retrievedChunkCount": 5
+    },
+    "resultCount": 5,
+    "contextCount": 5,
+    "sources": [
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "972273c4-e511-4487-a703-acb92862b246",
+        "chunkIndex": 0,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.6291346554959593,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "FELHASZNÁLÓI DOKUMENTÁCIÓ\n\n[16/2008. (VIII. 30.) NFGM rendelet 1.7.4. alapján]\n\nGrifEye V2.  típusjelű\n\nstencil vizsgáló berendezéshez\n\nGyártó cég neve, címe: Grif-Tools Kft\n\n3300 Eger, Vécseivölgy utca 99.\n\nMechanikai tervezés, kivitelezés, vezérlő szoftver:\n\nDEXMA Műszaki Fejlesztő Kft\n\n1026 Budapest, Lepke utca 29/b\n\nSzoftver:\n\nSanxo Sytem Kft\n\n2.)Gép megnevezése: GrifEye V2.\n\n3.)\n\n4.) A gép működésnek rövid bemutatása:\n\nA GrifEye stencil ellenőrző berendezés síkasztalos, pneumatikus stencil keret rögzítéssel rendelkező\n\noptikai ellenőrző készülék, amely a telecentrikus optikával és világítással ellátott 20Mpx felbontású kamerát nagy pontossággal mozgató X-Y mechanikára szerelve ellenőrzi a nyomtatott áramkörök gyártásában alkalmazott stencil lemezeket. A kamera által rögzített képeket a gép egy Windows 10 pro© operációs rendszert alkalmazó számítógépen futó program segítségével értékeli ki.\n\n5.) Összeállítási, beépítési és összekapcsolási utasítások, beleértve annak a váznak vagy szerkezetnek a rajzait, diagramjait és összekapcsolási eszközeit, amelyre a gépet felszerelik.\n\nNincs külön szerkezet, nem kell összekapcsolni más szerkezetekkel."
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "180ce840-5d9f-4b5e-9003-ae3903587529",
+        "chunkIndex": 6,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.4610954255006612,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "BEKÖTÉS – TELEPÍTÉS\n\nA berendezés üzemszerű működéséhez max 8 bar nyomású, 50l/perc légszállítású, vízmentes ipari sűrített levegő szükséges. a gép 8mm PU csővel kapcsolódik a léghálózathoz.\n\nHa a léghálózat nyomása a 8 bar légnyomást meghaladja, nyomáscsökkentő egységet szükséges beiktatni a hálózatba. A berendezés 8 bar nyomásnyál nagyobb léghálózathoz még ideiglenesen sem csatlakoztatható!\n\nVÍZSZINTBE ÁLLÍTÁS\n\nA berendezést a telepítésnél vízszintbe kell állítani. A gép vízszintbe állításához a következőszerszámokat alkalmazzuk: 13mm-esvilláskulcs,17-es villáskulcs, vízmérték.A kasírozó gép állítható géptalpakkal kerül szállításra. (2.ábra)\n\nÁllító csavar 13mm\n\nFlexibilis géptalp\n\nBiztosító anya 17mm\n\nGépláb\n\nA gép vízszintbe állítását és ellenőrzését a következőképpen végezzük:\n\n1.Fázis - Oldalnézet"
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "8b50b8f5-c93c-429e-95d8-562e579aace7",
+        "chunkIndex": 15,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.6104847720370636,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "+ fényforrás\n\nFényforrás -alsó\n\nBehúzó mechanika és keret rögzítő egység\n\nKeret szélességállító mechanika\n\nVíztálca\n\nÁllítható géptalpak\n\nGrifEye V2. stencil vizsgáló berendezés rövid ismertetése\n\nA GrifEye V2. egy teljesen integrált, önálló mérési és ellenőrzési munkaállomás a nyomtatott áramköri lapok gyártásához használt acél stencil lapok gyártás előtti és gyártás közbeni ellenőrzésére használatra.  A stencilt használók számára a rendszer lehetővé teszi a gyártásba bejövő és a már használt stencilek, mosás és tisztítás utáni ellenőrzését az ismételt gyártás előtt.\n\nGrifEye V2 egy PC Windows-alapú, saját fejlesztésű gépi látásmód szoftvercsomagot használ, amely egy nagyfelbontású, telecentrikus optikával, telecentrikus alsó fényforrással, gyűrű alakú felső világítással ellátott X-Y irányban nagypontosságú és nagy dinamikájú AC szervomotoros hajtással ellátott mechanikával végzi el az ellenőrzést. Ez a kombináció lehetővé teszi a keretbe foglalt stencil lemezek pontosságának ellenőrzését, valamint a több ezer vagy millió apertúra, irányának jelenlétének, helyzetének és méretének 100%-os ellenőrzését."
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "8aaa5215-8082-4e7d-8690-d966eb8d7d03",
+        "chunkIndex": 9,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.5976380407295925,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "meg a biztosító csavart. Az összes biztosító csavar meghúzása után is ellenőrizzük átlósan a vízszintet. (6. ábra szerint)\n\nA képeken szereplő ábrák stilizáltak, nem a valós gépet mutatják!\n\nVÉGSZÓ\n\nA jól beállított gépnek egyenletesen, erőlködés nélkül kell mozognia, semmilyen rezonancia, morgást, búgást nem szabad hallani. A pneumatika rendszer nem eresztheti a levegőt. Ha sziszegést hall, vagy nyomáscsökkenést észlel, ellenőrizze teljes rendszert, a sűrített levegő az egyik legdrágább energia, ne hagyja elszökni. Ha problémát észlel a telepítésnél, vagy nem képes önmaga telepíteni a gépet, hívja a Grif-Tools Kft-t!\n\n7.2 Használati Utasítás – Felhasználó Kézikönyv\n\nGrifEye V.2 stencil vizsgáló berendezéshez.\n\nA biztonságos és helyes üzemeltetés, illetve a termék lehetőségeinek teljes megértése érdekében kérjük, olvassa végig ezt a kézikönyvet, és tartsa azt biztos helyen.\n\nEzen kézikönyv engedély nélküli másolása, vagy terjesztése tilos.\n\nA kézikönyv tartalma és a termék műszaki adatai további figyelmeztetés nélkül megváltozhatnak.\n\nA kézikönyv és a termék többszörösen tesztelt. Ha mégis félrenyomtatást vagy hibát észlel, kérjük, tájékoztasson bennünket!"
+      },
+      {
+        "documentId": "5737e1cf-2028-400a-b301-b87f1b691cba",
+        "chunkId": "5dd40db2-1735-4448-ab8f-a766cffd1ab4",
+        "chunkIndex": 22,
+        "originalFilename": "GrifEye V2.docx",
+        "documentTitle": "GrifEye V2",
+        "similarity": 0.6189239353682267,
+        "sourceType": "docx",
+        "extractionMethod": "docx-raw-text",
+        "pageNumber": null,
+        "worksheetName": null,
+        "rowStart": null,
+        "rowEnd": null,
+        "content": "vagy szándékos rendeltetés elles használatból eredő baleseteket és személyi sérüléseket megelőzze.\n\nA GrifEye stencil ellenőrzőberendezésünk nem tartozik a 16/2008.(VIII.30) NFGM rendelet\n\n4.melléklete szerinti veszélyes gépkategóriák közé, melyre a rendelet 5.§ (3) és (4) bekezdéseit kell\n\nalkalmazni!\n\nA tökélyre törekvő célkitűzések miatt azonban előfordulhat, hogy egyes előírások nem tarthatók be.\n\nIlyen esetben a berendezést a célkitűzést lehető leginkább megközelítő módon kell megterveznünk és elkészíteni. „Veszélyzóna” a berendezés belsejében és/vagy közelében található minden olyan\n\nterület, amelyen az ott tartózkodó személyek egészségügyi vagy biztonsági kockázatnak vannak\n\nkitéve. „Ott tartózkodó” személynek számít az, aki teljesen vagy részben a veszélyzónában\n\ntartózkodik. „Kezelő” az egy vagy több személy, aki a berendezés üzembe helyezésével,\n\nbeállításával, kezelésével, karbantartásával, tisztításával, javításával vagy szállításával van\n\nmegbízva.\n\nA gépeket és berendezéseket úgy kell előállítani, hogy funkciójuk ellátására alkalmasak legyenek, és\n\nbeállításuk és karbantartásuk során az ezen dolgozó személyeket ne veszélyeztessék a gyártó által"
+      }
+    ],
+    "judgeModel": "gpt-4o-mini",
+    "judge": {
+      "relevance": 5,
+      "instructionFollowing": 5,
+      "groundedness": 5,
+      "clarity": 5,
+      "contextRetention": 5,
+      "consistency": 5,
+      "overallScore": 5,
+      "passed": true,
+      "unsupportedClaims": [],
+      "explanation": "A válasz pontosan tükrözi a GrifEye V2 berendezés sűrített levegős csatlakozási követelményeit, amelyeket a megadott dokumentumban található információk alapján fogalmazott meg. Minden szükséges paramétert és biztonsági megjegyzést tartalmaz, és a források is megfelelően alátámasztják az állításokat."
+    }
+  },
+  "ragCheck": {
+    "hasResults": true,
+    "hasContext": true,
+    "expectedSourceFound": true,
+    "similarityPassed": true,
+    "bestSimilarity": 0.6291346554959593,
+    "retrievalMetrics": {
+      "topK": 5,
+      "evaluatedResultCount": 5,
+      "relevantRetrievedCount": 1,
+      "totalRelevantCount": 2,
+      "precisionAtK": 0.2,
+      "recallAtK": 0.5,
+      "meanReciprocalRank": 0.5,
+      "firstRelevantRank": 2
+    },
+    "passed": true,
+    "explanation": "A keresés adott találatot. A válaszgenerálás kapott RAG-kontextust. Az elvárt dokumentum szerepel a források között. A legjobb hasonlóság 0.629, ami eléri a 0.150 küszöböt. Az első releváns találat helyezése: 2. Precision@5: 0.200, Recall@5: 0.500, MRR: 0.500."
+  },
+  "documentSearchScope": "selected",
+  "selectedDocumentIds": [
+    "5737e1cf-2028-400a-b301-b87f1b691cba"
+  ],
+  "selectedDocuments": [
+    {
+      "id": "5737e1cf-2028-400a-b301-b87f1b691cba",
+      "title": "GrifEye V2",
+      "originalFilename": "GrifEye V2.docx"
+    }
+  ]
+}

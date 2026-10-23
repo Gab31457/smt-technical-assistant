@@ -1,0 +1,57 @@
+[
+  {
+    "id": "retrieval-regression-001",
+    "name": "Témaváltás GrifEye-ról NASA ESD-re",
+    "currentQuestion": "Most ne a GrifEye-ról beszéljünk. Mekkora a NASA-dokumentumban az ESD-csuklópánt ellenállása?",
+    "previousContext": "Felhasználó: Mekkora a GrifEye maximális sűrített levegő nyomása? Asszisztens: A maximális nyomás 8 bar.",
+    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "forbiddenDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedQueryIncludes": ["ESD", "csuklópánt", "wrist strap", "ellenállás", "resistance"],
+    "forbiddenQueryTerms": ["GrifEye", "8 bar", "compressed air"],
+    "expectedUsesPreviousContext": false
+  },
+  {
+    "id": "retrieval-regression-002",
+    "name": "Téves érték kizárása",
+    "currentQuestion": "Nem 8 bar nyomást keresek, hanem a NASA ESD-csuklópánt ellenállási tartományát.",
+    "previousContext": "Felhasználó: Mekkora a GrifEye levegőnyomása? Asszisztens: Legfeljebb 8 bar.",
+    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "forbiddenDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "expectedQueryIncludes": ["NASA", "ESD", "wrist strap", "resistance"],
+    "forbiddenQueryTerms": ["8 bar", "pressure", "GrifEye"],
+    "expectedUsesPreviousContext": false
+  },
+  {
+    "id": "retrieval-regression-003",
+    "name": "Dokumentum kizárása",
+    "currentQuestion": "Ne használd a Quad Flatpack dokumentumot. A GrifEye V2 telepítési hőmérséklete érdekel.",
+    "previousContext": "Felhasználó: Milyen reflow hőmérsékletet ír elő a QFN dokumentum?",
+    "expectedDocumentIds": ["5737e1cf-2028-400a-b301-b87f1b691cba"],
+    "forbiddenDocumentIds": ["490dd0be-0d44-4852-bca4-e1aff38e0d35"],
+    "expectedQueryIncludes": ["GrifEye V2", "telepítési hőmérséklet", "installation temperature"],
+    "forbiddenQueryTerms": ["Quad Flatpack", "QFN", "reflow"],
+    "expectedUsesPreviousContext": false
+  },
+  {
+    "id": "retrieval-regression-004",
+    "name": "Korábbi feltételezés visszavonása",
+    "currentQuestion": "Korábban tévesen SMEMA-adatnak hittem. Valójában a NASA ionizátor offsetfeszültség-követelményét keresem.",
+    "previousContext": "Felhasználó: A SMEMA tesztdokumentumban mekkora a jelzési feszültség? Asszisztens: 24 V DC.",
+    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "forbiddenDocumentIds": ["825c5bf3-3a42-406d-93a8-c7c8b9cfd4d3"],
+    "expectedQueryIncludes": ["NASA", "ionizátor", "ionizer", "offset voltage"],
+    "forbiddenQueryTerms": ["SMEMA", "24 V DC", "signaling voltage"],
+    "expectedUsesPreviousContext": false
+  },
+  {
+    "id": "retrieval-regression-005",
+    "name": "Valódi visszautalás megtartása",
+    "currentQuestion": "És a földelőkapocsnál mekkora érték az elfogadható?",
+    "previousContext": "Felhasználó: Mekkora az ESD csuklópánt wristband ellenállási tartománya? Asszisztens: 800 kΩ és 1,2 MΩ között.",
+    "expectedDocumentIds": ["1b220ec9-eba0-4c5e-a19b-62193eecfa6e"],
+    "forbiddenDocumentIds": [],
+    "expectedQueryIncludes": ["ESD", "csuklópánt", "wrist strap", "földelőkapocs", "grounding clip", "resistance"],
+    "forbiddenQueryTerms": [],
+    "expectedUsesPreviousContext": true
+  }
+]

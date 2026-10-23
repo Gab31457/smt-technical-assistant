@@ -5,14 +5,10 @@ import { createEmbedding } from "@/lib/openai";
  * A vektoros keresés beállításai.
  *
  * limit:
- *   Legfeljebb hány találatot kérünk vissza.
+ *   Legfeljebb hány végső találatot kérünk vissza.
  *
  * minimumSimilarity:
  *   A minimálisan elfogadható cosine similarity.
- *
- * A similarity értéke elméletileg -1 és 1 között lehet.
- * A gyakorlatban a szemantikailag kapcsolódó szövegek
- * általában pozitív értéket adnak.
  */
 export interface VectorSearchOptions {
   limit: number;
@@ -22,28 +18,14 @@ export interface VectorSearchOptions {
 
 /*
  * Alapértelmezett keresési beállítások.
- *
- * Első körben maximum öt találatot kérünk vissza.
- *
- * Ez az alapérték fejlesztéshez és teszteléshez használható.
- * Később valós SMT műszaki dokumentumokkal és evaluációval
- * pontosítható.
- * 
+ * A végső Top K alapértelmezetten 5 találat.
  */
-export const DEFAULT_VECTOR_SEARCH_OPTIONS:
-  VectorSearchOptions = {
-    limit: 5,
-    minimumSimilarity: 0.2,
-    documentIds: [],
-  };
+export const DEFAULT_VECTOR_SEARCH_OPTIONS: VectorSearchOptions = {
+  limit: 5,
+  minimumSimilarity: 0.2,
+  documentIds: [],
+};
 
-/*
- * A PostgreSQL lekérdezés által visszaadott sor típusa.
- *
- * A pg csomag bizonyos numerikus PostgreSQL-típusokat
- * szövegként is visszaadhat, ezért a distance és similarity
- * mezők típusa string vagy number lehet.
- */
 interface VectorSearchDatabaseRow {
   chunk_id: string;
   document_id: string;
@@ -57,10 +39,6 @@ interface VectorSearchDatabaseRow {
   similarity: string | number;
 }
 
-/*
- * A backend többi része számára visszaadott,
- * könnyebben használható találati struktúra.
- */
 export interface VectorSearchResult {
   chunkId: string;
   documentId: string;
@@ -80,18 +58,6 @@ export interface VectorSearchResult {
   similarity: number;
 }
 
-/*
- * Egy JavaScript számtömb átalakítása a pgvector
- * által elfogadott szöveges vektorformátummá.
- *
- * Példa:
- *
- * [0.12, -0.34, 0.56]
- *
- * eredménye:
- *
- * [0.12,-0.34,0.56]
- */
 function readStringMetadata(
   metadata: Record<string, unknown>,
   key: string
@@ -112,24 +78,11 @@ function readNumberMetadata(
     : null;
 }
 
-function formatVectorForPostgreSQL(
-  embedding: number[]
-): string {
+function formatVectorForPostgreSQL(embedding: number[]): string {
   return `[${embedding.join(",")}]`;
 }
 
-/*
- * A keresési beállítások ellenőrzése.
- *
- * Ezzel elkerüljük például a negatív találatszámot
- * vagy az érvénytelen similarity küszöböt.
- */
-function validateSearchOptions(
-  options: VectorSearchOptions
-): void {
-  /*
-   * A limitnek pozitív egész számnak kell lennie.
-   */
+function validateSearchOptions(options: VectorSearchOptions): void {
   if (
     !Number.isInteger(options.limit) ||
     options.limit < 1 ||
@@ -140,10 +93,6 @@ function validateSearchOptions(
     );
   }
 
-  /*
-   * A cosine similarity elméleti tartománya
-   * -1 és 1 között van.
-   */
   if (
     !Number.isFinite(options.minimumSimilarity) ||
     options.minimumSimilarity < -1 ||
@@ -155,51 +104,24 @@ function validateSearchOptions(
   }
 }
 
-/*
- * Szemantikus keresés végrehajtása.
- *
- * A folyamat:
- *
- * 1. ellenőrzi a kérdést;
- * 2. embeddinget készít a kérdésből;
- * 3. pgvector cosine distance keresést futtat;
- * 4. kiszámítja a cosine similarity értéket;
- * 5. csak a minimum küszöböt elérő találatokat adja vissza.
- */
 export async function searchSimilarChunks(
   queryText: string,
   customOptions: Partial<VectorSearchOptions> = {}
 ): Promise<VectorSearchResult[]> {
-  /*
-   * A kérdés normalizálása.
-   */
   const normalizedQuery = queryText.trim();
 
-  /*
-   * Üres kérdéshez nem indítunk embedding API-hívást.
-   */
   if (normalizedQuery.length === 0) {
     throw new Error(
       "Üres keresőkérdéshez nem indítható szemantikus keresés."
     );
   }
 
-  /*
-   * A túl hosszú keresőkérdéseket elutasítjuk.
-   *
-   * Egy felhasználói keresőkérdéshez 2000 karakter
-   * bőven elegendő.
-   */
   if (normalizedQuery.length > 2000) {
     throw new Error(
       "A keresőkérdés legfeljebb 2000 karakter hosszú lehet."
     );
   }
 
-  /*
-   * Az egyedi beállításokat összevonjuk
-   * az alapértelmezett értékekkel.
-   */
   const options: VectorSearchOptions = {
     ...DEFAULT_VECTOR_SEARCH_OPTIONS,
     ...customOptions,
@@ -207,63 +129,32 @@ export async function searchSimilarChunks(
 
   validateSearchOptions(options);
 
-  const documentIds = [...new Set(
-    options.documentIds
-      .map((documentId) => documentId.trim())
-      .filter((documentId) => documentId.length > 0)
-  )];
+  const documentIds = [
+    ...new Set(
+      options.documentIds
+        .map((documentId) => documentId.trim())
+        .filter((documentId) => documentId.length > 0)
+    ),
+  ];
 
   const uuidPattern =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   if (!documentIds.every((documentId) => uuidPattern.test(documentId))) {
-    throw new Error("Érvénytelen dokumentumazonosító a keresési szűrőben.");
+    throw new Error(
+      "Érvénytelen dokumentumazonosító a keresési szűrőben."
+    );
   }
 
-  /*
-   * A felhasználói kérdés embeddingjének elkészítése.
-   *
-   * Ugyanazt az embeddingmodellt használjuk, mint
-   * a dokumentumchunkok feldolgozásakor.
-   */
-  const queryEmbedding =
-    await createEmbedding(normalizedQuery);
+  const queryEmbedding = await createEmbedding(normalizedQuery);
+  const formattedQueryEmbedding = formatVectorForPostgreSQL(queryEmbedding);
 
-  /*
-   * A JavaScript embedding átalakítása a PostgreSQL
-   * által elfogadott vektorformátummá.
-   */
-  const formattedQueryEmbedding =
-    formatVectorForPostgreSQL(queryEmbedding);
-
-  /*
-   * Az SQL-lekérdezést normál idézőjeles karakterláncokból
-   * építjük fel.
-   *
-   * Így elkerüljük a korábban tapasztalt, sérült backtick
-   * karakterből eredő template literal hibákat.
-   *
-   * A <=> operátor cosine distance értéket számít.
-   *
-   * A cosine similarity:
-   *
-   * 1 - cosine distance
-   *
-   * A WHERE részben csak:
-   *
-   * - completed státuszú dokumentumokat;
-   * - embeddinggel rendelkező chunkokat;
-   * - a minimum similarity küszöböt elérő találatokat
-   *
-   * engedünk át.
-   */
   const documentFilter =
     documentIds.length > 0
       ? "AND document.id = ANY($3::uuid[]) "
       : "";
 
-  const limitParameter =
-    documentIds.length > 0 ? "$4" : "$3";
+  const limitParameter = documentIds.length > 0 ? "$4" : "$3";
 
   const vectorSearchQuery =
     "SELECT " +
@@ -301,16 +192,11 @@ export async function searchSimilarChunks(
           options.limit,
         ];
 
-  const result =
-    await databasePool.query<VectorSearchDatabaseRow>(
-      vectorSearchQuery,
-      queryParameters
-    );
+  const result = await databasePool.query<VectorSearchDatabaseRow>(
+    vectorSearchQuery,
+    queryParameters
+  );
 
-  /*
-   * Az adatbázis mezőneveit frontend- és
-   * TypeScript-barát struktúrává alakítjuk.
-   */
   return result.rows.map((row) => ({
     chunkId: row.chunk_id,
     documentId: row.document_id,
@@ -337,10 +223,6 @@ export async function searchSimilarChunks(
   }));
 }
 
-/*
- * Több magyar/angol lekérdezés találatainak összevonása.
- * Azonos chunk csak egyszer marad meg, a legjobb hasonlósággal.
- */
 export interface SearchQueryDebugResult {
   chunkId: string;
   documentId: string;
@@ -368,22 +250,29 @@ export async function searchSimilarChunksForQueriesWithDebug(
   queryTexts: string[],
   customOptions: Partial<VectorSearchOptions> = {}
 ): Promise<MultiQuerySearchResponse> {
-  const uniqueQueries = [...new Set(
-    queryTexts
-      .map((queryText) => queryText.trim())
-      .filter((queryText) => queryText.length > 0)
-  )];
+  const uniqueQueries = [
+    ...new Set(
+      queryTexts
+        .map((queryText) => queryText.trim())
+        .filter((queryText) => queryText.length > 0)
+    ),
+  ];
 
   if (uniqueQueries.length === 0) {
     throw new Error("Legalább egy keresőkérdés megadása kötelező.");
   }
 
   const requestedLimit =
-    customOptions.limit ??
-    DEFAULT_VECTOR_SEARCH_OPTIONS.limit;
+    customOptions.limit ?? DEFAULT_VECTOR_SEARCH_OPTIONS.limit;
+
+  /*
+   * Minden lekérdezés legalább 15 belső jelöltet kér le.
+   * A felső korlát 20 marad, mert a keresési limit validációja
+   * jelenleg legfeljebb 20 találatot enged.
+   */
   const candidateLimit = Math.min(
     20,
-    Math.max(requestedLimit * 4, requestedLimit)
+    Math.max(15, requestedLimit * 4)
   );
 
   const searchResultGroups = await Promise.all(
@@ -402,16 +291,20 @@ export async function searchSimilarChunksForQueriesWithDebug(
     queryMatches: number;
   }
 
+  /*
+   * A Map kulcsa a chunkazonosító, ezért ugyanaz a chunk
+   * csak egyszer kerülhet az összevont jelöltlistába.
+   */
   const fusedResults = new Map<string, FusedSearchResult>();
   const reciprocalRankConstant = 20;
 
-  searchResultGroups.forEach((searchResults, queryIndex) => {
+  searchResultGroups.forEach((searchResults) => {
     searchResults.forEach((searchResult, resultIndex) => {
       const rank = resultIndex + 1;
-      const rankScore =
-        1 / (reciprocalRankConstant + rank);
-      const queryWeight = queryIndex === 0 ? 1.2 : 1;
-      const contribution = rankScore * queryWeight;
+      const rankScore = 1 / (reciprocalRankConstant + rank);
+      const similarityBonus =
+        Math.max(0, searchResult.similarity) * 0.02;
+      const contribution = rankScore + similarityBonus;
       const existing = fusedResults.get(searchResult.chunkId);
 
       if (!existing) {
@@ -424,7 +317,16 @@ export async function searchSimilarChunksForQueriesWithDebug(
         return;
       }
 
-      existing.fusionScore += contribution;
+      /*
+       * Ha ugyanaz a chunk több keresőkérdésben is megjelenik,
+       * nem adjuk össze a pontszámait. Az összegzés az általános,
+       * több lekérdezésben közepesen szereplő chunkokat indokolatlanul
+       * a specifikus, egy keresésben erős találatok elé helyezné.
+       */
+      existing.fusionScore = Math.max(
+        existing.fusionScore,
+        contribution
+      );
       existing.bestRank = Math.min(existing.bestRank, rank);
       existing.queryMatches += 1;
 
@@ -440,10 +342,6 @@ export async function searchSimilarChunksForQueriesWithDebug(
         return secondResult.fusionScore - firstResult.fusionScore;
       }
 
-      if (secondResult.queryMatches !== firstResult.queryMatches) {
-        return secondResult.queryMatches - firstResult.queryMatches;
-      }
-
       if (firstResult.bestRank !== secondResult.bestRank) {
         return firstResult.bestRank - secondResult.bestRank;
       }
@@ -456,48 +354,33 @@ export async function searchSimilarChunksForQueriesWithDebug(
     .map((fusedResult) => fusedResult.result);
 
   /*
-   * Minden keresési változat első találata garantált helyet kap.
-   * Így az angol lekérdezés legjobb angol PDF-találatát nem tudják
-   * kiszorítani a több lekérdezésben közepesen jól szereplő,
-   * általános magyar dokumentumrészletek.
+   * Nincs keresőkérdésenként garantált első találat.
+   * A végső listát kizárólag az összevont rangsor tölti fel.
    */
   const selectedResults: VectorSearchResult[] = [];
   const selectedChunkIds = new Set<string>();
 
-  for (const searchResults of searchResultGroups) {
-    const bestQueryResult = searchResults[0];
-
-    if (
-      bestQueryResult &&
-      !selectedChunkIds.has(bestQueryResult.chunkId)
-    ) {
-      selectedResults.push(bestQueryResult);
-      selectedChunkIds.add(bestQueryResult.chunkId);
-    }
-  }
-
   /*
-   * A maradék helyeket az összevont rangsor tölti fel.
-   * Több dokumentumos keresésnél dokumentumonként legfeljebb három
-   * chunkot engedünk be. Egyetlen kijelölt dokumentumnál viszont a teljes
-   * kért találati keretet felhasználhatja ugyanaz a dokumentum.
+   * Több dokumentumos keresésnél dokumentumonként legfeljebb
+   * három chunk kerülhet a végső listába. Egyetlen kijelölt
+   * dokumentumnál a teljes kért keretet használhatja ugyanaz
+   * a dokumentum.
    */
-  const selectedDocumentFilter =
-    customOptions.documentIds ??
-    DEFAULT_VECTOR_SEARCH_OPTIONS.documentIds;
+  const selectedDocumentFilter = [
+    ...new Set(
+      (
+        customOptions.documentIds ??
+        DEFAULT_VECTOR_SEARCH_OPTIONS.documentIds
+      )
+        .map((documentId) => documentId.trim())
+        .filter((documentId) => documentId.length > 0)
+    ),
+  ];
+
   const maximumChunksPerDocument =
-    selectedDocumentFilter.length === 1
-      ? requestedLimit
-      : 3;
+    selectedDocumentFilter.length === 1 ? requestedLimit : 3;
 
   const documentCounts = new Map<string, number>();
-
-  for (const selectedResult of selectedResults) {
-    documentCounts.set(
-      selectedResult.documentId,
-      (documentCounts.get(selectedResult.documentId) ?? 0) + 1
-    );
-  }
 
   for (const rankedResult of rankedResults) {
     if (selectedResults.length >= requestedLimit) {
@@ -525,8 +408,8 @@ export async function searchSimilarChunksForQueriesWithDebug(
 
   const finalResults = selectedResults.slice(0, requestedLimit);
 
-  const debugGroups: SearchQueryDebugGroup[] =
-    uniqueQueries.map((query, queryIndex) => ({
+  const debugGroups: SearchQueryDebugGroup[] = uniqueQueries.map(
+    (query, queryIndex) => ({
       query,
       results: (searchResultGroups[queryIndex] ?? [])
         .slice(0, 5)
@@ -542,7 +425,8 @@ export async function searchSimilarChunksForQueriesWithDebug(
           rowStart: result.rowStart,
           rowEnd: result.rowEnd,
         })),
-    }));
+    })
+  );
 
   return {
     results: finalResults,
@@ -554,11 +438,10 @@ export async function searchSimilarChunksForQueries(
   queryTexts: string[],
   customOptions: Partial<VectorSearchOptions> = {}
 ): Promise<VectorSearchResult[]> {
-  const response =
-    await searchSimilarChunksForQueriesWithDebug(
-      queryTexts,
-      customOptions
-    );
+  const response = await searchSimilarChunksForQueriesWithDebug(
+    queryTexts,
+    customOptions
+  );
 
   return response.results;
 }
